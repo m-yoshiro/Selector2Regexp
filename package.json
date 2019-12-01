@@ -11,5 +11,8 @@
   "license": "ISC",
   "dependencies": {
     "css-tree": "^1.0.0-alpha.38"
+  },
+  "devDependencies": {
+    "jest": "^24.9.0"
   }
 }

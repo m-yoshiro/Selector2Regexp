@@ -1,16 +1,14 @@
-const csstree = require('css-tree');
+const csstree = require("css-tree");
+const getSelectorNodes = require("./lib/getSelectorNodes");
+const generateRegexString = require("./lib/generateRegexString");
 
-const ast = csstree.parse('.exapmle', {
-  context: 'selector'
-});
-
-// csstree.walk(ast, node => {
-//   console.log(node.type)
-// })
-
-csstree.walk(ast, {
-  visit: 'ClassSelector',
-  enter: node => {
-    console.log(node.name);
+module.exports = function cssSearchAdviser(data) {
+  if (!data) {
+    throw Error();
   }
-})
+  const nodes = getSelectorNodes(data);
+  const result = generateRegexString(nodes);
+
+  console.log(result)
+  return result;
+};

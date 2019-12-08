@@ -1,20 +1,5 @@
 const TestRunner = require("jest-runner");
 const cssSearchAdviser = require("./../main");
-const getSelectorNodes = require("./../lib/getSelectorNodes");
-
-describe("getSelector", () => {
-  it('with className selector', () => {
-    const node = getSelectorNodes('.example')[0];
-    expect(node.name).toEqual('example');
-    expect(node.type).toEqual('ClassSelector');
-  })
-
-  it('with Id selector', () => {
-    const node = getSelectorNodes('#example')[0];
-    expect(node.name).toEqual('example');
-    expect(node.type).toEqual('IdSelector');
-  })
-});
 
 describe("initialize", () => {
   it("throw an error without an argument", () => {
@@ -24,16 +9,19 @@ describe("initialize", () => {
   });
 
   it("with class selector", () => {
-    const regexStr = cssSearchAdviser(".example");
+    const regexStr = cssSearchAdviser(".example")[0];
     const pattern = new RegExp(regexStr);
 
     expect(regexStr).toBe("class=['\"]s?(example)s?['\"]");
     expect(pattern.test('class="example"')).toBeTruthy();
+    expect(pattern.test('<div class="example">example</div>')).toBeTruthy();
+
     expect(pattern.test('class="exampleTest"')).toBeFalsy();
+    expect(pattern.test('<div class="exampleTest">example</div>')).toBeFalsy();
   });
 
   it("with id selector", () => {
-    const regexStr = cssSearchAdviser("#example");
+    const regexStr = cssSearchAdviser("#example")[0];
     const pattern = new RegExp(regexStr);
 
     expect(regexStr).toBe("id=['\"]s?(example)s?['\"]");

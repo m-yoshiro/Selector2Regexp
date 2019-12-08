@@ -4,11 +4,10 @@ const generateRegexString = require("./lib/generateRegexString");
 
 module.exports = function cssSearchAdviser(data) {
   if (!data) {
-    throw Error();
+    throw new Error('1 argument required, but only 0 present.');
   }
   const nodes = getSelectorNodes(data);
-  const result = generateRegexString(nodes);
+  const result = nodes.map(node => generateRegexString(node));
 
-  console.log(result)
   return result;
 };

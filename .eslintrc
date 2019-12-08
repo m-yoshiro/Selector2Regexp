@@ -1,4 +1,17 @@
 {
-  "extends": ["standard", "plugin:jest/recommended", "prettier"],
-  "plugins": ["jest"]
+  "extends": [
+    "standard",
+    "plugin:prettier/recommended",
+    "plugin:jest/recommended",
+    "prettier"
+  ],
+  "plugins": ["jest"],
+  "rules": {
+    "prettier/prettier": [
+      "error",
+      {
+        "singleQuote": true
+      }
+    ]
+  }
 }

@@ -7,11 +7,6 @@
   ],
   "plugins": ["jest"],
   "rules": {
-    "prettier/prettier": [
-      "error",
-      {
-        "singleQuote": true
-      }
-    ]
+    "prettier/prettier": "error"
   }
 }

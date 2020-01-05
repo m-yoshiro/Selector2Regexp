@@ -1,12 +1,7 @@
 {
-  "extends": [
-    "standard",
-    "plugin:prettier/recommended",
-    "plugin:jest/recommended",
-    "prettier"
-  ],
-  "plugins": ["jest"],
-  "rules": {
-    "prettier/prettier": "error"
+  "extends": ["plugin:jest/recommended", "plugin:prettier/recommended"],
+  "plugins": ["prettier", "jest"],
+  "parserOptions": {
+    "ecmaVersion": 2019
   }
 }

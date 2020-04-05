@@ -1,4 +1,4 @@
-const cssSearchAdviser = require('./../main');
+const cssSearchAdviser = require('../main');
 
 describe('initialize', () => {
   it('throw an error without an argument', () => {

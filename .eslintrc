@@ -3,5 +3,8 @@
   "plugins": ["prettier", "jest"],
   "parserOptions": {
     "ecmaVersion": 2019
+  },
+  "rules": {
+    "arrow-parens": ["error", "as-needed"]
   }
 }

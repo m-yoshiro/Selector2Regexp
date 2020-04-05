@@ -1,27 +1,29 @@
 import getSelectorNodes from './lib/getSelectorNodes';
 import generateRegexString from './lib/generateRegexString';
+import { CSSSelectorString } from '../types';
 
-import { ICssSearchSelector } from '../types';
-
-class CssSearchSelector implements ICssSearchSelector {
-  private data: any;
-  constructor(data: any) {
-    this.data = data;
-  }
+class CssSearchSelector {
+  constructor() {}
 
   get version(): string {
     return '';
   }
 
-  run() {}
+  convert(data: CSSSelectorString) {
+    if (!data) {
+      throw new Error('1 argument required, but only 0 present.');
+    }
+    const nodes = getSelectorNodes(data);
+
+    return nodes.map((node) => generateRegexString(node));
+  }
 }
 
-export function cssSearchSelector(data) {
+export function cssSearchSelector(data: CSSSelectorString) {
   if (!data) {
     throw new Error('1 argument required, but only 0 present.');
   }
   const nodes = getSelectorNodes(data);
-  const result = nodes.map(node => generateRegexString(node));
 
-  return result;
+  return nodes.map((node) => generateRegexString(node));
 }

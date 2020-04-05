@@ -9,7 +9,7 @@ describe('generateRegexString()', () => {
     expect(() => {
       generateRegexString({
         name: 'example',
-        type: 'Selector'
+        type: 'Selector',
       });
     }).toThrow(Error);
   });
@@ -17,7 +17,7 @@ describe('generateRegexString()', () => {
   it('with className selector', () => {
     const node = {
       name: 'example',
-      type: 'ClassSelector'
+      type: 'ClassSelector',
     };
 
     expect(generateRegexString(node)).toBe('class=[\'"]s?(example)s?[\'"]');

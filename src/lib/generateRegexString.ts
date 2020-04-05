@@ -1,9 +1,12 @@
+import csstree from 'css-tree';
+import { SelectorForSearch } from '../../types';
+
 const translation = {
   ClassSelector: 'class',
-  IdSelector: 'id'
+  IdSelector: 'id',
 };
 
-export default node => {
+export default (node: SelectorForSearch) => {
   if (!node) {
     throw new Error('1 argument required, but only 0 present.');
   }

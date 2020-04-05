@@ -3,7 +3,7 @@ const translation = {
   IdSelector: 'id'
 };
 
-module.exports = node => {
+export default node => {
   if (!node) {
     throw new Error('1 argument required, but only 0 present.');
   }

@@ -1,4 +1,3 @@
-import csstree from 'css-tree';
 import { SelectorForSearch } from '../../types';
 
 const translation = {

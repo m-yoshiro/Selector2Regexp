@@ -1,4 +1,4 @@
-const getSelectorNodes = require('../src/lib/getSelectorNodes');
+import getSelectorNodes from '../src/lib/getSelectorNodes';
 
 describe('getSelector', () => {
   it('with className selector', () => {

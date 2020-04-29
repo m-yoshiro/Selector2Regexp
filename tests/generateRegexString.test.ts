@@ -1,4 +1,12 @@
 import generateRegexString from '../src/lib/generateRegexString';
+import csstree from 'css-tree';
+
+const ast = csstree.parse('.example', {
+  context: 'selector',
+  onParseError: (error) => {
+    console.log(error.message);
+  },
+});
 
 describe('generateRegexString()', () => {
   it('throw an error without an argument', () => {

@@ -1,4 +1,4 @@
-import getSelectorNodes from '../src/lib/getSelectorNodes';
+import getSelectorNodes from '../src/lib/convertToNodes';
 
 describe('getSelector', () => {
   it('with className selector', () => {

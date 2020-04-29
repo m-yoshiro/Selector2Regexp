@@ -1,4 +1,4 @@
-import getSelectorNodes from './lib/getSelectorNodes';
+import getSelectorNodes from './lib/convertToNodes';
 import generateRegexString from './lib/generateRegexString';
 import { CSSSelectorString } from '../types';
 

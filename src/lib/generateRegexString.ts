@@ -1,11 +1,11 @@
-import { SelectorForSearch } from '../../types';
+import { IdOrClassSelector } from '../../types';
 
 const translation = {
   ClassSelector: 'class',
   IdSelector: 'id',
 };
 
-export default (node: SelectorForSearch) => {
+export default (node: IdOrClassSelector) => {
   if (!node) {
     throw new Error('1 argument required, but only 0 present.');
   }

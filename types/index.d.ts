@@ -6,4 +6,4 @@ export interface CssSearchSelector {
 
 export type CSSSelectorString = string;
 
-export type SelectorForSearch = csstree.ClassSelector | csstree.IdSelector;
+export type IdOrClassSelector = csstree.ClassSelector | csstree.IdSelector;

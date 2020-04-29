@@ -4,8 +4,5 @@
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
     "ecmaVersion": 2019
-  },
-  "rules": {
-    "arrow-parens": ["error", "as-needed"]
   }
 }

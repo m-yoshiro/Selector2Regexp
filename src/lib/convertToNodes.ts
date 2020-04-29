@@ -2,10 +2,6 @@ import csstree from 'css-tree';
 import { CSSSelectorString, IdOrClassSelector } from '../../types';
 
 export default (selectorString: CSSSelectorString) => {
-  if (!selectorString) {
-    throw new Error('1 argument required, but only 0 present.');
-  }
-
   const ast = csstree.parse(selectorString, {
     context: 'selector',
     onParseError: (error) => {

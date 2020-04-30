@@ -9,7 +9,7 @@ export default (selectorString: CSSSelectorString) => {
     },
   });
 
-  let nodes: (IdOrClassSelector | null)[] = [];
+  const nodes: (IdOrClassSelector | null)[] = [];
 
   csstree.walk(ast, (node) => {
     if (node.type === 'ClassSelector' || node.type === 'IdSelector') {
@@ -17,5 +17,5 @@ export default (selectorString: CSSSelectorString) => {
     }
   });
 
-  return nodes.length > 0 ? (nodes as IdOrClassSelector[]) : null;
+  return nodes.length > 0 ? nodes : null;
 };

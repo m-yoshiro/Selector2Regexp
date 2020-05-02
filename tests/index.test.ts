@@ -1,14 +1,8 @@
-const cssSearchAdviser = require('../main');
+import selector2Regex from '../src/index';
 
 describe('initialize', () => {
-  it('throw an error without an argument', () => {
-    expect(() => {
-      cssSearchAdviser();
-    }).toThrow(Error);
-  });
-
   it('with class selector', () => {
-    const regexStr = cssSearchAdviser('.example')[0];
+    const regexStr = selector2Regex('.example')[0];
     const pattern = new RegExp(regexStr);
 
     expect(regexStr).toBe('class=[\'"]s?(example)s?[\'"]');
@@ -20,7 +14,7 @@ describe('initialize', () => {
   });
 
   it('with id selector', () => {
-    const regexStr = cssSearchAdviser('#example')[0];
+    const regexStr = selector2Regex('#example')[0];
     const pattern = new RegExp(regexStr);
 
     expect(regexStr).toBe('id=[\'"]s?(example)s?[\'"]');

@@ -1,11 +1,12 @@
 import { IdOrClassSelector } from '../../types';
+import csstree from 'css-tree';
 
 const translation = {
   ClassSelector: 'class',
   IdSelector: 'id',
 };
 
-export default (node: IdOrClassSelector) => {
+export default (node: csstree.Selector) => {
   if (!node) {
     throw new Error('1 argument required, but only 0 present.');
   }

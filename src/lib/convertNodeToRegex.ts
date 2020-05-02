@@ -17,5 +17,5 @@ export default (node: IdOrClassSelector) => {
   const selector = node.name;
   const attribute = translation[node.type];
 
-  return `${attribute}=['"]s?(${selector})s?['"]`;
+  return `${attribute}=(['"])\s?(${selector})\s?\1`;
 };

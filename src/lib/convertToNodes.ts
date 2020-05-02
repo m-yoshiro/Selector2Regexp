@@ -14,8 +14,6 @@ export default (selectorString: CSSSelectorString) => {
     throw error;
   }
 
-  console.log(ast);
-
   const nodes: (IdOrClassSelector | null)[] = [];
 
   csstree.walk(ast, (node) => {

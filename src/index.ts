@@ -1,5 +1,5 @@
 import convertStringToNodes from './lib/convertStringToNodes';
-import generateRegexString from './lib/generateRegexString';
+import convertNodeToRegex from './lib/convertNodeToRegex';
 import { CSSSelectorString } from '../types';
 
 export default function selector2Regex(data: CSSSelectorString) {
@@ -8,5 +8,5 @@ export default function selector2Regex(data: CSSSelectorString) {
   }
   const selectorNodes = convertStringToNodes(data);
 
-  return selectorNodes && selectorNodes.map((node) => generateRegexString(node!));
+  return selectorNodes && selectorNodes.map((node) => convertNodeToRegex(node!));
 }

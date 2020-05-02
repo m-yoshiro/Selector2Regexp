@@ -1,4 +1,4 @@
-import generateRegexString from '../src/lib/generateRegexString';
+import convertNodeToRegex from '../src/lib/convertNodeToRegex';
 import csstree from 'css-tree';
 
 describe('generateRegexString()', () => {
@@ -8,6 +8,6 @@ describe('generateRegexString()', () => {
       name: 'example',
     };
 
-    expect(generateRegexString(node)).toBe('class=[\'"]s?(example)s?[\'"]');
+    expect(convertNodeToRegex(node)).toBe('class=[\'"]s?(example)s?[\'"]');
   });
 });

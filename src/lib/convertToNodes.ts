@@ -2,12 +2,19 @@ import csstree from 'css-tree';
 import { CSSSelectorString, IdOrClassSelector } from '../../types';
 
 export default (selectorString: CSSSelectorString) => {
-  const ast = csstree.parse(selectorString, {
-    context: 'selector',
-    onParseError: (error) => {
-      console.log(error.message);
-    },
-  });
+  let ast;
+  try {
+    ast = csstree.parse(selectorString, {
+      context: 'selector',
+      onParseError: (error) => {
+        console.log(error.message);
+      },
+    });
+  } catch (error) {
+    throw error;
+  }
+
+  console.log(ast);
 
   const nodes: (IdOrClassSelector | null)[] = [];
 

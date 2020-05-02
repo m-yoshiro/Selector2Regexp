@@ -14,4 +14,9 @@ describe('convertToNodes', () => {
       { loc: null, name: 'child', type: 'ClassSelector' },
     ]);
   });
+
+  it('with selector and block', () => {
+    expect(() => convertToNodes('.example .list;')).toThrowError('Unexpected input');
+    expect(() => convertToNodes('color: red;')).toThrowError('Identifier is expected');
+  });
 });

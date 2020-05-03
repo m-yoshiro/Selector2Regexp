@@ -3,7 +3,7 @@ import { CSSSelectorString } from '../../types';
 
 export default (selectorString: CSSSelectorString) => {
   try {
-    return csstree.parse(selectorString, {
+    return csstree.parse(selectorString.trim(), {
       context: 'selector',
       onParseError: (error) => {
         console.log(error.message);
@@ -12,12 +12,4 @@ export default (selectorString: CSSSelectorString) => {
   } catch (error) {
     throw error;
   }
-
-  // const nodes: (IdOrClassSelector | null)[] = [];
-
-  // csstree.walk(ast, (node) => {
-  //   if (node.type === 'ClassSelector' || node.type === 'IdSelector') {
-  //     nodes.push(node);
-  //   }
-  // });
 };

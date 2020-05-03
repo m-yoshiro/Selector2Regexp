@@ -1,22 +1,16 @@
 import convertStringToSelector from '../src/lib/convertStringToSelector';
+import csstree from 'css-tree';
 
 describe('convertToNodes', () => {
   it('with class selector', () => {
-    expect(convertStringToSelector('.example')).toStrictEqual([{ loc: null, name: 'example', type: 'ClassSelector' }]);
+    expect(convertStringToSelector('.example')).toStrictEqual(csstree.parse('.example', { context: 'selector' }));
   });
+
   it('with ID selector', () => {
-    expect(convertStringToSelector('#example')).toStrictEqual([{ loc: null, name: 'example', type: 'IdSelector' }]);
+    expect(convertStringToSelector('#example')).toStrictEqual(csstree.parse('#example', { context: 'selector' }));
   });
 
   it('with multiple selector', () => {
-    expect(convertStringToSelector('.example .child')).toStrictEqual([
-      { loc: null, name: 'example', type: 'ClassSelector' },
-      { loc: null, name: 'child', type: 'ClassSelector' },
-    ]);
-  });
-
-  it('with selector and block', () => {
-    expect(() => convertStringToSelector('.example .list;')).toThrowError('Unexpected input');
-    expect(() => convertStringToSelector('color: red;')).toThrowError('Identifier is expected');
+    expect(convertStringToSelector('.example .child')).toStrictEqual(csstree.parse('.example .child', { context: 'selector' }));
   });
 });

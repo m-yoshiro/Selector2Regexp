@@ -5,7 +5,6 @@ const END_OF_BRACKET = '\\s*>';
 const TYPE_NAME = '\\w+';
 const CLASS_ATTRIBUTE = 'class';
 const ANY_VALUE = '\\w*';
-const ANY_ID = '\\w*';
 const ID_ATTRIBUTE = 'id';
 const ATTRIBUTE_SEPARATOR = '\\s+';
 const SPACE_BETWEEN_ELEMENT = '\\s*';

@@ -8,7 +8,7 @@ export default (selectorString: CSSSelectorString) => {
       onParseError: (error) => {
         console.log(error.message);
       },
-    });
+    }) as csstree.Selector;
   } catch (error) {
     throw error;
   }

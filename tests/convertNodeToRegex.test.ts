@@ -27,7 +27,7 @@ describe('generateRegexString()', () => {
 
   describe('given an ID selector', () => {
     it('Should be equal', () => {
-      expect(convertNodeToRegex(selector('#app'))).toBe('id=[\'"]\\w*\\s*(app)\\s*\\w*[\'"]');
+      expect(convertNodeToRegex(selector('#app'))).toBe('id=[\'"]\\w*\\s*(?<!\\w)(app)(?!\\w)\\s*\\w*[\'"]');
     });
 
     it('Find an given ID in HTML', () => {
@@ -43,6 +43,12 @@ describe('generateRegexString()', () => {
     });
   });
 
+  describe('given an Type selector', () => {
+    it('Should be equal', () => {
+      expect(convertNodeToRegex(selector('div'))).toBe('class=[\'"]\\s?(button)\\s?[\'"]');
+    });
+  });
+
   describe('given an Descendant – Whitespace – combinator', () => {
     it('with Descendant – Whitespace – Combinator', () => {
       expect(convertNodeToRegex(selector('.example .child'))).toBe('class=[\'"]\\s?(example)\\s?[\'"]\\s*.*>\\s*<\\s*(\\w+)\\s*/>');
@@ -50,7 +56,6 @@ describe('generateRegexString()', () => {
 
     it('Descendant valid regex', () => {
       const html = `<div class="example"><div class="child"></div></div>`;
-      console.log(html);
       expect(new RegExp(convertNodeToRegex(selector('.example .child'))).test(html)).toBeTruthy();
     });
   });

@@ -12,7 +12,11 @@ const QUOTE = '[\'"]';
 const BEFORE_ATTRIBUTE = `(?<!\\w)`; // ES2018
 const AFTER_ATTRIBUTE = '(?!\\w)';
 
-const attributeRegexp = <T extends string>(attribute: string, value: T | T[]) => {
+const attributeRegexp = <T extends string>(attribute: string, value: T | T[] | null) => {
+  if (!value) {
+    return `${attribute}`;
+  }
+
   const valueRegexp = (value: T | T[]) => {
     const valueString = Array.isArray(value) ? value.join('|') : value;
     const n = Array.isArray(value) ? `{${value.length}}` : '';
@@ -21,6 +25,14 @@ const attributeRegexp = <T extends string>(attribute: string, value: T | T[]) =>
   };
 
   return `${attribute}=${QUOTE}${valueRegexp(value)}${QUOTE}`;
+};
+
+const openingTagRegexp = (type: string, attribute?: string) => {
+  return START_OF_BRACKET + type + END_OF_BRACKET;
+};
+
+const closingTagRegexp = (type: string) => {
+  return START_OF_BRACKET + '/' + type + END_OF_BRACKET;
 };
 
 export default (selector: csstree.Selector) => {
@@ -33,7 +45,7 @@ export default (selector: csstree.Selector) => {
   }
 
   const result: {
-    type: 'ClassSelector' | 'IdSelector' | 'WhiteSpace';
+    type: 'ClassSelector' | 'IdSelector' | 'AttributeSelector' | 'WhiteSpace' | 'TypeSelector';
     value: string;
   }[] = [];
 
@@ -50,6 +62,20 @@ export default (selector: csstree.Selector) => {
         result.push({
           type: node.type,
           value: attributeRegexp(ID_ATTRIBUTE, node.name),
+        });
+        break;
+
+      case 'AttributeSelector':
+        result.push({
+          type: node.type,
+          value: attributeRegexp(node.name.name, (node.value as csstree.Identifier).name),
+        });
+        break;
+
+      case 'TypeSelector':
+        result.push({
+          type: node.type,
+          value: openingTagRegexp(node.name),
         });
         break;
 

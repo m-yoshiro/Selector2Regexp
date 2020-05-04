@@ -6,7 +6,7 @@ export default function selector2Regex(data: CSSSelectorString) {
   if (!data) {
     throw new Error('1 argument required, but only 0 present.');
   }
-  const selectorNodes = convertStringToSelector(data);
+  const selectorNode = convertStringToSelector(data);
 
-  return selectorNodes && selectorNodes.map((node) => convertNodeToRegex(node!));
+  return convertNodeToRegex(selectorNode);
 }

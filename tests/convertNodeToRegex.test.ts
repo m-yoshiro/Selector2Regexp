@@ -39,13 +39,14 @@ describe('generateRegexString()', () => {
 
   describe('Attribute selector', () => {
     it('Should be equal', () => {
-      expect(convertNodeToRegex(selector('[class=button]'))).toBe('class=[\'"]\\s?(button)\\s?[\'"]');
+      expect(convertNodeToRegex(selector('[class=example]'))).toBe('class=[\'"]\\w*\\s*(?<!\\w)(example)(?!\\w)\\s*\\w*[\'"]');
+      expect(convertNodeToRegex(selector('[data-id=modal]'))).toBe('data-id=[\'"]\\w*\\s*(?<!\\w)(modal)(?!\\w)\\s*\\w*[\'"]');
     });
   });
 
   describe('Type selector', () => {
     it('Should be equal', () => {
-      expect(convertNodeToRegex(selector('div'))).toBe('class=[\'"]\\s?(button)\\s?[\'"]');
+      expect(convertNodeToRegex(selector('div'))).toBe('<\\s*div\\s*>');
     });
   });
 

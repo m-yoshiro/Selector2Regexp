@@ -52,7 +52,10 @@ describe('generateRegexString()', () => {
 
   describe('Descendant – Whitespace – combinator', () => {
     it('with Descendant – Whitespace – Combinator', () => {
-      expect(convertNodeToRegex(selector('.example .child'))).toBe('class=[\'"]\\s?(example)\\s?[\'"]\\s*.*>\\s*<\\s*(\\w+)\\s*/>');
+      // expect(convertNodeToRegex(selector('.example .child'))).toBe('class=[\'"]\\s?(example)\\s?[\'"]\\s*.*>\\s*<\\s*(\\w+)\\s*/>');
+      console.log(convertNodeToRegex(selector('.example .child')));
+
+      expect(new RegExp(convertNodeToRegex(selector('.example .child'))).test(`<div class="example"><div class="child"></div></div>`)).toBeTruthy();
     });
 
     it('Descendant valid regex', () => {

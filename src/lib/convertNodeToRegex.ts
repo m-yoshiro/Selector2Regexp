@@ -82,7 +82,7 @@ export default (selector: csstree.Selector) => {
       case 'WhiteSpace':
         result.push({
           type: node.type,
-          value: END_OF_BRACKET + SPACE_BETWEEN_ELEMENT + START_OF_BRACKET + TYPE_NAME,
+          value: END_OF_BRACKET + SPACE_BETWEEN_ELEMENT + START_OF_BRACKET + TYPE_NAME + ATTRIBUTE_SEPARATOR,
         });
         break;
 

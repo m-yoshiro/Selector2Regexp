@@ -21,7 +21,7 @@ Usage:
   console.log(argv);
 
   if (input.length > 1) {
-    process.exit(1);
+    throw new Error('Multiple input is not supported.');
   }
 
   console.log(selector2Regexp(input[0]));

@@ -7,7 +7,7 @@ const selector = (str: string) =>
   }) as csstree.Selector;
 
 describe('generateRegexString()', () => {
-  describe('given an ClassName selector', () => {
+  describe('ClassName selector', () => {
     it('Should be equal', () => {
       expect(convertNodeToRegex(selector('.example'))).toBe('class=[\'"]\\w*\\s*(?<!\\w)(example)(?!\\w)\\s*\\w*[\'"]');
     });
@@ -25,7 +25,7 @@ describe('generateRegexString()', () => {
     });
   });
 
-  describe('given an ID selector', () => {
+  describe('ID selector', () => {
     it('Should be equal', () => {
       expect(convertNodeToRegex(selector('#app'))).toBe('id=[\'"]\\w*\\s*(?<!\\w)(app)(?!\\w)\\s*\\w*[\'"]');
     });
@@ -37,19 +37,19 @@ describe('generateRegexString()', () => {
     });
   });
 
-  describe('given an Attribute selector', () => {
+  describe('Attribute selector', () => {
     it('Should be equal', () => {
       expect(convertNodeToRegex(selector('[class=button]'))).toBe('class=[\'"]\\s?(button)\\s?[\'"]');
     });
   });
 
-  describe('given an Type selector', () => {
+  describe('Type selector', () => {
     it('Should be equal', () => {
       expect(convertNodeToRegex(selector('div'))).toBe('class=[\'"]\\s?(button)\\s?[\'"]');
     });
   });
 
-  describe('given an Descendant – Whitespace – combinator', () => {
+  describe('Descendant – Whitespace – combinator', () => {
     it('with Descendant – Whitespace – Combinator', () => {
       expect(convertNodeToRegex(selector('.example .child'))).toBe('class=[\'"]\\s?(example)\\s?[\'"]\\s*.*>\\s*<\\s*(\\w+)\\s*/>');
     });
@@ -60,7 +60,7 @@ describe('generateRegexString()', () => {
     });
   });
 
-  describe('given an unsupported selector', () => {
+  describe('Unsupported selector', () => {
     it('with ">", "+" and "~" Combinator throw Error', () => {
       expect(() => convertNodeToRegex(selector('.example > .child'))).toThrowError('Combinator ">" is not supported.');
       expect(() => convertNodeToRegex(selector('.example + .adjacentSibling'))).toThrowError('Combinator "+" is not supported.');

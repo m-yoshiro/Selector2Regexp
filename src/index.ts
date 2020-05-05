@@ -1,5 +1,5 @@
 import parse from './lib/parse';
-import convertNodeToRegex from './lib/convertNodeToRegex';
+import transformToRegexp from './lib/transformToRegexp';
 import { CSSSelectorString } from '../types';
 
 export default function (data: CSSSelectorString) {
@@ -8,5 +8,5 @@ export default function (data: CSSSelectorString) {
   }
   const selectorNode = parse(data);
 
-  return convertNodeToRegex(selectorNode);
+  return transformToRegexp(selectorNode);
 }

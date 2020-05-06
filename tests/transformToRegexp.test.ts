@@ -64,6 +64,16 @@ describe('generateRegexString()', () => {
           </div>
         `)
       ).toBeTruthy();
+
+      expect(
+        new RegExp(transformToRegexp(selector('.example .second'))).test(`
+          <div class="example">
+            <div class="first"></div>
+            <div><div class="second"></div></div>
+            <div class="third"></div>
+          </div>
+        `)
+      ).toBeTruthy();
     });
   });
 

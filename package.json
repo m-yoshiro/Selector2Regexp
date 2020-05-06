@@ -1,7 +1,7 @@
 {
-  "name": "css-search-selector",
+  "name": "Selector2Regexp",
   "version": "0.0.1-alpha",
-  "description": "",
+  "description": "Convert CSS Selector to a Regexp string for searching matched elements in HTML.",
   "bin": {
     "s2r": "./bin/selector2regexp"
   },
@@ -13,9 +13,19 @@
     "lint:fix": "eslint --fix ./**/*.ts",
     "test": "jest"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "keywords": [
+    "s2r",
+    "regexp",
+    "CSS",
+    "selector",
+    "HTML"
+  ],
+  "author": "Yoshiro Matsumoto <yoshiro-public@gmail.com>",
+  "license": "MIT",
+  "bug": {
+    "url": "https://github.com/m-yoshiro/Selector2Regexp/issues"
+  },
+  "homepage": "https://github.com/m-yoshiro/Selector2Regexp",
   "dependencies": {
     "css-tree": "^1.0.0-alpha.39"
   },

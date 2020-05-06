@@ -27,7 +27,8 @@
   },
   "homepage": "https://github.com/m-yoshiro/Selector2Regexp",
   "dependencies": {
-    "css-tree": "^1.0.0-alpha.39"
+    "css-tree": "^1.0.0-alpha.39",
+    "yargs": "^15.3.1"
   },
   "devDependencies": {
     "@types/css-tree": "^1.0.3",
@@ -47,7 +48,6 @@
     "jest": "^25.5.4",
     "prettier": "^2.0.5",
     "ts-jest": "^25.4.0",
-    "typescript": "^3.8.3",
-    "yargs": "^15.3.1"
+    "typescript": "^3.8.3"
   }
 }

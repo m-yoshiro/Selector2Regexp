@@ -13,7 +13,8 @@
     "lint:fix": "eslint --fix ./**/*.ts",
     "test": "jest",
     "preversion": "npm run test",
-    "version": "npm run build"
+    "version": "npm run build",
+    "postversion": "git push && git push --tags"
   },
   "keywords": [
     "s2r",

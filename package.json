@@ -23,7 +23,7 @@
     "selector",
     "HTML"
   ],
-  "author": "Yoshiro Matsumoto <yoshiro-public@gmail.com>",
+  "author": "Yoshiro Matsumoto <yoshiro.public@gmail.com>",
   "license": "MIT",
   "bug": {
     "url": "https://github.com/m-yoshiro/Selector2Regexp/issues"

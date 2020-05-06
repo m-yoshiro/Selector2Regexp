@@ -6,6 +6,12 @@ Convert CSS Selector to a Regexp string for searching matched elements in HTML.
 
 ![](https://github.com/m-yoshiro/Selector2Regexp/workflows/TEST/badge.svg)
 
+## Install
+
+```sh
+npm i selector-2-regexp
+```
+
 ## Usage
 
 ```sh

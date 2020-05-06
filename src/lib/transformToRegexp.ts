@@ -1,5 +1,5 @@
 import csstree from 'css-tree';
-import { visitor, Visitor } from './visitor';
+import { visitor } from './visitor';
 
 export default function (selector: csstree.Selector) {
   if (selector.type !== 'Selector') {
@@ -33,6 +33,9 @@ export default function (selector: csstree.Selector) {
         result.push(visitor[node.type](node));
         break;
       case 'PseudoElementSelector':
+        result.push(visitor[node.type](node));
+        break;
+      case 'SelectorList':
         result.push(visitor[node.type](node));
         break;
       default:

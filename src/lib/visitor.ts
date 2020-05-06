@@ -1,5 +1,4 @@
 import csstree, { PseudoElementSelector } from 'css-tree';
-import { CssSearchSelector } from '../../types';
 
 const START_OF_BRACKET = '<\\s*';
 const END_OF_BRACKET = '\\s*>';
@@ -26,6 +25,7 @@ export type Visitor = {
   TypeSelector: (node: csstree.TypeSelector) => SelectorRegexpString;
   Combinator: (node: csstree.Combinator) => NoSupport;
   PseudoElementSelector: (node: PseudoElementSelector) => NoSupport;
+  SelectorList: (node: csstree.SelectorList) => NoSupport;
 };
 
 const attributeRegexp = <T extends string>(attribute: string, value: T | T[] | null) => {
@@ -78,5 +78,9 @@ export const visitor: Visitor = {
 
   PseudoElementSelector(node) {
     throw new Error('Pseudo-elements "before" or "after" is not supported.');
+  },
+
+  SelectorList(node) {
+    throw new Error('SelectorList, like a "a.button", is not supported.');
   },
 };

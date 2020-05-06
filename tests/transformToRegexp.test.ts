@@ -77,6 +77,11 @@ describe('generateRegexString()', () => {
     });
   });
 
+  // describe('Selector list', () => {
+  //   it('To match generated regexp in HTML', () => {
+  //   });
+  // }
+
   describe('Unsupported selector', () => {
     it('with ">", "+" and "~" Combinator throw Error', () => {
       expect(() => transformToRegexp(selector('.example > .child'))).toThrowError('Combinator ">" is not supported.');

@@ -18,8 +18,6 @@ Usage:
 
   const input = argv._;
 
-  console.log(argv);
-
   if (input.length > 1) {
     throw new Error('Multiple input is not supported.');
   }

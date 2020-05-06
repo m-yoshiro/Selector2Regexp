@@ -52,7 +52,7 @@ describe('generateRegexString()', () => {
 
   describe('Whitespace combinator', () => {
     it('To match generated regexp in HTML', () => {
-      // expect(convertNodeToRegex(selector('.example .child'))).toBe('class=[\'"]\\s?(example)\\s?[\'"]\\s*.*>\\s*<\\s*(\\w+)\\s*/>');
+      // expect(transformToRegexp(selector('.example .child'))).toBe(' ['"]\w*\s*(?<!\w)(example)(?!\w)\s*\w*['"]\s*>\s*(?:\s<.*>.*\s*)*?<\s*\w+\s+class=['"]\w*\s*(?<!\w)(second)(?!\w)\s*\w*['"]');
       expect(new RegExp(transformToRegexp(selector('.example .child'))).test(`<div class="example"><div class="child"></div></div>`)).toBeTruthy();
       console.log(transformToRegexp(selector('.example .second')));
       expect(

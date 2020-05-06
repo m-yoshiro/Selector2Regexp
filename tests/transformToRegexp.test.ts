@@ -12,13 +12,13 @@ describe('generateRegexString()', () => {
       expect(transformToRegexp(selector('.example'))).toBe('class=[\'"]\\w*\\s*(?<!\\w)(example)(?!\\w)\\s*\\w*[\'"]');
     });
 
-    it('Find an given className in HTML', () => {
+    it('To match generated regexp in HTML', () => {
       expect(new RegExp(transformToRegexp(selector('.example'))).test(`<div class="example"></div>`)).toBeTruthy();
       expect(new RegExp(transformToRegexp(selector('.example'))).test(`<div class="left example"></div>`)).toBeTruthy();
       expect(new RegExp(transformToRegexp(selector('.example'))).test(`<div class="left example right"></div>`)).toBeTruthy();
     });
 
-    it('Fail to find an given className in HTML', () => {
+    it('Not to match', () => {
       expect(new RegExp(transformToRegexp(selector('.example'))).test(`<div class="xample"></div>`)).toBeFalsy();
       expect(new RegExp(transformToRegexp(selector('.example'))).test(`<div class="leftexample"></div>`)).toBeFalsy();
       expect(new RegExp(transformToRegexp(selector('.example'))).test(`<div class="left exampleright"></div>`)).toBeFalsy();
@@ -30,7 +30,7 @@ describe('generateRegexString()', () => {
       expect(transformToRegexp(selector('#app'))).toBe('id=[\'"]\\w*\\s*(?<!\\w)(app)(?!\\w)\\s*\\w*[\'"]');
     });
 
-    it('Find an given ID in HTML', () => {
+    it('To match generated regexp in HTML', () => {
       expect(new RegExp(transformToRegexp(selector('#app'))).test(`<div id="app"></div>`)).toBeTruthy();
       expect(new RegExp(transformToRegexp(selector('#app'))).test(`<div id="left app"></div>`)).toBeTruthy();
       expect(new RegExp(transformToRegexp(selector('#app'))).test(`<div id="left app right"></div>`)).toBeTruthy();
@@ -50,17 +50,20 @@ describe('generateRegexString()', () => {
     });
   });
 
-  describe('Descendant – Whitespace – combinator', () => {
-    it('with Descendant – Whitespace – Combinator', () => {
+  describe('Whitespace combinator', () => {
+    it('To match generated regexp in HTML', () => {
       // expect(convertNodeToRegex(selector('.example .child'))).toBe('class=[\'"]\\s?(example)\\s?[\'"]\\s*.*>\\s*<\\s*(\\w+)\\s*/>');
-      console.log(transformToRegexp(selector('.example .child')));
-
       expect(new RegExp(transformToRegexp(selector('.example .child'))).test(`<div class="example"><div class="child"></div></div>`)).toBeTruthy();
-    });
-
-    it('Descendant valid regex', () => {
-      const html = `<div class="example"><div class="child"></div></div>`;
-      expect(new RegExp(transformToRegexp(selector('.example .child'))).test(html)).toBeTruthy();
+      console.log(transformToRegexp(selector('.example .second')));
+      expect(
+        new RegExp(transformToRegexp(selector('.example .second'))).test(`
+          <div class="example">
+            <div class="first"></div>
+            <div class="second"></div>
+            <div class="third"></div>
+          </div>
+        `)
+      ).toBeTruthy();
     });
   });
 

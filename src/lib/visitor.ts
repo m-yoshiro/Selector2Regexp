@@ -10,8 +10,10 @@ const ID_ATTRIBUTE = 'id';
 const ATTRIBUTE_SEPARATOR = '\\s+';
 const SPACE_BETWEEN_ELEMENT = '\\s*';
 const QUOTE = '[\'"]';
-const BEFORE_ATTRIBUTE = `(?<!\\w)`; // ES2018
+const BEFORE_ATTRIBUTE = '(?<!\\w)'; // ES2018
 const AFTER_ATTRIBUTE = '(?!\\w)';
+const ANY_OPENING_TAG = '<.*>';
+// const ANY_CONTENT = '<.*>';
 
 type SelectorRegexpString = string;
 type NoSupport = Error | void;
@@ -67,7 +69,7 @@ export const visitor: Visitor = {
   },
 
   WhiteSpace(node) {
-    return END_OF_BRACKET + SPACE_BETWEEN_ELEMENT + START_OF_BRACKET + TYPE_NAME + ATTRIBUTE_SEPARATOR;
+    return END_OF_BRACKET + SPACE_BETWEEN_ELEMENT + `(?:\\s${ANY_OPENING_TAG}.*\\s*)*?` + START_OF_BRACKET + TYPE_NAME + ATTRIBUTE_SEPARATOR;
   },
 
   Combinator(node) {

@@ -8,7 +8,7 @@ export default function (selector: csstree.Selector) {
 
   const result: unknown[] = [];
   csstree.walk(selector, (node) => {
-    // TOFIX:
+    // TODO: To be simple
     // if (node.type in visitor) {
     //   visitor[node.type](node);
     // }

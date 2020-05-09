@@ -23,5 +23,5 @@ Usage:
     throw new Error('Multiple input is not supported.');
   }
 
-  return selector2Regexp(input[0]);
+  process.stdout.write(selector2Regexp(input[0]) + '\n');
 };

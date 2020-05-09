@@ -1,6 +1,3 @@
-import { spawn } from 'child_process';
-const s2r = spawn('s2r', ['.button']);
+import cli from '../src/cli';
 
-s2r.stdout.on('data', (data) => {
-  console.log(`stdout: ${data}`);
-});
+describe('CLI', () => {});

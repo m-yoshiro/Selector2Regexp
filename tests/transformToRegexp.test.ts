@@ -14,7 +14,10 @@ describe('generateRegexString()', () => {
 
     it('To match generated regexp in HTML', () => {
       expect(new RegExp(transformToRegexp(selector('.example'))).test(`<div class="example"></div>`)).toBeTruthy();
+      expect(new RegExp(transformToRegexp(selector('.example'))).test(`<div class=" example"></div>`)).toBeTruthy();
+      expect(new RegExp(transformToRegexp(selector('.example'))).test(`<div class="example "></div>`)).toBeTruthy();
       expect(new RegExp(transformToRegexp(selector('.example'))).test(`<div class="left example"></div>`)).toBeTruthy();
+      expect(new RegExp(transformToRegexp(selector('.example'))).test(`<div class="example right"></div>`)).toBeTruthy();
       expect(new RegExp(transformToRegexp(selector('.example'))).test(`<div class="left example right"></div>`)).toBeTruthy();
     });
 

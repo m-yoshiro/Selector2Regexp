@@ -11,6 +11,7 @@
     "clean": "rm -rf ./dist",
     "lint": "eslint ./**/*.ts",
     "lint:fix": "eslint --fix ./**/*.ts",
+    "pretest": "npm run build",
     "test": "jest",
     "preversion": "npm run test",
     "version": "npm run build",

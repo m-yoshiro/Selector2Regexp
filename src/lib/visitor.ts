@@ -44,7 +44,7 @@ const attributeRegexp = <T extends string>(attribute: string, value: T | T[] | n
 };
 
 const openingTagRegexp = (type: string, attribute?: string) => {
-  return START_OF_BRACKET + type + END_OF_BRACKET;
+  return START_OF_BRACKET + `(${type})` + '\\s*.*?' + END_OF_BRACKET;
 };
 
 const closingTagRegexp = (type: string) => {

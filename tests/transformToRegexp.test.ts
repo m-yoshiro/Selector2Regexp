@@ -49,7 +49,11 @@ describe('generateRegexString()', () => {
 
   describe('Type selector', () => {
     it('Should be equal', () => {
-      expect(transformToRegexp(selector('div'))).toBe('<\\s*div\\s*>');
+      expect(transformToRegexp(selector('div'))).toBe('<\\s*(div)\\s*.*?\\s*>');
+    });
+
+    it('To match generated regexp in HTML', () => {
+      expect(new RegExp(transformToRegexp(selector('div'))).test(`<div id="app"></div>`)).toBeTruthy();
     });
   });
 

@@ -1,7 +1,7 @@
 import selector2Regexp from './index';
 import yargs from 'yargs';
 
-export default () => {
+export default (args: string[]) => {
   const argv = yargs
     .usage(
       `
@@ -14,7 +14,8 @@ Usage:
     .help('h')
     .alias('h', 'help')
     .version(require('../package.json').version)
-    .alias('v', 'version').argv;
+    .alias('v', 'version')
+    .parse(args);
 
   const input = argv._;
 
@@ -22,5 +23,5 @@ Usage:
     throw new Error('Multiple input is not supported.');
   }
 
-  console.log(selector2Regexp(input[0]));
+  process.stdout.write(selector2Regexp(input[0]) + '\n');
 };

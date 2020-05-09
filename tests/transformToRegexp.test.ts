@@ -14,7 +14,10 @@ describe('generateRegexString()', () => {
 
     it('To match generated regexp in HTML', () => {
       expect(new RegExp(transformToRegexp(selector('.example'))).test(`<div class="example"></div>`)).toBeTruthy();
+      expect(new RegExp(transformToRegexp(selector('.example'))).test(`<div class=" example"></div>`)).toBeTruthy();
+      expect(new RegExp(transformToRegexp(selector('.example'))).test(`<div class="example "></div>`)).toBeTruthy();
       expect(new RegExp(transformToRegexp(selector('.example'))).test(`<div class="left example"></div>`)).toBeTruthy();
+      expect(new RegExp(transformToRegexp(selector('.example'))).test(`<div class="example right"></div>`)).toBeTruthy();
       expect(new RegExp(transformToRegexp(selector('.example'))).test(`<div class="left example right"></div>`)).toBeTruthy();
     });
 
@@ -54,7 +57,6 @@ describe('generateRegexString()', () => {
     it('To match generated regexp in HTML', () => {
       // expect(transformToRegexp(selector('.example .child'))).toBe(' ['"]\w*\s*(?<!\w)(example)(?!\w)\s*\w*['"]\s*>\s*(?:\s<.*>.*\s*)*?<\s*\w+\s+class=['"]\w*\s*(?<!\w)(second)(?!\w)\s*\w*['"]');
       expect(new RegExp(transformToRegexp(selector('.example .child'))).test(`<div class="example"><div class="child"></div></div>`)).toBeTruthy();
-      console.log(transformToRegexp(selector('.example .second')));
       expect(
         new RegExp(transformToRegexp(selector('.example .second'))).test(`
           <div class="example">

@@ -2,4 +2,5 @@
 
 /* eslint-disable @typescript-eslint/no-var-requires */
 
-require('../dist/cli').default();
+const cliResult = require('../dist/cli').default();
+cliResult && process.stdout.write(cliResult + '\n');

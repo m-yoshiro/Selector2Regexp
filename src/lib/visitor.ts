@@ -92,49 +92,49 @@ const findAfter = (node: s2rNode<csstree.CssNode>, type: targetNode['type']) => 
 
 export const visitor: Visitor = {
   ClassSelector(node, list) {
-    if (node.data.type === 'ClassSelector') {
-      if (findBefore(node, 'ClassSelector').length > 0) {
-        return '';
-      }
-
-      const afters = findAfter(node, 'ClassSelector');
-
-      if (afters.length > 0) {
-        return attributeRegexp(CLASS_ATTRIBUTE, [node.data.name, ...afters.map((node) => node.data.name)]);
-      }
-
-      return attributeRegexp(CLASS_ATTRIBUTE, node.data.name);
+    if (node.data.type !== 'ClassSelector') {
+      return '';
     }
 
-    return '';
+    if (findBefore(node, 'ClassSelector').length > 0) {
+      return '';
+    }
+
+    const afters = findAfter(node, 'ClassSelector');
+
+    if (afters.length > 0) {
+      return attributeRegexp(CLASS_ATTRIBUTE, [node.data.name, ...afters.map((node) => node.data.name)]);
+    }
+
+    return attributeRegexp(CLASS_ATTRIBUTE, node.data.name);
   },
 
   IdSelector(node) {
-    if (node.data.type === 'IdSelector') {
-      return attributeRegexp(ID_ATTRIBUTE, node.data.name);
+    if (node.data.type !== 'IdSelector') {
+      return '';
     }
-    return '';
+    return attributeRegexp(ID_ATTRIBUTE, node.data.name);
   },
 
   AttributeSelector(node) {
-    if (node.data.type === 'AttributeSelector') {
-      return attributeRegexp(node.data.name.name, (node.data.value as csstree.Identifier).name);
+    if (node.data.type !== 'AttributeSelector') {
+      return '';
     }
-    return '';
+    return attributeRegexp(node.data.name.name, (node.data.value as csstree.Identifier).name);
   },
 
   TypeSelector(node) {
-    if (node.data.type === 'TypeSelector') {
-      return openingTagRegexp(node.data.name);
+    if (node.data.type !== 'TypeSelector') {
+      return '';
     }
-    return '';
+    return openingTagRegexp(node.data.name);
   },
 
   WhiteSpace(node) {
-    if (node.data.type === 'WhiteSpace') {
-      return END_OF_BRACKET + SPACE_BETWEEN_ELEMENT + `(?:\\s${ANY_OPENING_TAG}.*\\s*)*?` + START_OF_BRACKET + TYPE_NAME + ATTRIBUTE_SEPARATOR;
+    if (node.data.type !== 'WhiteSpace') {
+      return '';
     }
-    return '';
+    return END_OF_BRACKET + SPACE_BETWEEN_ELEMENT + `(?:\\s${ANY_OPENING_TAG}.*\\s*)*?` + START_OF_BRACKET + TYPE_NAME + ATTRIBUTE_SEPARATOR;
   },
 
   Combinator(node) {

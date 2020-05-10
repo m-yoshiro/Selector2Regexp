@@ -12,6 +12,6 @@ export type targetNode = csstree.ClassSelector | csstree.IdSelector | csstree.Ty
 
 export type s2rNode<N extends csstree.CssNode> = {
   data: N;
-  next: () => s2rNode | null;
-  prev: () => s2rNode | null;
+  next: () => s2rNode<N> | null;
+  prev: () => s2rNode<N> | null;
 };

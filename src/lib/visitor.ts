@@ -1,5 +1,5 @@
 import csstree, { PseudoElementSelector } from 'css-tree';
-import { s2rNode } from '../../types';
+import { s2rNode, targetNode } from '../../types';
 
 const START_OF_BRACKET = '<\\s*';
 const END_OF_BRACKET = '\\s*>';
@@ -19,14 +19,14 @@ type SelectorRegexpString = string;
 type NoSupport = Error | void;
 
 export type Visitor = {
-  ClassSelector: (node: s2rNode<csstree.CssNode>) => SelectorRegexpString;
-  IdSelector: (node: s2rNode<csstree.CssNode>) => SelectorRegexpString;
-  AttributeSelector: (node: s2rNode<csstree.CssNode>) => SelectorRegexpString;
-  WhiteSpace: (node: s2rNode<csstree.CssNode>) => SelectorRegexpString;
-  TypeSelector: (node: s2rNode<csstree.CssNode>) => SelectorRegexpString;
-  Combinator: (node: s2rNode<csstree.CssNode>) => NoSupport;
-  PseudoElementSelector: (node: s2rNode<csstree.CssNode>) => NoSupport;
-  SelectorList: (node: s2rNode<csstree.CssNode>) => NoSupport;
+  ClassSelector: (node: s2rNode<csstree.CssNode>, list?: targetNode[]) => SelectorRegexpString;
+  IdSelector: (node: s2rNode<csstree.CssNode>, list?: targetNode[]) => SelectorRegexpString;
+  AttributeSelector: (node: s2rNode<csstree.CssNode>, list?: targetNode[]) => SelectorRegexpString;
+  WhiteSpace: (node: s2rNode<csstree.CssNode>, list?: targetNode[]) => SelectorRegexpString;
+  TypeSelector: (node: s2rNode<csstree.CssNode>, list?: targetNode[]) => SelectorRegexpString;
+  Combinator: (node: s2rNode<csstree.CssNode>, list?: targetNode[]) => NoSupport;
+  PseudoElementSelector: (node: s2rNode<csstree.CssNode>, list?: targetNode[]) => NoSupport;
+  SelectorList: (node: s2rNode<csstree.CssNode>, list?: targetNode[]) => NoSupport;
 };
 
 const attributeRegexp = <T extends string>(attribute: string, value: T | T[] | null) => {
@@ -53,7 +53,7 @@ const closingTagRegexp = (type: string) => {
 };
 
 export const visitor: Visitor = {
-  ClassSelector(node) {
+  ClassSelector(node, list) {
     if (node.data.type === 'ClassSelector') {
       // if (node.prev && node.prev.data.type === 'ClassSelector') {
       // }

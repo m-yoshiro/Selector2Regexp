@@ -1,7 +1,6 @@
 import csstree from 'css-tree';
 import { visitor } from './visitor';
-
-type targetNode = csstree.ClassSelector | csstree.IdSelector | csstree.TypeSelector | csstree.AttributeSelector | csstree.WhiteSpace | csstree.Combinator | csstree.PseudoElementSelector | csstree.SelectorList;
+import { targetNode } from '../../types';
 
 export default function (selector: csstree.Selector) {
   if (selector.type !== 'Selector') {
@@ -11,14 +10,12 @@ export default function (selector: csstree.Selector) {
   let list: targetNode[] = [];
 
   const createS2rList = (list: targetNode[]) => {
+    // [1, 3, 4, 5, 6]
     return list.map((node, i, o) => {
-      const next = o[i + 1];
-      const prev = o[i - 1];
-
       return {
         data: node,
-        next: next ? next : null,
-        prev: prev ? prev : null,
+        next: () => (o[i + 1] ? o[i + 1] : null),
+        prev: () => (o[i - 1] ? o[i - 1] : null),
       };
     });
   };
@@ -41,6 +38,6 @@ export default function (selector: csstree.Selector) {
   });
 
   return createS2rList(list)
-    .map((node) => visitor[node.data.type](node))
+    .map((node) => visitor[node.data.type](node, list))
     .join('');
 }

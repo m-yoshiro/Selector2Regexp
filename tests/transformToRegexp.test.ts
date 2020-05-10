@@ -85,7 +85,7 @@ describe('generateRegexString()', () => {
     });
   });
 
-  describe('Multipe selector', () => {
+  describe('Multiple selector', () => {
     it('To match generated regexp in HTML', () => {
       expect(new RegExp(transformToRegexp(selector('.button.button--primary'))).test(`<button class="button button--primary"></button>`)).toBeTruthy();
     });

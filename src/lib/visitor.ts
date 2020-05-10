@@ -19,14 +19,14 @@ type SelectorRegexpString = string;
 type NoSupport = Error | void;
 
 export type Visitor = {
-  ClassSelector: (node: s2rNode<csstree.CssNode, csstree.CssNode>) => SelectorRegexpString;
-  IdSelector: (node: s2rNode<csstree.CssNode, csstree.CssNode>) => SelectorRegexpString;
-  AttributeSelector: (node: s2rNode<csstree.CssNode, csstree.CssNode>) => SelectorRegexpString;
-  WhiteSpace: (node: s2rNode<csstree.CssNode, csstree.CssNode>) => SelectorRegexpString;
-  TypeSelector: (node: s2rNode<csstree.CssNode, csstree.CssNode>) => SelectorRegexpString;
-  Combinator: (node: s2rNode<csstree.CssNode, csstree.CssNode>) => NoSupport;
-  PseudoElementSelector: (node: s2rNode<csstree.CssNode, csstree.CssNode>) => NoSupport;
-  SelectorList: (node: s2rNode<csstree.CssNode, csstree.CssNode>) => NoSupport;
+  ClassSelector: (node: s2rNode<csstree.CssNode>) => SelectorRegexpString;
+  IdSelector: (node: s2rNode<csstree.CssNode>) => SelectorRegexpString;
+  AttributeSelector: (node: s2rNode<csstree.CssNode>) => SelectorRegexpString;
+  WhiteSpace: (node: s2rNode<csstree.CssNode>) => SelectorRegexpString;
+  TypeSelector: (node: s2rNode<csstree.CssNode>) => SelectorRegexpString;
+  Combinator: (node: s2rNode<csstree.CssNode>) => NoSupport;
+  PseudoElementSelector: (node: s2rNode<csstree.CssNode>) => NoSupport;
+  SelectorList: (node: s2rNode<csstree.CssNode>) => NoSupport;
 };
 
 const attributeRegexp = <T extends string>(attribute: string, value: T | T[] | null) => {

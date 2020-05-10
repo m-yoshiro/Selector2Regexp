@@ -8,8 +8,8 @@ export type CSSSelectorString = string;
 
 export type IdOrClassSelector = csstree.ClassSelector | csstree.IdSelector;
 
-export type s2rNode<N extends csstree.CssNode, Prev extends csstree.CssNode> = {
+export type s2rNode<N extends csstree.CssNode> = {
   type: N['type'];
   data: N;
-  prev: Prev | null;
+  prev: s2rNode | null;
 };

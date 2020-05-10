@@ -9,7 +9,8 @@ export default function (selector: csstree.Selector) {
     throw new Error(`Bad node type ${selector.type} for 'generateRegexString'.`);
   }
 
-  const result: s2rNode<targetNode, targetNode>[] = [];
+  const result: s2rNode<targetNode>[] = [];
+  const prev = (result: s2rNode<targetNode>[]) => (result.length > 0 ? result[result.length - 1] : null);
 
   csstree.walk(selector, (node) => {
     switch (node.type) {
@@ -24,7 +25,7 @@ export default function (selector: csstree.Selector) {
         result.push({
           type: node.type,
           data: node,
-          prev: null,
+          prev: prev(result),
         });
         break;
       default:

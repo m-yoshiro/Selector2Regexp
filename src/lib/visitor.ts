@@ -93,8 +93,6 @@ const findAfter = (node: s2rNode<csstree.CssNode>, type: targetNode['type']) => 
 export const visitor: Visitor = {
   ClassSelector(node, list) {
     if (node.data.type === 'ClassSelector') {
-      // if (node.prev && node.prev.data.type === 'ClassSelector') {
-
       if (findBefore(node, 'ClassSelector').length > 0) {
         return '';
       }
@@ -102,7 +100,6 @@ export const visitor: Visitor = {
       const afters = findAfter(node, 'ClassSelector');
 
       if (afters.length > 0) {
-        // console.log(afters);
         return attributeRegexp(CLASS_ATTRIBUTE, [node.data.name, ...afters.map((node) => node.data.name)]);
       }
 

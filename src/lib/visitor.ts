@@ -55,6 +55,9 @@ const closingTagRegexp = (type: string) => {
 export const visitor: Visitor = {
   ClassSelector(node) {
     if (node.data.type === 'ClassSelector') {
+      // if (node.prev && node.prev.data.type === 'ClassSelector') {
+      // }
+
       return attributeRegexp(CLASS_ATTRIBUTE, node.data.name);
     }
 

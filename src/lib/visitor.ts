@@ -127,6 +127,21 @@ export const visitor: Visitor = {
     if (node.data.type !== 'TypeSelector') {
       return '';
     }
+
+    if (node.prev()) {
+      // Ignore Sibling, Descendant
+      if (node.prev()!.data.type === 'Combinator' || node.prev()!.data.type === 'WhiteSpace') {
+        return '';
+      }
+
+      // TypeSelector don't have these selectors
+      if (node.prev()!.data.type === 'TypeSelector' || node.prev()!.data.type === 'PseudoElementSelector' || node.prev()!.data.type === 'AttributeSelector' || node.prev()!.data.type === 'IdSelector' || node.prev()!.data.type === 'ClassSelector') {
+        return '';
+      }
+
+      // TODO: For multiple selectors implements
+    }
+
     return openingTagRegexp(node.data.name);
   },
 

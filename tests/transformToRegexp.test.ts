@@ -89,6 +89,10 @@ describe('generateRegexString()', () => {
     it('To match generated regexp in HTML', () => {
       expect(new RegExp(transformToRegexp(selector('.button.button--primary'))).test(`<button class="button button--primary"></button>`)).toBeTruthy();
     });
+
+    it('To be false', () => {
+      expect(new RegExp(transformToRegexp(selector('.button .button--primary'))).test(`<button class="button button--primary"></button>`)).toBeFalsy();
+    });
   });
 
   describe('Unsupported selector', () => {

@@ -35,10 +35,16 @@ const attributeRegexp = <T extends string>(attribute: string, value: T | T[] | n
   }
 
   const valueRegexp = (value: T | T[]) => {
-    const valueString = Array.isArray(value) ? value.join('|') : value;
-    const n = Array.isArray(value) ? `{${value.length}}` : '';
+    if (Array.isArray(value) && value.length > 1) {
+      const valueString = value.join('|');
+      const n = `{${value.length}}`;
 
-    return `${ANY_VALUE}${SPACE_BETWEEN_ELEMENT}${BEFORE_ATTRIBUTE}(${valueString})${AFTER_ATTRIBUTE}${SPACE_BETWEEN_ELEMENT}${ANY_VALUE}${n}`;
+      return ANY_VALUE + '(' + SPACE_BETWEEN_ELEMENT + BEFORE_ATTRIBUTE + `(${valueString})` + AFTER_ATTRIBUTE + SPACE_BETWEEN_ELEMENT + ')' + `${n}` + ANY_VALUE;
+    }
+
+    const valueString = Array.isArray(value) ? value.join('|') : value;
+
+    return ANY_VALUE + SPACE_BETWEEN_ELEMENT + BEFORE_ATTRIBUTE + `(${valueString})` + AFTER_ATTRIBUTE + SPACE_BETWEEN_ELEMENT + ANY_VALUE;
   };
 
   return `${attribute}=${QUOTE}${valueRegexp(value)}${QUOTE}`;
@@ -52,28 +58,53 @@ const closingTagRegexp = (type: string) => {
   return START_OF_BRACKET + '/' + type + END_OF_BRACKET;
 };
 
+const findBefore = (node: s2rNode<csstree.CssNode>, type: targetNode['type']) => {
+  let result = [];
+
+  let prev = node.prev();
+
+  while (prev) {
+    if (prev.data.type === type) {
+      result.push(prev);
+    }
+    prev = prev.prev();
+  }
+
+  return result;
+};
+
+const findAfter = (node: s2rNode<csstree.CssNode>, type: targetNode['type']) => {
+  let result = [];
+
+  let next = node.next();
+
+  while (next) {
+    const cursor = next;
+    if (cursor.data.type === type && cursor.prev().data.type !== 'WhiteSpace' && cursor.prev().data.type !== 'Combinator') {
+      result.push(cursor);
+    }
+
+    next = cursor.next();
+  }
+
+  return result;
+};
+
 export const visitor: Visitor = {
   ClassSelector(node, list) {
     if (node.data.type === 'ClassSelector') {
       // if (node.prev && node.prev.data.type === 'ClassSelector') {
 
-      let t = [];
-      t.push(node);
-
-      if (node.next()) {
-        let next = node.next();
-        console.log('next: ', next);
-
-        // while (next) {
-        //   // if (next.data.type === 'ClassSelector') {
-        //   //   t.push(next);
-        //   // }
-        //   console.log('next: ', next);
-        //   next = next.next();
-        // }
+      if (findBefore(node, 'ClassSelector').length > 0) {
+        return '';
       }
 
-      console.log(t);
+      const afters = findAfter(node, 'ClassSelector');
+
+      if (afters.length > 0) {
+        // console.log(afters);
+        return attributeRegexp(CLASS_ATTRIBUTE, [node.data.name, ...afters.map((node) => node.data.name)]);
+      }
 
       return attributeRegexp(CLASS_ATTRIBUTE, node.data.name);
     }

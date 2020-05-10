@@ -80,7 +80,7 @@ const findAfter = (node: s2rNode<csstree.CssNode>, type: targetNode['type']) => 
 
   while (next) {
     const cursor = next;
-    if (cursor.data.type === type && cursor.prev().data.type !== 'WhiteSpace' && cursor.prev().data.type !== 'Combinator') {
+    if (cursor.data.type === type && cursor.prev()!.data.type !== 'WhiteSpace' && cursor.prev()!.data.type !== 'Combinator') {
       result.push(cursor);
     }
 
@@ -103,7 +103,7 @@ export const visitor: Visitor = {
     const afters = findAfter(node, 'ClassSelector');
 
     if (afters.length > 0) {
-      return attributeRegexp(CLASS_ATTRIBUTE, [node.data.name, ...afters.map((node) => node.data.name)]);
+      return attributeRegexp(CLASS_ATTRIBUTE, [node.data.name, ...afters.map((node) => (node.data as csstree.ClassSelector).name)]);
     }
 
     return attributeRegexp(CLASS_ATTRIBUTE, node.data.name);

@@ -56,7 +56,24 @@ export const visitor: Visitor = {
   ClassSelector(node, list) {
     if (node.data.type === 'ClassSelector') {
       // if (node.prev && node.prev.data.type === 'ClassSelector') {
-      // }
+
+      let t = [];
+      t.push(node);
+
+      if (node.next()) {
+        let next = node.next();
+        console.log('next: ', next);
+
+        // while (next) {
+        //   // if (next.data.type === 'ClassSelector') {
+        //   //   t.push(next);
+        //   // }
+        //   console.log('next: ', next);
+        //   next = next.next();
+        // }
+      }
+
+      console.log(t);
 
       return attributeRegexp(CLASS_ATTRIBUTE, node.data.name);
     }

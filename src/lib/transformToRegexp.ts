@@ -1,6 +1,6 @@
 import csstree from 'css-tree';
 import { visitor } from './visitor';
-import { targetNode } from '../../types';
+import { s2rNode, targetNode } from '../../types';
 
 export default function (selector: csstree.Selector) {
   if (selector.type !== 'Selector') {
@@ -10,14 +10,17 @@ export default function (selector: csstree.Selector) {
   let list: targetNode[] = [];
 
   const createS2rList = (list: targetNode[]) => {
-    // [1, 3, 4, 5, 6]
-    return list.map((node, i, o) => {
-      return {
+    const result: s2rNode<targetNode>[] = [];
+
+    list.forEach((node, i) => {
+      result.push({
         data: node,
-        next: () => (o[i + 1] ? o[i + 1] : null),
-        prev: () => (o[i - 1] ? o[i - 1] : null),
-      };
+        next: () => (result[i + 1] ? result[i + 1] : null),
+        prev: () => (result[i - 1] ? result[i - 1] : null),
+      });
     });
+
+    return result;
   };
 
   csstree.walk(selector, (node) => {

@@ -1,4 +1,5 @@
 import csstree, { PseudoElementSelector } from 'css-tree';
+import { s2rNode } from '../../types';
 
 const START_OF_BRACKET = '<\\s*';
 const END_OF_BRACKET = '\\s*>';
@@ -18,14 +19,14 @@ type SelectorRegexpString = string;
 type NoSupport = Error | void;
 
 export type Visitor = {
-  ClassSelector: (node: csstree.ClassSelector) => SelectorRegexpString;
-  IdSelector: (node: csstree.IdSelector) => SelectorRegexpString;
-  AttributeSelector: (node: csstree.AttributeSelector) => SelectorRegexpString;
-  WhiteSpace: (node: csstree.WhiteSpace) => SelectorRegexpString;
-  TypeSelector: (node: csstree.TypeSelector) => SelectorRegexpString;
-  Combinator: (node: csstree.Combinator) => NoSupport;
-  PseudoElementSelector: (node: PseudoElementSelector) => NoSupport;
-  SelectorList: (node: csstree.SelectorList) => NoSupport;
+  ClassSelector: (node: s2rNode<csstree.CssNode, csstree.CssNode>) => SelectorRegexpString;
+  IdSelector: (node: s2rNode<csstree.CssNode, csstree.CssNode>) => SelectorRegexpString;
+  AttributeSelector: (node: s2rNode<csstree.CssNode, csstree.CssNode>) => SelectorRegexpString;
+  WhiteSpace: (node: s2rNode<csstree.CssNode, csstree.CssNode>) => SelectorRegexpString;
+  TypeSelector: (node: s2rNode<csstree.CssNode, csstree.CssNode>) => SelectorRegexpString;
+  Combinator: (node: s2rNode<csstree.CssNode, csstree.CssNode>) => NoSupport;
+  PseudoElementSelector: (node: s2rNode<csstree.CssNode, csstree.CssNode>) => NoSupport;
+  SelectorList: (node: s2rNode<csstree.CssNode, csstree.CssNode>) => NoSupport;
 };
 
 const attributeRegexp = <T extends string>(attribute: string, value: T | T[] | null) => {
@@ -53,27 +54,43 @@ const closingTagRegexp = (type: string) => {
 
 export const visitor: Visitor = {
   ClassSelector(node) {
-    return attributeRegexp(CLASS_ATTRIBUTE, node.name);
+    if (node.data.type === 'ClassSelector') {
+      return attributeRegexp(CLASS_ATTRIBUTE, node.data.name);
+    }
+
+    return '';
   },
 
   IdSelector(node) {
-    return attributeRegexp(ID_ATTRIBUTE, node.name);
+    if (node.data.type === 'IdSelector') {
+      return attributeRegexp(ID_ATTRIBUTE, node.data.name);
+    }
+    return '';
   },
 
   AttributeSelector(node) {
-    return attributeRegexp(node.name.name, (node.value as csstree.Identifier).name);
+    if (node.data.type === 'AttributeSelector') {
+      return attributeRegexp(node.data.name.name, (node.data.value as csstree.Identifier).name);
+    }
+    return '';
   },
 
   TypeSelector(node) {
-    return openingTagRegexp(node.name);
+    if (node.data.type === 'TypeSelector') {
+      return openingTagRegexp(node.data.name);
+    }
+    return '';
   },
 
   WhiteSpace(node) {
-    return END_OF_BRACKET + SPACE_BETWEEN_ELEMENT + `(?:\\s${ANY_OPENING_TAG}.*\\s*)*?` + START_OF_BRACKET + TYPE_NAME + ATTRIBUTE_SEPARATOR;
+    if (node.data.type === 'WhiteSpace') {
+      return END_OF_BRACKET + SPACE_BETWEEN_ELEMENT + `(?:\\s${ANY_OPENING_TAG}.*\\s*)*?` + START_OF_BRACKET + TYPE_NAME + ATTRIBUTE_SEPARATOR;
+    }
+    return '';
   },
 
   Combinator(node) {
-    throw new Error(`Combinator "${node.name}" is not supported.`);
+    throw new Error(`Combinator "${(node.data as csstree.Combinator).name}" is not supported.`);
   },
 
   PseudoElementSelector(node) {

@@ -1,47 +1,36 @@
 import csstree from 'css-tree';
 import { visitor } from './visitor';
+import { s2rNode } from '../../types';
+
+type targetNode = csstree.ClassSelector | csstree.IdSelector | csstree.TypeSelector | csstree.AttributeSelector | csstree.WhiteSpace | csstree.Combinator | csstree.PseudoElementSelector | csstree.SelectorList;
 
 export default function (selector: csstree.Selector) {
   if (selector.type !== 'Selector') {
     throw new Error(`Bad node type ${selector.type} for 'generateRegexString'.`);
   }
 
-  const result: unknown[] = [];
-  csstree.walk(selector, (node) => {
-    // TODO: To be simple
-    // if (node.type in visitor) {
-    //   visitor[node.type](node);
-    // }
+  const result: s2rNode<targetNode, targetNode>[] = [];
 
+  csstree.walk(selector, (node) => {
     switch (node.type) {
       case 'ClassSelector':
-        result.push(visitor[node.type](node));
-        break;
       case 'IdSelector':
-        result.push(visitor[node.type](node));
-        break;
       case 'TypeSelector':
-        result.push(visitor[node.type](node));
-        break;
       case 'WhiteSpace':
-        result.push(visitor[node.type](node));
-        break;
       case 'AttributeSelector':
-        result.push(visitor[node.type](node));
-        break;
       case 'Combinator':
-        result.push(visitor[node.type](node));
-        break;
       case 'PseudoElementSelector':
-        result.push(visitor[node.type](node));
-        break;
       case 'SelectorList':
-        result.push(visitor[node.type](node));
+        result.push({
+          type: node.type,
+          data: node,
+          prev: null,
+        });
         break;
       default:
         break;
     }
   });
 
-  return result.join('');
+  return result.map((node) => visitor[node.data.type](node)).join('');
 }

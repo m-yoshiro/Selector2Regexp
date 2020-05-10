@@ -85,10 +85,11 @@ describe('generateRegexString()', () => {
     });
   });
 
-  // describe('Selector list', () => {
-  //   it('To match generated regexp in HTML', () => {
-  //   });
-  // }
+  describe('Multipe selector', () => {
+    it('To match generated regexp in HTML', () => {
+      expect(new RegExp(transformToRegexp(selector('.button.button--primary'))).test(`<button class="button button--primary"></button>`)).toBeTruthy();
+    });
+  });
 
   describe('Unsupported selector', () => {
     it('with ">", "+" and "~" Combinator throw Error', () => {

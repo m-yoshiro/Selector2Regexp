@@ -50,8 +50,12 @@ const attributeRegexp = <T extends string>(attribute: string, value: T | T[] | n
   return `${attribute}=${QUOTE}${valueRegexp(value)}${QUOTE}`;
 };
 
-const openingTagRegexp = (type: string, attribute?: string) => {
-  return START_OF_BRACKET + `(${type})` + '\\s*.*?' + END_OF_BRACKET;
+const openingTagRegexpNoClosing = (type: string) => {
+  return START_OF_BRACKET + `(${type})` + '\\s*.*?';
+};
+
+const openingTagRegexp = (type: string) => {
+  return openingTagRegexpNoClosing(type) + END_OF_BRACKET;
 };
 
 const closingTagRegexp = (type: string) => {
@@ -128,18 +132,27 @@ export const visitor: Visitor = {
       return '';
     }
 
-    if (node.prev()) {
-      // Ignore Sibling, Descendant
-      if (node.prev()!.data.type === 'Combinator' || node.prev()!.data.type === 'WhiteSpace') {
-        return '';
+    // if (node.prev()) {
+    //   return '';
+    // Ignore Sibling, Descendant
+    // if (node.prev()!.data.type === 'Combinator' || node.prev()!.data.type === 'WhiteSpace') {
+    //   return '';
+    // }
+    // Previous TypeSelector, don't have these selectors
+    // if (node.prev()!.data.type === 'TypeSelector' || node.prev()!.data.type === 'PseudoElementSelector' || node.prev()!.data.type === 'AttributeSelector' || node.prev()!.data.type === 'IdSelector' || node.prev()!.data.type === 'ClassSelector') {
+    //   return '';
+    // }
+    // }
+
+    if (node.next()) {
+      if (node.next()!.data.type === 'TypeSelector') {
+        throw new Error(`TypeSelector can't be in the next of name type`);
+      }
+      if (node.next()!.data.type === 'Combinator' || node.next()!.data.type === 'WhiteSpace') {
+        throw new Error(`TypeSelector doesn't support "Cominator" and "WhiteSpace"`);
       }
 
-      // TypeSelector don't have these selectors
-      if (node.prev()!.data.type === 'TypeSelector' || node.prev()!.data.type === 'PseudoElementSelector' || node.prev()!.data.type === 'AttributeSelector' || node.prev()!.data.type === 'IdSelector' || node.prev()!.data.type === 'ClassSelector') {
-        return '';
-      }
-
-      // TODO: For multiple selectors implements
+      return openingTagRegexpNoClosing(node.data.name);
     }
 
     return openingTagRegexp(node.data.name);

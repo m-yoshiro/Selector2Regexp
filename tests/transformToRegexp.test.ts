@@ -86,13 +86,28 @@ describe('generateRegexString()', () => {
   });
 
   describe('Multiple selector', () => {
-    it('To match generated regexp in HTML', () => {
-      expect(new RegExp(transformToRegexp(selector('.button.button--primary'))).test(`<button class="button button--primary"></button>`)).toBeTruthy();
-      expect(new RegExp(transformToRegexp(selector('.button.button--primary.button--small'))).test(`<button class="button button--primary button--small"></button>`)).toBeTruthy();
+    describe('ClassSelectors', () => {
+      it('To match generated regexp in HTML', () => {
+        expect(new RegExp(transformToRegexp(selector('.button.button--primary'))).test(`<button class="button button--primary"></button>`)).toBeTruthy();
+        expect(new RegExp(transformToRegexp(selector('.button.button--primary.button--small'))).test(`<button class="button button--primary button--small"></button>`)).toBeTruthy();
+      });
+
+      it('To be false', () => {
+        expect(new RegExp(transformToRegexp(selector('.button .button--primary'))).test(`<button class="button button--primary"></button>`)).toBeFalsy();
+      });
     });
 
-    it('To be false', () => {
-      expect(new RegExp(transformToRegexp(selector('.button .button--primary'))).test(`<button class="button button--primary"></button>`)).toBeFalsy();
+    describe('TypeSelector with any selectors', () => {
+      it('To match generated regexp in HTML', () => {
+        console.log(transformToRegexp(selector('div.panel')));
+        expect(new RegExp(transformToRegexp(selector('div.panel'))).test(`<div class="panel"></div>`)).toBeTruthy();
+
+        expect(new RegExp(transformToRegexp(selector('div.panel.panel--wide'))).test(`<div class="panel panel--wide"></div>`)).toBeTruthy();
+      });
+
+      it('To be false', () => {
+        expect(new RegExp(transformToRegexp(selector('div.panel'))).test(`<section class="panel"></section>`)).toBeFalsy();
+      });
     });
   });
 

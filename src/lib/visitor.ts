@@ -124,6 +124,24 @@ export const visitor: Visitor = {
     if (node.data.type !== 'AttributeSelector') {
       return '';
     }
+
+    switch (node.data.matcher) {
+      case null:
+        break;
+      case '=':
+        break;
+      case '~=':
+        break;
+      case '^=':
+        break;
+      case '$=':
+        break;
+      case '*=':
+        break;
+      default:
+        break;
+    }
+
     return attributeRegexp(node.data.name.name, (node.data.value as csstree.Identifier).name);
   },
 

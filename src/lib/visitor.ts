@@ -29,7 +29,7 @@ export type Visitor = {
   SelectorList: (node: s2rNode<csstree.CssNode>, list?: targetNode[]) => NoSupport;
 };
 
-const attributeRegexp = <T extends string>(attribute: string, value: T | T[] | null) => {
+const attributeRegexp = <T extends string>(attribute: string, value?: T | T[] | null) => {
   if (!value) {
     return `${attribute}`;
   }
@@ -125,8 +125,11 @@ export const visitor: Visitor = {
       return '';
     }
 
+    let result: string;
+
     switch (node.data.matcher) {
       case null:
+        attributeRegexp(node.data.name.name);
         break;
       case '=':
         break;

@@ -49,6 +49,9 @@ describe('generateRegexString()', () => {
     it('To match generated regexp in HTML', () => {
       expect(new RegExp(transformToRegexp(selector('[data-state*=active]'))).test(`<div data-state="super-active"></div>`)).toBeTruthy();
       expect(new RegExp(transformToRegexp(selector('[hidden]'))).test(`<div hidden></div>`)).toBeTruthy();
+      expect(new RegExp(transformToRegexp(selector('class^=button]'))).test(`<div class="button-small"></div>`)).toBeTruthy();
+      expect(new RegExp(transformToRegexp(selector('class$=box]'))).test(`<div class="super-box"></div>`)).toBeTruthy();
+      expect(new RegExp(transformToRegexp(selector('class~=one]'))).test(`<div class="some one any"></div>`)).toBeTruthy();
     });
   });
 

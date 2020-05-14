@@ -129,23 +129,29 @@ export const visitor: Visitor = {
 
     switch (node.data.matcher) {
       case null:
-        attributeRegexp(node.data.name.name);
+        result = attributeRegexp(node.data.name.name);
         break;
       case '=':
+        result = attributeRegexp(node.data.name.name, (node.data.value as csstree.Identifier).name);
         break;
       case '~=':
+        result = attributeRegexp(node.data.name.name, (node.data.value as csstree.Identifier).name);
         break;
       case '^=':
+        result = attributeRegexp(node.data.name.name, (node.data.value as csstree.Identifier).name);
         break;
       case '$=':
+        result = attributeRegexp(node.data.name.name, (node.data.value as csstree.Identifier).name);
         break;
       case '*=':
+        result = attributeRegexp(node.data.name.name, (node.data.value as csstree.Identifier).name);
         break;
       default:
+        result = attributeRegexp(node.data.name.name, (node.data.value as csstree.Identifier).name);
         break;
     }
 
-    return attributeRegexp(node.data.name.name, (node.data.value as csstree.Identifier).name);
+    return result;
   },
 
   TypeSelector(node) {

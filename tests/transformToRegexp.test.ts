@@ -46,12 +46,50 @@ describe('generateRegexString()', () => {
       expect(transformToRegexp(selector('[data-id=modal]'))).toBe('data-id=[\'"]\\w*\\s*(?<!\\w)(modal)(?!\\w)\\s*\\w*[\'"]');
     });
 
-    it('To match generated regexp in HTML', () => {
-      expect(new RegExp(transformToRegexp(selector('[data-state*=active]'))).test(`<div data-state="super-active"></div>`)).toBeTruthy();
-      expect(new RegExp(transformToRegexp(selector('[hidden]'))).test(`<div hidden></div>`)).toBeTruthy();
-      expect(new RegExp(transformToRegexp(selector('class^=button]'))).test(`<div class="button-small"></div>`)).toBeTruthy();
-      expect(new RegExp(transformToRegexp(selector('class$=box]'))).test(`<div class="super-box"></div>`)).toBeTruthy();
-      expect(new RegExp(transformToRegexp(selector('class~=one]'))).test(`<div class="some one any"></div>`)).toBeTruthy();
+    describe('Attribute name only', () => {
+      it('return true', () => {
+        expect(new RegExp(transformToRegexp(selector('[hidden]'))).test(`<div hidden></div>`)).toBeTruthy();
+      });
+      it('return false', () => {
+        expect(new RegExp(transformToRegexp(selector('[hidden]'))).test(`<div data-state></div>`)).toBeFalsy();
+      });
+    });
+
+    describe('*=', () => {
+      it('return true', () => {
+        expect(new RegExp(transformToRegexp(selector('[data-state*=active]'))).test(`<div data-state="super-active"></div>`)).toBeTruthy();
+        expect(new RegExp(transformToRegexp(selector('[data-state*=active]'))).test(`<div data-state="super active"></div>`)).toBeTruthy();
+      });
+      it('return false', () => {
+        expect(new RegExp(transformToRegexp(selector('[data-state*=active]'))).test(`<div data-test="super-active"></div>`)).toBeFalsy();
+      });
+    });
+
+    describe('^=', () => {
+      it('return true', () => {
+        expect(new RegExp(transformToRegexp(selector('[class^=button]'))).test(`<div class="button-small"></div>`)).toBeTruthy();
+      });
+      it('return false', () => {
+        expect(new RegExp(transformToRegexp(selector('[class^=button]'))).test(`<div class="super-button"></div>`)).toBeFalsy();
+      });
+    });
+
+    describe('$=', () => {
+      it('return true', () => {
+        expect(new RegExp(transformToRegexp(selector('[class$=box]'))).test(`<div class="super-box"></div>`)).toBeTruthy();
+      });
+      it('return false', () => {
+        expect(new RegExp(transformToRegexp(selector('[class$=box]'))).test(`<div class="box-super"></div>`)).toBeFalsy();
+      });
+    });
+
+    describe('~=', () => {
+      it('return true', () => {
+        expect(new RegExp(transformToRegexp(selector('[class~=one]'))).test(`<div class="some one any"></div>`)).toBeTruthy();
+      });
+      it('return false', () => {
+        expect(new RegExp(transformToRegexp(selector('[class~=one]'))).test(`<div class="someone any"></div>`)).toBeFalsy();
+      });
     });
   });
 

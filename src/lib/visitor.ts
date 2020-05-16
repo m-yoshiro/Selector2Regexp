@@ -56,6 +56,10 @@ const attributeRegexp = <T extends string>(attribute: string, value?: T | T[] | 
   }
 
   if (matcher) {
+    if (matcher === '=') {
+      return `${attribute}=${QUOTE}(${value})${QUOTE}`;
+    }
+
     if (matcher === '*=') {
       return attributeTemplate(attribute, singleValue(`([\\w\\d_-]*?${value}[\\w\\d_-]*?)`));
     }

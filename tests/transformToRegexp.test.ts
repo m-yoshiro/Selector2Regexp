@@ -8,10 +8,6 @@ const selector = (str: string) =>
 
 describe('generateRegexString()', () => {
   describe('ClassName selector', () => {
-    it('Should be equal', () => {
-      expect(transformToRegexp(selector('.example'))).toBe('class=[\'"]\\w*\\s*(?<!\\w)(example)(?!\\w)\\s*\\w*[\'"]');
-    });
-
     it('To match generated regexp in HTML', () => {
       expect(new RegExp(transformToRegexp(selector('.example'))).test(`<div class="example"></div>`)).toBeTruthy();
       expect(new RegExp(transformToRegexp(selector('.example'))).test(`<div class=" example"></div>`)).toBeTruthy();
@@ -29,10 +25,6 @@ describe('generateRegexString()', () => {
   });
 
   describe('ID selector', () => {
-    it('Should be equal', () => {
-      expect(transformToRegexp(selector('#app'))).toBe('id=[\'"]\\w*\\s*(?<!\\w)(app)(?!\\w)\\s*\\w*[\'"]');
-    });
-
     it('To match generated regexp in HTML', () => {
       expect(new RegExp(transformToRegexp(selector('#app'))).test(`<div id="app"></div>`)).toBeTruthy();
       expect(new RegExp(transformToRegexp(selector('#app'))).test(`<div id="left app"></div>`)).toBeTruthy();
@@ -101,10 +93,6 @@ describe('generateRegexString()', () => {
   });
 
   describe('Type selector', () => {
-    it('Should be equal', () => {
-      expect(transformToRegexp(selector('div'))).toBe('<\\s*(div)\\s*.*?\\s*>');
-    });
-
     it('To match generated regexp in HTML', () => {
       expect(new RegExp(transformToRegexp(selector('div'))).test(`<div id="app"></div>`)).toBeTruthy();
       expect(new RegExp(transformToRegexp(selector('div'))).test(`<div id="app" class="sample"></div>`)).toBeTruthy();
@@ -114,7 +102,6 @@ describe('generateRegexString()', () => {
 
   describe('Whitespace combinator', () => {
     it('To match generated regexp in HTML', () => {
-      // expect(transformToRegexp(selector('.example .child'))).toBe(' ['"]\w*\s*(?<!\w)(example)(?!\w)\s*\w*['"]\s*>\s*(?:\s<.*>.*\s*)*?<\s*\w+\s+class=['"]\w*\s*(?<!\w)(second)(?!\w)\s*\w*['"]');
       expect(new RegExp(transformToRegexp(selector('.example .child'))).test(`<div class="example"><div class="child"></div></div>`)).toBeTruthy();
       expect(
         new RegExp(transformToRegexp(selector('.example .second'))).test(`

@@ -165,6 +165,13 @@ export const visitor: Visitor = {
         result = attributeRegexp(node.data.name.name);
         break;
       case '=':
+        if (node.data.value) {
+          let value = node.data.value.type === 'Identifier' ? node.data.value.name : node.data.value.value;
+          result = attributeRegexp(node.data.name.name, value.replace(/(:?^['"]|['"]$)/g, ''), node.data.matcher);
+          break;
+        }
+        result = attributeRegexp(node.data.name.name);
+        break;
       case '~=':
       case '$=':
       case '^=':

@@ -56,9 +56,8 @@ describe('generateRegexString()', () => {
         expect(new RegExp(transformToRegexp(selector('[data-state="super active"]'))).test(`<div data-state="super active"></div>`)).toBeTruthy();
       });
       it('return false', () => {
-        expect(new RegExp(transformToRegexp(selector('[data-state=active]'))).test(`<div data-state="super active"></div>`)).toBeFalsy();
         console.log(transformToRegexp(selector('[data-state="super active"]')));
-
+        expect(new RegExp(transformToRegexp(selector('[data-state=active]'))).test(`<div data-state="super active"></div>`)).toBeFalsy();
         expect(new RegExp(transformToRegexp(selector('[data-state="super active"]'))).test(`<div data-state="active super"></div>`)).toBeFalsy();
       });
     });

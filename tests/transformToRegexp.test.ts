@@ -46,10 +46,12 @@ describe('generateRegexString()', () => {
   });
 
   describe('ID selector', () => {
-    it('To match generated regexp in HTML', () => {
-      expect(new RegExp(transformToRegexp(selector('#app'))).test(`<div id="app"></div>`)).toBeTruthy();
-      expect(new RegExp(transformToRegexp(selector('#app'))).test(`<div id="left app"></div>`)).toBeTruthy();
-      expect(new RegExp(transformToRegexp(selector('#app'))).test(`<div id="left app right"></div>`)).toBeTruthy();
+    const testRegexp = new RegExp(transformToRegexp(selector('#idTest')));
+
+    it('Should match the id', () => {
+      expect(testRegexp.test(`<div id="idTest"></div>`)).toBeTruthy();
+      expect(testRegexp.test(`<div id="left idTest"></div>`)).toBeTruthy();
+      expect(testRegexp.test(`<div id="left idTest right"></div>`)).toBeTruthy();
     });
   });
 

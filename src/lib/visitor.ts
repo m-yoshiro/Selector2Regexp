@@ -57,15 +57,15 @@ const attributeRegexp = <T extends string>(attribute: string, value?: T | T[] | 
 
   if (matcher) {
     if (matcher === '*=') {
-      return attributeTemplate(attribute, ANY_VALUE + SPACE_BETWEEN_ELEMENT + BEFORE_ATTRIBUTE + `([\\w\\d_-]*?${value}[\\w\\d_-]*?)` + AFTER_ATTRIBUTE + SPACE_BETWEEN_ELEMENT + ANY_VALUE);
+      return attributeTemplate(attribute, singleValue(`([\\w\\d_-]*?${value}[\\w\\d_-]*?)`));
     }
 
     if (matcher === '^=') {
-      return attributeTemplate(attribute, ANY_VALUE + SPACE_BETWEEN_ELEMENT + BEFORE_ATTRIBUTE + `(${value}[\\w\\d_-]*?)` + AFTER_ATTRIBUTE + SPACE_BETWEEN_ELEMENT + ANY_VALUE);
+      return attributeTemplate(attribute, singleValue(`(${value}[\\w\\d_-]*?)`));
     }
 
     if (matcher === '$=') {
-      return attributeTemplate(attribute, ANY_VALUE + SPACE_BETWEEN_ELEMENT + BEFORE_ATTRIBUTE + `([\\w\\d_-]*?${value})` + AFTER_ATTRIBUTE + SPACE_BETWEEN_ELEMENT + ANY_VALUE);
+      return attributeTemplate(attribute, singleValue(`([\\w\\d_-]*?${value})`));
     }
 
     if (matcher === '~=') {

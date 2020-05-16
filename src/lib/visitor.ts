@@ -29,25 +29,31 @@ export type Visitor = {
   SelectorList: (node: s2rNode<csstree.CssNode>, list?: targetNode[]) => NoSupport;
 };
 
-const attributeRegexp = <T extends string>(attribute: string, value?: T | T[] | null) => {
+const multipleValue = (value: string[]) => {
+  if (!Array.isArray(value) || value.length <= 1) {
+    return null;
+  }
+
+  const valueString = value.join('|');
+  const n = `{${value.length}}`;
+
+  return ANY_VALUE + '(' + SPACE_BETWEEN_ELEMENT + BEFORE_ATTRIBUTE + `(${valueString})` + AFTER_ATTRIBUTE + SPACE_BETWEEN_ELEMENT + ')' + `${n}` + ANY_VALUE;
+};
+
+const singleValue = (value: string) => {
+  return ANY_VALUE + SPACE_BETWEEN_ELEMENT + BEFORE_ATTRIBUTE + `(${value})` + AFTER_ATTRIBUTE + SPACE_BETWEEN_ELEMENT + ANY_VALUE;
+};
+
+const attributeRegexp = <T extends string>(attribute: string, value?: T | T[] | null, matcher?: '=' | '*=' | '~=' | '^=' | '$=') => {
   if (!value) {
     return `${attribute}`;
   }
 
-  const valueRegexp = (value: T | T[]) => {
-    if (Array.isArray(value) && value.length > 1) {
-      const valueString = value.join('|');
-      const n = `{${value.length}}`;
+  if (Array.isArray(value)) {
+    return `${attribute}=${QUOTE}${multipleValue(value)}${QUOTE}`;
+  }
 
-      return ANY_VALUE + '(' + SPACE_BETWEEN_ELEMENT + BEFORE_ATTRIBUTE + `(${valueString})` + AFTER_ATTRIBUTE + SPACE_BETWEEN_ELEMENT + ')' + `${n}` + ANY_VALUE;
-    }
-
-    const valueString = Array.isArray(value) ? value.join('|') : value;
-
-    return ANY_VALUE + SPACE_BETWEEN_ELEMENT + BEFORE_ATTRIBUTE + `(${valueString})` + AFTER_ATTRIBUTE + SPACE_BETWEEN_ELEMENT + ANY_VALUE;
-  };
-
-  return `${attribute}=${QUOTE}${valueRegexp(value)}${QUOTE}`;
+  return `${attribute}=${QUOTE}${singleValue(value)}${QUOTE}`;
 };
 
 const classRegexp = (value: string | string[]) => attributeRegexp(CLASS_ATTRIBUTE, value);
@@ -141,6 +147,7 @@ export const visitor: Visitor = {
         result = attributeRegexp(node.data.name.name, (node.data.value as csstree.Identifier).name);
         break;
       case '^=':
+        // ((?:name)[\w\d])
         result = attributeRegexp(node.data.name.name, (node.data.value as csstree.Identifier).name);
         break;
       case '$=':

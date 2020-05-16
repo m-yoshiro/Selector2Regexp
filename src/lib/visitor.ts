@@ -29,26 +29,59 @@ export type Visitor = {
   SelectorList: (node: s2rNode<csstree.CssNode>, list?: targetNode[]) => NoSupport;
 };
 
-const attributeRegexp = <T extends string>(attribute: string, value: T | T[] | null) => {
+const multipleValue = (value: string[]) => {
+  if (!Array.isArray(value) || value.length <= 1) {
+    return null;
+  }
+
+  const valueString = value.join('|');
+  const n = `{${value.length}}`;
+
+  return ANY_VALUE + '(' + SPACE_BETWEEN_ELEMENT + BEFORE_ATTRIBUTE + `(${valueString})` + AFTER_ATTRIBUTE + SPACE_BETWEEN_ELEMENT + ')' + `${n}` + ANY_VALUE;
+};
+
+const singleValue = (value: string) => {
+  return ANY_VALUE + SPACE_BETWEEN_ELEMENT + BEFORE_ATTRIBUTE + `(${value})` + AFTER_ATTRIBUTE + SPACE_BETWEEN_ELEMENT + ANY_VALUE;
+};
+
+const attributeTemplate = (attribute: string, value: string) => `${attribute}=${QUOTE}${value}${QUOTE}`;
+
+const attributeRegexp = <T extends string>(attribute: string, value?: T | T[] | null, matcher?: '=' | '*=' | '~=' | '^=' | '$=') => {
   if (!value) {
     return `${attribute}`;
   }
 
-  const valueRegexp = (value: T | T[]) => {
-    if (Array.isArray(value) && value.length > 1) {
-      const valueString = value.join('|');
-      const n = `{${value.length}}`;
+  if (Array.isArray(value)) {
+    return `${attribute}=${QUOTE}${multipleValue(value)}${QUOTE}`;
+  }
 
-      return ANY_VALUE + '(' + SPACE_BETWEEN_ELEMENT + BEFORE_ATTRIBUTE + `(${valueString})` + AFTER_ATTRIBUTE + SPACE_BETWEEN_ELEMENT + ')' + `${n}` + ANY_VALUE;
+  if (matcher) {
+    if (matcher === '=') {
+      return `${attribute}=${QUOTE}(${value})${QUOTE}`;
     }
 
-    const valueString = Array.isArray(value) ? value.join('|') : value;
+    if (matcher === '*=') {
+      return attributeTemplate(attribute, singleValue(`([\\w\\d_-]*?${value}[\\w\\d_-]*?)`));
+    }
 
-    return ANY_VALUE + SPACE_BETWEEN_ELEMENT + BEFORE_ATTRIBUTE + `(${valueString})` + AFTER_ATTRIBUTE + SPACE_BETWEEN_ELEMENT + ANY_VALUE;
-  };
+    if (matcher === '^=') {
+      return attributeTemplate(attribute, singleValue(`(${value}[\\w\\d_-]*?)`));
+    }
 
-  return `${attribute}=${QUOTE}${valueRegexp(value)}${QUOTE}`;
+    if (matcher === '$=') {
+      return attributeTemplate(attribute, singleValue(`([\\w\\d_-]*?${value})`));
+    }
+
+    if (matcher === '~=') {
+      return attributeTemplate(attribute, singleValue(value));
+    }
+  }
+
+  return attributeTemplate(attribute, singleValue(value));
 };
+
+const classRegexp = (value: string | string[]) => attributeRegexp(CLASS_ATTRIBUTE, value);
+const idRegexp = (value: string | string[]) => attributeRegexp(ID_ATTRIBUTE, value);
 
 const openingTagRegexpNoClosing = (type: string) => {
   return START_OF_BRACKET + `(${type})` + '\\s*.*?';
@@ -107,42 +140,59 @@ export const visitor: Visitor = {
     const afters = findAfter(node, 'ClassSelector');
 
     if (afters.length > 0) {
-      return attributeRegexp(CLASS_ATTRIBUTE, [node.data.name, ...afters.map((node) => (node.data as csstree.ClassSelector).name)]);
+      return classRegexp([node.data.name, ...afters.map((node) => (node.data as csstree.ClassSelector).name)]);
     }
 
-    return attributeRegexp(CLASS_ATTRIBUTE, node.data.name);
+    return classRegexp(node.data.name);
   },
 
   IdSelector(node) {
     if (node.data.type !== 'IdSelector') {
       return '';
     }
-    return attributeRegexp(ID_ATTRIBUTE, node.data.name);
+    return idRegexp(node.data.name);
   },
 
   AttributeSelector(node) {
     if (node.data.type !== 'AttributeSelector') {
       return '';
     }
-    return attributeRegexp(node.data.name.name, (node.data.value as csstree.Identifier).name);
+
+    let result: string;
+
+    switch (node.data.matcher) {
+      case null:
+        result = attributeRegexp(node.data.name.name);
+        break;
+
+      case '=':
+        if (node.data.value) {
+          let value = node.data.value.type === 'Identifier' ? node.data.value.name : node.data.value.value;
+          result = attributeRegexp(node.data.name.name, value.replace(/(:?^['"]|['"]$)/g, ''), node.data.matcher);
+          break;
+        }
+        result = attributeRegexp(node.data.name.name);
+        break;
+
+      case '~=':
+      case '$=':
+      case '^=':
+      case '*=':
+        result = attributeRegexp(node.data.name.name, (node.data.value as csstree.Identifier).name, node.data.matcher);
+        break;
+
+      default:
+        result = attributeRegexp(node.data.name.name, (node.data.value as csstree.Identifier).name);
+        break;
+    }
+
+    return result;
   },
 
   TypeSelector(node) {
     if (node.data.type !== 'TypeSelector') {
       return '';
     }
-
-    // if (node.prev()) {
-    //   return '';
-    // Ignore Sibling, Descendant
-    // if (node.prev()!.data.type === 'Combinator' || node.prev()!.data.type === 'WhiteSpace') {
-    //   return '';
-    // }
-    // Previous TypeSelector, don't have these selectors
-    // if (node.prev()!.data.type === 'TypeSelector' || node.prev()!.data.type === 'PseudoElementSelector' || node.prev()!.data.type === 'AttributeSelector' || node.prev()!.data.type === 'IdSelector' || node.prev()!.data.type === 'ClassSelector') {
-    //   return '';
-    // }
-    // }
 
     if (node.next()) {
       if (node.next()!.data.type === 'TypeSelector') {

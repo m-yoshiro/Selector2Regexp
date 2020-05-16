@@ -40,8 +40,13 @@ s2r '.button' | pbcopy
   # Id Selector
   s2r '#app'
 
-  # Attribute Selector // Supported matcher is just "=" only now.
+  # Attribute Selector
+  s2r '[hidden]'
   s2r '[data-state=active]'
+  s2r '[data-state*=active]'
+  s2r '[data-state~=active]'
+  s2r '[data-state^=active]'
+  s2r '[data-state$=active]'
   ```
 
 - **Descendant selector**

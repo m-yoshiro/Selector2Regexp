@@ -140,29 +140,36 @@ describe('generateRegexString()', () => {
       expect(testCaseDiv.test(`<div id="app" class="sample"></div>`)).toBeTruthy();
     });
 
-    it('Should match when a target is child', () => {
+    it('Should match when a target is a child', () => {
       expect(testCaseA.test(`<div id="app" class="sample"><a href=""></a></div>`)).toBeTruthy();
     });
   });
 
   describe('Whitespace combinator', () => {
-    it('To match generated regexp in HTML', () => {
-      expect(new RegExp(transformToRegexp(selector('.example .child'))).test(`<div class="example"><div class="child"></div></div>`)).toBeTruthy();
+    const testCase = new RegExp(transformToRegexp(selector('.example .child')));
+
+    it('Should match when HTML strings without any spaces or newline', () => {
+      expect(testCase.test(`<div class="example"><div class="child"></div></div>`)).toBeTruthy();
+    });
+
+    it('Should match when HTML strings with any spaces or newline', () => {
       expect(
-        new RegExp(transformToRegexp(selector('.example .second'))).test(`
+        testCase.test(`
           <div class="example">
             <div class="first"></div>
-            <div class="second"></div>
+            <div class="second child"></div>
             <div class="third"></div>
           </div>
         `)
       ).toBeTruthy();
+    });
 
+    it('Should match when HTML strings with any children', () => {
       expect(
-        new RegExp(transformToRegexp(selector('.example .second'))).test(`
+        testCase.test(`
           <div class="example">
             <div class="first"></div>
-            <div><div class="second"></div></div>
+            <div><div class="second child"></div></div>
             <div class="third"></div>
           </div>
         `)
@@ -172,37 +179,36 @@ describe('generateRegexString()', () => {
 
   describe('Multiple selector', () => {
     describe('ClassSelectors', () => {
-      it('To match generated regexp in HTML', () => {
+      it('Should match', () => {
         expect(new RegExp(transformToRegexp(selector('.button.button--primary'))).test(`<button class="button button--primary"></button>`)).toBeTruthy();
         expect(new RegExp(transformToRegexp(selector('.button.button--primary.button--small'))).test(`<button class="button button--primary button--small"></button>`)).toBeTruthy();
       });
 
-      it('To be false', () => {
+      it('Should NOT match', () => {
         expect(new RegExp(transformToRegexp(selector('.button .button--primary'))).test(`<button class="button button--primary"></button>`)).toBeFalsy();
       });
     });
 
     describe('TypeSelector with any selectors', () => {
-      it('To match generated regexp in HTML', () => {
+      it('Should match', () => {
         expect(new RegExp(transformToRegexp(selector('div.panel'))).test(`<div class="panel"></div>`)).toBeTruthy();
-
         expect(new RegExp(transformToRegexp(selector('div.panel.panel--wide'))).test(`<div class="panel panel--wide"></div>`)).toBeTruthy();
       });
 
-      it('To be false', () => {
+      it('Should NOT match', () => {
         expect(new RegExp(transformToRegexp(selector('div.panel'))).test(`<section class="panel"></section>`)).toBeFalsy();
       });
     });
   });
 
   describe('Unsupported selector', () => {
-    it('with ">", "+" and "~" Combinator throw Error', () => {
+    it('Throw Error with ">", "+" and "~" Combinator', () => {
       expect(() => transformToRegexp(selector('.example > .child'))).toThrowError('Combinator ">" is not supported.');
       expect(() => transformToRegexp(selector('.example + .adjacentSibling'))).toThrowError('Combinator "+" is not supported.');
       expect(() => transformToRegexp(selector('.example ~ .sibling'))).toThrowError('Combinator "~" is not supported.');
     });
 
-    it('with Pseudo-elements thtow Error', () => {
+    it('Throw Error with Pseudo-elements', () => {
       expect(() => transformToRegexp(selector('.example::before'))).toThrowError('Pseudo-elements "before" or "after" is not supported.');
       expect(() => transformToRegexp(selector('.example::after'))).toThrowError('Pseudo-elements "before" or "after" is not supported.');
     });

@@ -164,6 +164,7 @@ export const visitor: Visitor = {
       case null:
         result = attributeRegexp(node.data.name.name);
         break;
+
       case '=':
         if (node.data.value) {
           let value = node.data.value.type === 'Identifier' ? node.data.value.name : node.data.value.value;
@@ -172,12 +173,14 @@ export const visitor: Visitor = {
         }
         result = attributeRegexp(node.data.name.name);
         break;
+
       case '~=':
       case '$=':
       case '^=':
       case '*=':
         result = attributeRegexp(node.data.name.name, (node.data.value as csstree.Identifier).name, node.data.matcher);
         break;
+
       default:
         result = attributeRegexp(node.data.name.name, (node.data.value as csstree.Identifier).name);
         break;

@@ -50,6 +50,9 @@ const attributeRegexp = <T extends string>(attribute: string, value?: T | T[] | 
   return `${attribute}=${QUOTE}${valueRegexp(value)}${QUOTE}`;
 };
 
+const classRegexp = (value: string | string[]) => attributeRegexp(CLASS_ATTRIBUTE, value);
+const idRegexp = (value: string | string[]) => attributeRegexp(ID_ATTRIBUTE, value);
+
 const openingTagRegexpNoClosing = (type: string) => {
   return START_OF_BRACKET + `(${type})` + '\\s*.*?';
 };
@@ -107,17 +110,17 @@ export const visitor: Visitor = {
     const afters = findAfter(node, 'ClassSelector');
 
     if (afters.length > 0) {
-      return attributeRegexp(CLASS_ATTRIBUTE, [node.data.name, ...afters.map((node) => (node.data as csstree.ClassSelector).name)]);
+      return classRegexp([node.data.name, ...afters.map((node) => (node.data as csstree.ClassSelector).name)]);
     }
 
-    return attributeRegexp(CLASS_ATTRIBUTE, node.data.name);
+    return classRegexp(node.data.name);
   },
 
   IdSelector(node) {
     if (node.data.type !== 'IdSelector') {
       return '';
     }
-    return attributeRegexp(ID_ATTRIBUTE, node.data.name);
+    return idRegexp(node.data.name);
   },
 
   AttributeSelector(node) {

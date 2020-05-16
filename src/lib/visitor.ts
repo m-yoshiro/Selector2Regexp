@@ -44,6 +44,8 @@ const singleValue = (value: string) => {
   return ANY_VALUE + SPACE_BETWEEN_ELEMENT + BEFORE_ATTRIBUTE + `(${value})` + AFTER_ATTRIBUTE + SPACE_BETWEEN_ELEMENT + ANY_VALUE;
 };
 
+const attributeTemplate = (attribute: string, value: string) => `${attribute}=${QUOTE}${value}${QUOTE}`;
+
 const attributeRegexp = <T extends string>(attribute: string, value?: T | T[] | null, matcher?: '=' | '*=' | '~=' | '^=' | '$=') => {
   if (!value) {
     return `${attribute}`;
@@ -53,7 +55,11 @@ const attributeRegexp = <T extends string>(attribute: string, value?: T | T[] | 
     return `${attribute}=${QUOTE}${multipleValue(value)}${QUOTE}`;
   }
 
-  return `${attribute}=${QUOTE}${singleValue(value)}${QUOTE}`;
+  if (matcher && matcher === '*=') {
+    return attributeTemplate(attribute, ANY_VALUE + SPACE_BETWEEN_ELEMENT + BEFORE_ATTRIBUTE + `([\\w\\d_-]*?${value}[\\w\\d_-]*?)` + AFTER_ATTRIBUTE + SPACE_BETWEEN_ELEMENT + ANY_VALUE);
+  }
+
+  return attributeTemplate(attribute, singleValue(value));
 };
 
 const classRegexp = (value: string | string[]) => attributeRegexp(CLASS_ATTRIBUTE, value);
@@ -141,7 +147,7 @@ export const visitor: Visitor = {
         result = attributeRegexp(node.data.name.name);
         break;
       case '=':
-        result = attributeRegexp(node.data.name.name, (node.data.value as csstree.Identifier).name);
+        result = attributeRegexp(node.data.name.name, (node.data.value as csstree.Identifier).name, node.data.matcher);
         break;
       case '~=':
         result = attributeRegexp(node.data.name.name, (node.data.value as csstree.Identifier).name);
@@ -154,7 +160,7 @@ export const visitor: Visitor = {
         result = attributeRegexp(node.data.name.name, (node.data.value as csstree.Identifier).name);
         break;
       case '*=':
-        result = attributeRegexp(node.data.name.name, (node.data.value as csstree.Identifier).name);
+        result = attributeRegexp(node.data.name.name, (node.data.value as csstree.Identifier).name, node.data.matcher);
         break;
       default:
         result = attributeRegexp(node.data.name.name, (node.data.value as csstree.Identifier).name);

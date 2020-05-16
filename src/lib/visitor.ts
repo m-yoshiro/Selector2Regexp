@@ -55,8 +55,22 @@ const attributeRegexp = <T extends string>(attribute: string, value?: T | T[] | 
     return `${attribute}=${QUOTE}${multipleValue(value)}${QUOTE}`;
   }
 
-  if (matcher && matcher === '*=') {
-    return attributeTemplate(attribute, ANY_VALUE + SPACE_BETWEEN_ELEMENT + BEFORE_ATTRIBUTE + `([\\w\\d_-]*?${value}[\\w\\d_-]*?)` + AFTER_ATTRIBUTE + SPACE_BETWEEN_ELEMENT + ANY_VALUE);
+  if (matcher) {
+    if (matcher === '*=') {
+      return attributeTemplate(attribute, ANY_VALUE + SPACE_BETWEEN_ELEMENT + BEFORE_ATTRIBUTE + `([\\w\\d_-]*?${value}[\\w\\d_-]*?)` + AFTER_ATTRIBUTE + SPACE_BETWEEN_ELEMENT + ANY_VALUE);
+    }
+
+    if (matcher === '^=') {
+      return attributeTemplate(attribute, ANY_VALUE + SPACE_BETWEEN_ELEMENT + BEFORE_ATTRIBUTE + `(${value}[\\w\\d_-]*?)` + AFTER_ATTRIBUTE + SPACE_BETWEEN_ELEMENT + ANY_VALUE);
+    }
+
+    if (matcher === '$=') {
+      return attributeTemplate(attribute, ANY_VALUE + SPACE_BETWEEN_ELEMENT + BEFORE_ATTRIBUTE + `([\\w\\d_-]*?${value})` + AFTER_ATTRIBUTE + SPACE_BETWEEN_ELEMENT + ANY_VALUE);
+    }
+
+    if (matcher === '~=') {
+      return attributeTemplate(attribute, singleValue(value));
+    }
   }
 
   return attributeTemplate(attribute, singleValue(value));
@@ -147,18 +161,9 @@ export const visitor: Visitor = {
         result = attributeRegexp(node.data.name.name);
         break;
       case '=':
-        result = attributeRegexp(node.data.name.name, (node.data.value as csstree.Identifier).name, node.data.matcher);
-        break;
       case '~=':
-        result = attributeRegexp(node.data.name.name, (node.data.value as csstree.Identifier).name);
-        break;
-      case '^=':
-        // ((?:name)[\w\d])
-        result = attributeRegexp(node.data.name.name, (node.data.value as csstree.Identifier).name);
-        break;
       case '$=':
-        result = attributeRegexp(node.data.name.name, (node.data.value as csstree.Identifier).name);
-        break;
+      case '^=':
       case '*=':
         result = attributeRegexp(node.data.name.name, (node.data.value as csstree.Identifier).name, node.data.matcher);
         break;

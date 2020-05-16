@@ -191,18 +191,6 @@ export const visitor: Visitor = {
       return '';
     }
 
-    // if (node.prev()) {
-    //   return '';
-    // Ignore Sibling, Descendant
-    // if (node.prev()!.data.type === 'Combinator' || node.prev()!.data.type === 'WhiteSpace') {
-    //   return '';
-    // }
-    // Previous TypeSelector, don't have these selectors
-    // if (node.prev()!.data.type === 'TypeSelector' || node.prev()!.data.type === 'PseudoElementSelector' || node.prev()!.data.type === 'AttributeSelector' || node.prev()!.data.type === 'IdSelector' || node.prev()!.data.type === 'ClassSelector') {
-    //   return '';
-    // }
-    // }
-
     if (node.next()) {
       if (node.next()!.data.type === 'TypeSelector') {
         throw new Error(`TypeSelector can't be in the next of name type`);

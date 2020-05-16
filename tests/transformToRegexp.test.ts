@@ -8,118 +8,140 @@ const selector = (str: string) =>
 
 describe('generateRegexString()', () => {
   describe('ClassName selector', () => {
-    const testRegexp = new RegExp(transformToRegexp(selector('.example')));
+    const testCase = new RegExp(transformToRegexp(selector('.example')));
 
     describe('a class', () => {
       it('Should match', () => {
-        expect(testRegexp.test(`<div class="example"></div>`)).toBeTruthy();
+        expect(testCase.test(`<div class="example"></div>`)).toBeTruthy();
       });
 
-      it('Should not match wrong classes', () => {
-        expect(testRegexp.test(`<div class="xample"></div>`)).toBeFalsy();
+      it('Should NOT match wrong classes', () => {
+        expect(testCase.test(`<div class="xample"></div>`)).toBeFalsy();
       });
     });
 
     describe('a class with any spaces', () => {
       it('Should match', () => {
-        expect(testRegexp.test(`<div class=" example"></div>`)).toBeTruthy();
-        expect(testRegexp.test(`<div class="example "></div>`)).toBeTruthy();
+        expect(testCase.test(`<div class=" example"></div>`)).toBeTruthy();
+        expect(testCase.test(`<div class="example "></div>`)).toBeTruthy();
       });
 
-      it('Should not match', () => {
-        expect(testRegexp.test(`<div class="exa mple"></div>`)).toBeFalsy();
+      it('Should NOT match', () => {
+        expect(testCase.test(`<div class="exa mple"></div>`)).toBeFalsy();
       });
     });
 
     describe('a class with any values', () => {
       it('Should match', () => {
-        expect(testRegexp.test(`<div class="left example"></div>`)).toBeTruthy();
-        expect(testRegexp.test(`<div class="example right"></div>`)).toBeTruthy();
-        expect(testRegexp.test(`<div class="left example right"></div>`)).toBeTruthy();
+        expect(testCase.test(`<div class="left example"></div>`)).toBeTruthy();
+        expect(testCase.test(`<div class="example right"></div>`)).toBeTruthy();
+        expect(testCase.test(`<div class="left example right"></div>`)).toBeTruthy();
       });
 
-      it('Should not match whenever match a part of wrong string', () => {
-        expect(testRegexp.test(`<div class="leftexample"></div>`)).toBeFalsy();
-        expect(testRegexp.test(`<div class="left exampleright"></div>`)).toBeFalsy();
+      it('Should NOT match whenever match a part of wrong string', () => {
+        expect(testCase.test(`<div class="leftexample"></div>`)).toBeFalsy();
+        expect(testCase.test(`<div class="left exampleright"></div>`)).toBeFalsy();
       });
     });
   });
 
   describe('ID selector', () => {
-    const testRegexp = new RegExp(transformToRegexp(selector('#idTest')));
+    const testCase = new RegExp(transformToRegexp(selector('#idTest')));
 
     it('Should match the id', () => {
-      expect(testRegexp.test(`<div id="idTest"></div>`)).toBeTruthy();
-      expect(testRegexp.test(`<div id="left idTest"></div>`)).toBeTruthy();
-      expect(testRegexp.test(`<div id="left idTest right"></div>`)).toBeTruthy();
+      expect(testCase.test(`<div id="idTest"></div>`)).toBeTruthy();
+      expect(testCase.test(`<div id="left idTest"></div>`)).toBeTruthy();
+      expect(testCase.test(`<div id="left idTest right"></div>`)).toBeTruthy();
     });
   });
 
   describe('Attribute selector', () => {
-    describe('Attribute name only', () => {
-      it('return true', () => {
-        expect(new RegExp(transformToRegexp(selector('[hidden]'))).test(`<div hidden></div>`)).toBeTruthy();
+    describe('Attribute without any value', () => {
+      const testCase = new RegExp(transformToRegexp(selector('[hidden]')));
+
+      it('Should match', () => {
+        expect(testCase.test(`<div hidden></div>`)).toBeTruthy();
       });
-      it('return false', () => {
-        expect(new RegExp(transformToRegexp(selector('[hidden]'))).test(`<div data-state></div>`)).toBeFalsy();
+
+      it('Should NOT match', () => {
+        expect(testCase.test(`<div data-state></div>`)).toBeFalsy();
       });
     });
 
-    describe('=', () => {
-      it('return true', () => {
-        expect(new RegExp(transformToRegexp(selector('[data-state=active]'))).test(`<div data-state="active"></div>`)).toBeTruthy();
-        expect(new RegExp(transformToRegexp(selector('[data-state="super active"]'))).test(`<div data-state="super active"></div>`)).toBeTruthy();
+    describe('Matcher "="', () => {
+      const testCaseWithSingleValue = new RegExp(transformToRegexp(selector('[data-state=active]')));
+      const testCaseWithMultipleValues = new RegExp(transformToRegexp(selector('[data-state="super active"]')));
+
+      it('Should match', () => {
+        expect(testCaseWithSingleValue.test(`<div data-state="active"></div>`)).toBeTruthy();
+        expect(testCaseWithMultipleValues.test(`<div data-state="super active"></div>`)).toBeTruthy();
       });
-      it('return false', () => {
-        console.log(transformToRegexp(selector('[data-state="super active"]')));
-        expect(new RegExp(transformToRegexp(selector('[data-state=active]'))).test(`<div data-state="super active"></div>`)).toBeFalsy();
-        expect(new RegExp(transformToRegexp(selector('[data-state="super active"]'))).test(`<div data-state="active super"></div>`)).toBeFalsy();
+
+      it('Should NOT match', () => {
+        expect(testCaseWithSingleValue.test(`<div data-state="super active"></div>`)).toBeFalsy();
+        expect(testCaseWithMultipleValues.test(`<div data-state="active super"></div>`)).toBeFalsy();
       });
     });
 
-    describe('*=', () => {
-      it('return true', () => {
-        expect(new RegExp(transformToRegexp(selector('[data-state*=active]'))).test(`<div data-state="super-active"></div>`)).toBeTruthy();
-        expect(new RegExp(transformToRegexp(selector('[data-state*=active]'))).test(`<div data-state="super active"></div>`)).toBeTruthy();
+    describe('Matcher "*="', () => {
+      const testCase = new RegExp(transformToRegexp(selector('[data-state*=active]')));
+
+      it('Should match', () => {
+        expect(testCase.test(`<div data-state="super-active"></div>`)).toBeTruthy();
+        expect(testCase.test(`<div data-state="super active"></div>`)).toBeTruthy();
       });
-      it('return false', () => {
-        expect(new RegExp(transformToRegexp(selector('[data-state*=active]'))).test(`<div data-test="super-active"></div>`)).toBeFalsy();
+
+      it('Should NOT match', () => {
+        expect(testCase.test(`<div data-test="super-active"></div>`)).toBeFalsy();
       });
     });
 
-    describe('^=', () => {
-      it('return true', () => {
-        expect(new RegExp(transformToRegexp(selector('[class^=button]'))).test(`<div class="button-small"></div>`)).toBeTruthy();
+    describe('Matcher "^="', () => {
+      const testCase = new RegExp(transformToRegexp(selector('[class^=button]')));
+
+      it('Should match', () => {
+        expect(testCase.test(`<div class="button-small"></div>`)).toBeTruthy();
       });
-      it('return false', () => {
-        expect(new RegExp(transformToRegexp(selector('[class^=button]'))).test(`<div class="super-button"></div>`)).toBeFalsy();
+
+      it('Should NOT match', () => {
+        expect(testCase.test(`<div class="super-button"></div>`)).toBeFalsy();
       });
     });
 
-    describe('$=', () => {
-      it('return true', () => {
-        expect(new RegExp(transformToRegexp(selector('[class$=box]'))).test(`<div class="super-box"></div>`)).toBeTruthy();
+    describe('Matcher "$="', () => {
+      const testCase = new RegExp(transformToRegexp(selector('[class$=box]')));
+
+      it('Should match', () => {
+        expect(testCase.test(`<div class="super-box"></div>`)).toBeTruthy();
       });
-      it('return false', () => {
-        expect(new RegExp(transformToRegexp(selector('[class$=box]'))).test(`<div class="box-super"></div>`)).toBeFalsy();
+      it('Should NOT match', () => {
+        expect(testCase.test(`<div class="box-super"></div>`)).toBeFalsy();
       });
     });
 
-    describe('~=', () => {
-      it('return true', () => {
-        expect(new RegExp(transformToRegexp(selector('[class~=one]'))).test(`<div class="some one any"></div>`)).toBeTruthy();
+    describe('Matcher "~="', () => {
+      const testCase = new RegExp(transformToRegexp(selector('[class~=one]')));
+
+      it('Should match', () => {
+        expect(testCase.test(`<div class="some one any"></div>`)).toBeTruthy();
       });
-      it('return false', () => {
-        expect(new RegExp(transformToRegexp(selector('[class~=one]'))).test(`<div class="someone any"></div>`)).toBeFalsy();
+      it('Should NOT match', () => {
+        expect(testCase.test(`<div class="someone any"></div>`)).toBeFalsy();
       });
     });
   });
 
   describe('Type selector', () => {
-    it('To match generated regexp in HTML', () => {
-      expect(new RegExp(transformToRegexp(selector('div'))).test(`<div id="app"></div>`)).toBeTruthy();
-      expect(new RegExp(transformToRegexp(selector('div'))).test(`<div id="app" class="sample"></div>`)).toBeTruthy();
-      expect(new RegExp(transformToRegexp(selector('a'))).test(`<div id="app" class="sample"><a href=""></a></div>`)).toBeTruthy();
+    const testCaseDiv = new RegExp(transformToRegexp(selector('div')));
+    const testCaseA = new RegExp(transformToRegexp(selector('a')));
+
+    it('Should match', () => {
+      expect(testCaseDiv.test(`<div id="app"></div>`)).toBeTruthy();
+      expect(testCaseDiv.test(`<div id="app" class="sample"></div>`)).toBeTruthy();
+    });
+
+    it('Should match when a target is child', () => {
+      expect(testCaseA.test(`<div id="app" class="sample"><a href=""></a></div>`)).toBeTruthy();
     });
   });
 

@@ -8,19 +8,40 @@ const selector = (str: string) =>
 
 describe('generateRegexString()', () => {
   describe('ClassName selector', () => {
-    it('To match generated regexp in HTML', () => {
-      expect(new RegExp(transformToRegexp(selector('.example'))).test(`<div class="example"></div>`)).toBeTruthy();
-      expect(new RegExp(transformToRegexp(selector('.example'))).test(`<div class=" example"></div>`)).toBeTruthy();
-      expect(new RegExp(transformToRegexp(selector('.example'))).test(`<div class="example "></div>`)).toBeTruthy();
-      expect(new RegExp(transformToRegexp(selector('.example'))).test(`<div class="left example"></div>`)).toBeTruthy();
-      expect(new RegExp(transformToRegexp(selector('.example'))).test(`<div class="example right"></div>`)).toBeTruthy();
-      expect(new RegExp(transformToRegexp(selector('.example'))).test(`<div class="left example right"></div>`)).toBeTruthy();
+    const testRegexp = new RegExp(transformToRegexp(selector('.example')));
+
+    describe('a class', () => {
+      it('Should match', () => {
+        expect(testRegexp.test(`<div class="example"></div>`)).toBeTruthy();
+      });
+
+      it('Should not match wrong classes', () => {
+        expect(testRegexp.test(`<div class="xample"></div>`)).toBeFalsy();
+      });
     });
 
-    it('Not to match', () => {
-      expect(new RegExp(transformToRegexp(selector('.example'))).test(`<div class="xample"></div>`)).toBeFalsy();
-      expect(new RegExp(transformToRegexp(selector('.example'))).test(`<div class="leftexample"></div>`)).toBeFalsy();
-      expect(new RegExp(transformToRegexp(selector('.example'))).test(`<div class="left exampleright"></div>`)).toBeFalsy();
+    describe('a class with any spaces', () => {
+      it('Should match', () => {
+        expect(testRegexp.test(`<div class=" example"></div>`)).toBeTruthy();
+        expect(testRegexp.test(`<div class="example "></div>`)).toBeTruthy();
+      });
+
+      it('Should not match', () => {
+        expect(testRegexp.test(`<div class="exa mple"></div>`)).toBeFalsy();
+      });
+    });
+
+    describe('a class with any values', () => {
+      it('Should match', () => {
+        expect(testRegexp.test(`<div class="left example"></div>`)).toBeTruthy();
+        expect(testRegexp.test(`<div class="example right"></div>`)).toBeTruthy();
+        expect(testRegexp.test(`<div class="left example right"></div>`)).toBeTruthy();
+      });
+
+      it('Should not match whenever match a part of wrong string', () => {
+        expect(testRegexp.test(`<div class="leftexample"></div>`)).toBeFalsy();
+        expect(testRegexp.test(`<div class="left exampleright"></div>`)).toBeFalsy();
+      });
     });
   });
 

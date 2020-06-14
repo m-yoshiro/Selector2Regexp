@@ -56,24 +56,24 @@ const attributeRegexp = <T extends string>(attribute: string, value?: T | T[] | 
   }
 
   if (matcher) {
-    if (matcher === '=') {
-      return `${attribute}=${QUOTE}(${value})${QUOTE}`;
-    }
+    switch (matcher) {
+      case '=':
+        return `${attribute}=${QUOTE}(${value})${QUOTE}`;
 
-    if (matcher === '*=') {
-      return attributeTemplate(attribute, singleValue(`([\\w\\d_-]*?${value}[\\w\\d_-]*?)`));
-    }
+      case '*=':
+        return attributeTemplate(attribute, singleValue(`([\\w\\d_-]*?${value}[\\w\\d_-]*?)`));
 
-    if (matcher === '^=') {
-      return attributeTemplate(attribute, singleValue(`(${value}[\\w\\d_-]*?)`));
-    }
+      case '^=':
+        return attributeTemplate(attribute, singleValue(`(${value}[\\w\\d_-]*?)`));
 
-    if (matcher === '$=') {
-      return attributeTemplate(attribute, singleValue(`([\\w\\d_-]*?${value})`));
-    }
+      case '$=':
+        return attributeTemplate(attribute, singleValue(`([\\w\\d_-]*?${value})`));
 
-    if (matcher === '~=') {
-      return attributeTemplate(attribute, singleValue(value));
+      case '~=':
+        return attributeTemplate(attribute, singleValue(value));
+
+      default:
+        break;
     }
   }
 

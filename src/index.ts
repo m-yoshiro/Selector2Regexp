@@ -1,5 +1,5 @@
-import parse from './lib/parse';
-import transformToRegexp from './lib/transformToRegexp';
+import { parse } from './lib/parse';
+import { transformToRegexp } from './lib/transformToRegexp';
 import { CSSSelectorString } from '../types';
 
 export default function (data: CSSSelectorString) {

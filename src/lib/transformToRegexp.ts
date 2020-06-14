@@ -2,7 +2,7 @@ import csstree from 'css-tree';
 import { visitor } from './visitor';
 import { s2rNode, targetNode } from '../../types';
 
-export default function (selector: csstree.Selector) {
+export function transformToRegexp(selector: csstree.Selector) {
   if (selector.type !== 'Selector') {
     throw new Error(`Bad node type ${selector.type} for 'generateRegexString'.`);
   }

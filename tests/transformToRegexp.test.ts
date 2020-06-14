@@ -1,4 +1,4 @@
-import transformToRegexp from '../src/lib/transformToRegexp';
+import { transformToRegexp } from '../src/lib/transformToRegexp';
 import csstree from 'css-tree';
 
 const selector = (str: string) =>

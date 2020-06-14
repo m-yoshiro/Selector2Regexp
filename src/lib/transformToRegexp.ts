@@ -7,7 +7,7 @@ export default function (selector: csstree.Selector) {
     throw new Error(`Bad node type ${selector.type} for 'generateRegexString'.`);
   }
 
-  let list: targetNode[] = [];
+  const list: targetNode[] = [];
 
   const createS2rList = (list: targetNode[]) => {
     const result: s2rNode<targetNode>[] = [];

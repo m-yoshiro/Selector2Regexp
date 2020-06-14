@@ -96,7 +96,7 @@ const closingTagRegexp = (type: string) => {
 };
 
 const findBefore = (node: s2rNode<csstree.CssNode>, type: targetNode['type']) => {
-  let result = [];
+  const result = [];
 
   let prev = node.prev();
 
@@ -111,7 +111,7 @@ const findBefore = (node: s2rNode<csstree.CssNode>, type: targetNode['type']) =>
 };
 
 const findAfter = (node: s2rNode<csstree.CssNode>, type: targetNode['type']) => {
-  let result = [];
+  const result = [];
 
   let next = node.next();
 
@@ -167,7 +167,7 @@ export const visitor: Visitor = {
 
       case '=':
         if (node.data.value) {
-          let value = node.data.value.type === 'Identifier' ? node.data.value.name : node.data.value.value;
+          const value = node.data.value.type === 'Identifier' ? node.data.value.name : node.data.value.value;
           result = attributeRegexp(node.data.name.name, value.replace(/(:?^['"]|['"]$)/g, ''), node.data.matcher);
           break;
         }

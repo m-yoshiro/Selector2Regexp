@@ -1,5 +1,5 @@
 import csstree, { PseudoElementSelector } from 'css-tree';
-import { s2rNode, targetNode } from '../../types';
+import { s2rNode, targetNode } from '../../../types';
 
 import {
   START_OF_BRACKET,

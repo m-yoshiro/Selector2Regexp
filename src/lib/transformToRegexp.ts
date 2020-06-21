@@ -1,5 +1,5 @@
 import csstree from 'css-tree';
-import { visitor } from './visitor';
+import { visitor } from './visitor/visitor';
 import { s2rNode, targetNode } from '../../types';
 
 export function transformToRegexp(selector: csstree.Selector) {

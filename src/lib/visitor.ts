@@ -1,19 +1,20 @@
 import csstree, { PseudoElementSelector } from 'css-tree';
 import { s2rNode, targetNode } from '../../types';
 
-const START_OF_BRACKET = '<\\s*';
-const END_OF_BRACKET = '\\s*>';
-const TYPE_NAME = '\\w+';
-const CLASS_ATTRIBUTE = 'class';
-const ANY_VALUE = '\\w*';
-const ID_ATTRIBUTE = 'id';
-const ATTRIBUTE_SEPARATOR = '\\s+';
-const SPACE_BETWEEN_ELEMENT = '\\s*';
-const QUOTE = '[\'"]';
-const BEFORE_ATTRIBUTE = '(?<!\\w)'; // ES2018
-const AFTER_ATTRIBUTE = '(?!\\w)';
-const ANY_OPENING_TAG = '<.*>';
-// const ANY_CONTENT = '<.*>';
+import {
+  START_OF_BRACKET,
+  END_OF_BRACKET,
+  TYPE_NAME,
+  CLASS_ATTRIBUTE,
+  ANY_VALUE,
+  ID_ATTRIBUTE,
+  ATTRIBUTE_SEPARATOR,
+  SPACE_BETWEEN_ELEMENT,
+  QUOTE,
+  BEFORE_ATTRIBUTE, // ES2018
+  AFTER_ATTRIBUTE,
+  ANY_OPENING_TAG,
+} from './definitions';
 
 type SelectorRegexpString = string;
 type NoSupport = Error | void;

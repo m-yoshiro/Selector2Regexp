@@ -19,7 +19,7 @@ export type Visitor = {
 };
 
 export const visitor: Visitor = {
-  ClassSelector(node, list) {
+  ClassSelector(node) {
     if (node.data.type !== 'ClassSelector') {
       return '';
     }
@@ -110,11 +110,11 @@ export const visitor: Visitor = {
     throw new Error(`Combinator "${(node.data as csstree.Combinator).name}" is not supported.`);
   },
 
-  PseudoElementSelector(node) {
+  PseudoElementSelector() {
     throw new Error('Pseudo-elements "before" or "after" is not supported.');
   },
 
-  SelectorList(node) {
+  SelectorList() {
     throw new Error('SelectorList, like a "a.button", is not supported.');
   },
 };

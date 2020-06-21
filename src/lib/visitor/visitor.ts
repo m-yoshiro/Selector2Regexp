@@ -1,20 +1,8 @@
-import csstree, { PseudoElementSelector } from 'css-tree';
+import csstree from 'css-tree';
 import { s2rNode, targetNode } from '../../../types';
 
-import {
-  START_OF_BRACKET,
-  END_OF_BRACKET,
-  TYPE_NAME,
-  CLASS_ATTRIBUTE,
-  ANY_VALUE,
-  ID_ATTRIBUTE,
-  ATTRIBUTE_SEPARATOR,
-  SPACE_BETWEEN_ELEMENT,
-  QUOTE,
-  BEFORE_ATTRIBUTE,
-  AFTER_ATTRIBUTE,
-  ANY_OPENING_TAG,
-} from './definitions';
+import { START_OF_BRACKET, END_OF_BRACKET, TYPE_NAME, ATTRIBUTE_SEPARATOR, SPACE_BETWEEN_ELEMENT, ANY_OPENING_TAG } from './definitions';
+import { attributeRegexp, classRegexp, idRegexp, openingTagRegexpNoClosing, openingTagRegexp, findBefore, findAfter } from './utils';
 
 type SelectorRegexpString = string;
 type NoSupport = Error | void;
@@ -28,104 +16,6 @@ export type Visitor = {
   Combinator: (node: s2rNode<csstree.CssNode>, list?: targetNode[]) => NoSupport;
   PseudoElementSelector: (node: s2rNode<csstree.CssNode>, list?: targetNode[]) => NoSupport;
   SelectorList: (node: s2rNode<csstree.CssNode>, list?: targetNode[]) => NoSupport;
-};
-
-const multipleValue = (value: string[]) => {
-  if (!Array.isArray(value) || value.length <= 1) {
-    return null;
-  }
-
-  const valueString = value.join('|');
-  const n = `{${value.length}}`;
-
-  return ANY_VALUE + '(' + SPACE_BETWEEN_ELEMENT + BEFORE_ATTRIBUTE + `(${valueString})` + AFTER_ATTRIBUTE + SPACE_BETWEEN_ELEMENT + ')' + `${n}` + ANY_VALUE;
-};
-
-const singleValue = (value: string) => {
-  return ANY_VALUE + SPACE_BETWEEN_ELEMENT + BEFORE_ATTRIBUTE + `(${value})` + AFTER_ATTRIBUTE + SPACE_BETWEEN_ELEMENT + ANY_VALUE;
-};
-
-const attributeTemplate = (attribute: string, value: string) => `${attribute}=${QUOTE}${value}${QUOTE}`;
-
-const attributeRegexp = <T extends string>(attribute: string, value?: T | T[] | null, matcher?: '=' | '*=' | '~=' | '^=' | '$=') => {
-  if (!value) {
-    return `${attribute}`;
-  }
-
-  if (Array.isArray(value)) {
-    return `${attribute}=${QUOTE}${multipleValue(value)}${QUOTE}`;
-  }
-
-  if (matcher) {
-    switch (matcher) {
-      case '=':
-        return `${attribute}=${QUOTE}(${value})${QUOTE}`;
-
-      case '*=':
-        return attributeTemplate(attribute, singleValue(`([\\w\\d_-]*?${value}[\\w\\d_-]*?)`));
-
-      case '^=':
-        return attributeTemplate(attribute, singleValue(`(${value}[\\w\\d_-]*?)`));
-
-      case '$=':
-        return attributeTemplate(attribute, singleValue(`([\\w\\d_-]*?${value})`));
-
-      case '~=':
-        return attributeTemplate(attribute, singleValue(value));
-
-      default:
-        break;
-    }
-  }
-
-  return attributeTemplate(attribute, singleValue(value));
-};
-
-const classRegexp = (value: string | string[]) => attributeRegexp(CLASS_ATTRIBUTE, value);
-const idRegexp = (value: string | string[]) => attributeRegexp(ID_ATTRIBUTE, value);
-
-const openingTagRegexpNoClosing = (type: string) => {
-  return START_OF_BRACKET + `(${type})` + '\\s*.*?';
-};
-
-const openingTagRegexp = (type: string) => {
-  return openingTagRegexpNoClosing(type) + END_OF_BRACKET;
-};
-
-const closingTagRegexp = (type: string) => {
-  return START_OF_BRACKET + '/' + type + END_OF_BRACKET;
-};
-
-const findBefore = (node: s2rNode<csstree.CssNode>, type: targetNode['type']) => {
-  const result = [];
-
-  let prev = node.prev();
-
-  while (prev) {
-    if (prev.data.type === type) {
-      result.push(prev);
-    }
-    prev = prev.prev();
-  }
-
-  return result;
-};
-
-const findAfter = (node: s2rNode<csstree.CssNode>, type: targetNode['type']) => {
-  const result = [];
-
-  let next = node.next();
-
-  while (next) {
-    const cursor = next;
-    if (cursor.data.type === type && cursor.prev()!.data.type !== 'WhiteSpace' && cursor.prev()!.data.type !== 'Combinator') {
-      result.push(cursor);
-    }
-
-    next = cursor.next();
-  }
-
-  return result;
 };
 
 export const visitor: Visitor = {

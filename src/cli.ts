@@ -13,6 +13,7 @@ Usage:
     .demandCommand(1)
     .help('h')
     .alias('h', 'help')
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
     .version(require('../package.json').version)
     .alias('v', 'version')
     .parse(args);

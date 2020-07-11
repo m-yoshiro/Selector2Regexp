@@ -1,7 +1,7 @@
 import csstree from 'css-tree';
 import { CSSSelectorString } from '../../types';
 
-export default (selectorString: CSSSelectorString) => {
+export const parse = (selectorString: CSSSelectorString) => {
   try {
     return csstree.parse(selectorString.trim(), {
       context: 'selector',

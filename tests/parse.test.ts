@@ -1,4 +1,4 @@
-import parse from '../src/lib/parse';
+import { parse } from '../src/lib/parse';
 import csstree from 'css-tree';
 
 describe('convertToNodes', () => {

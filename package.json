@@ -1,6 +1,6 @@
 {
   "name": "selector-2-regexp",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "Convert CSS Selector to a Regexp string for searching matched elements in HTML.",
   "bin": {
     "s2r": "./bin/selector2regexp"

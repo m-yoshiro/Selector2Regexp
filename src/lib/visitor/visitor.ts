@@ -66,7 +66,7 @@ export const visitor: Visitor = {
         case '$=':
         case '^=':
         case '*=':
-          let value;
+          let value: null | string = null;
           if (node.data.value) {
             value = node.data.value.type === 'Identifier' ? node.data.value.name : node.data.value.value.replace(/[\"\']/g, '');
           }

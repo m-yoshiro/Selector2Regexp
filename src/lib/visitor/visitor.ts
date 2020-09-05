@@ -66,7 +66,12 @@ export const visitor: Visitor = {
         case '$=':
         case '^=':
         case '*=':
-          result = attributeRegexp(node.data.name.name, (node.data.value as csstree.Identifier).name, node.data.matcher);
+          let value;
+          if (node.data.value) {
+            value = node.data.value.type === 'Identifier' ? node.data.value.name : node.data.value.value.replace(/[\"\']/g, '');
+          }
+
+          result = attributeRegexp(node.data.name.name, value, node.data.matcher);
           break;
         default:
           result = attributeRegexp(node.data.name.name, (node.data.value as csstree.Identifier).name);

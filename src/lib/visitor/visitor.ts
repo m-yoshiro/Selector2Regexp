@@ -49,35 +49,39 @@ export const visitor: Visitor = {
       return '';
     }
 
-    let result: string;
+    if (node.data.matcher) {
+      let result: string;
 
-    switch (node.data.matcher) {
-      case null:
-        result = attributeRegexp(node.data.name.name);
-        break;
+      switch (node.data.matcher) {
+        case '=':
+          if (node.data.value) {
+            const value = node.data.value.type === 'Identifier' ? node.data.value.name : node.data.value.value;
+            result = attributeRegexp(node.data.name.name, value.replace(/(:?^['"]|['"]$)/g, ''), node.data.matcher);
+            break;
+          }
 
-      case '=':
-        if (node.data.value) {
-          const value = node.data.value.type === 'Identifier' ? node.data.value.name : node.data.value.value;
-          result = attributeRegexp(node.data.name.name, value.replace(/(:?^['"]|['"]$)/g, ''), node.data.matcher);
+          result = attributeRegexp(node.data.name.name);
           break;
-        }
-        result = attributeRegexp(node.data.name.name);
-        break;
+        case '~=':
+        case '$=':
+        case '^=':
+        case '*=':
+          let value: null | string = null;
+          if (node.data.value) {
+            value = node.data.value.type === 'Identifier' ? node.data.value.name : node.data.value.value.replace(/[\"\']/g, '');
+          }
 
-      case '~=':
-      case '$=':
-      case '^=':
-      case '*=':
-        result = attributeRegexp(node.data.name.name, (node.data.value as csstree.Identifier).name, node.data.matcher);
-        break;
+          result = attributeRegexp(node.data.name.name, value, node.data.matcher);
+          break;
+        default:
+          result = attributeRegexp(node.data.name.name, (node.data.value as csstree.Identifier).name);
+          break;
+      }
 
-      default:
-        result = attributeRegexp(node.data.name.name, (node.data.value as csstree.Identifier).name);
-        break;
+      return result;
+    } else {
+      return attributeRegexp(node.data.name.name);
     }
-
-    return result;
   },
 
   TypeSelector(node) {

@@ -106,6 +106,25 @@ describe('generateRegexString()', () => {
       it('Should NOT match', () => {
         expect(testCase.test(`<div class="super-button"></div>`)).toBeFalsy();
       });
+
+      describe('when selector has double quotes', () => {
+        const selectorStr = transformToRegexp(selector('[class^=button-]'));
+        const selectorStrWithQuote = transformToRegexp(selector('[class^="button-"]'));
+        const testCaseWithQuote = new RegExp(selectorStrWithQuote);
+
+        it('Should be equal', () => {
+          expect(selectorStrWithQuote).toEqual(selectorStr);
+        });
+
+        it('Should match', () => {
+          expect(testCaseWithQuote.test(`<div class="button-small"></div>`)).toBeTruthy();
+        });
+
+        it('Should NOT match', () => {
+          expect(testCaseWithQuote.test(`<div class="super-button"></div>`)).toBeFalsy();
+          expect(testCaseWithQuote.test(`<div class="button"></div>`)).toBeFalsy();
+        });
+      });
     });
 
     describe('Matcher "$="', () => {

@@ -119,6 +119,6 @@ export const visitor: Visitor = {
   },
 
   SelectorList() {
-    throw new Error('SelectorList, like a "a.button", is not supported.');
+    throw new Error('SelectorList, like a ".button-a, .button-b", is not supported.');
   },
 };

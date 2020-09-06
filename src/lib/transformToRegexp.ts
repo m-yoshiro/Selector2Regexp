@@ -2,10 +2,11 @@ import csstree from 'css-tree';
 import { visitor } from './visitor/visitor';
 import { s2rNode, targetNode } from '../../types';
 
-export function transformToRegexp(selector: csstree.Selector) {
-  if (selector.type !== 'Selector') {
-    throw new Error(`Bad node type ${selector.type} for 'generateRegexString'.`);
-  }
+const isSelectorList = (selector: csstree.SelectorList | csstree.Selector) => selector.type === 'SelectorList' && selector.children.getSize() > 1;
+
+export function transformToRegexp(selector: csstree.SelectorList | csstree.Selector) {
+  // If selector is 'SelectorList' with more than two items, selector is identified as 'SelectorList'.
+  selector = isSelectorList(selector) ? selector : (selector.children.first() as csstree.Selector);
 
   const list: targetNode[] = [];
 

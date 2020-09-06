@@ -4,7 +4,7 @@ import { CSSSelectorString } from '../../types';
 export const parse = (selectorString: CSSSelectorString) => {
   try {
     return csstree.parse(selectorString.trim(), {
-      context: 'selector',
+      context: 'selectorList',
       onParseError: (error) => {
         console.log(error.message);
       },

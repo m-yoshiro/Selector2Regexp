@@ -3,7 +3,7 @@ import csstree from 'css-tree';
 
 const selector = (str: string) =>
   csstree.parse(str, {
-    context: 'selector',
+    context: 'selectorList',
   }) as csstree.Selector;
 
 describe('generateRegexString()', () => {
@@ -230,6 +230,12 @@ describe('generateRegexString()', () => {
     it('Throw Error with Pseudo-elements', () => {
       expect(() => transformToRegexp(selector('.example::before'))).toThrowError('Pseudo-elements "before" or "after" is not supported.');
       expect(() => transformToRegexp(selector('.example::after'))).toThrowError('Pseudo-elements "before" or "after" is not supported.');
+    });
+  });
+
+  describe('Selector List', () => {
+    it('Throw Error', () => {
+      expect(() => transformToRegexp(selector('.example-a, .example-b'))).toThrowError('SelectorList, like a ".example-a, .example-b", is not supported.');
     });
   });
 });

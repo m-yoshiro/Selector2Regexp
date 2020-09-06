@@ -232,4 +232,10 @@ describe('generateRegexString()', () => {
       expect(() => transformToRegexp(selector('.example::after'))).toThrowError('Pseudo-elements "before" or "after" is not supported.');
     });
   });
+
+  describe('Selector List', () => {
+    it('Throw Error', () => {
+      expect(() => transformToRegexp(selector('.example-a, .example-b'))).toThrowError('SelectorList, like a ".example-a, .example-b", is not supported.');
+    });
+  });
 });

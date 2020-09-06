@@ -3,7 +3,7 @@ import csstree from 'css-tree';
 
 const selector = (str: string) =>
   csstree.parse(str, {
-    context: 'selector',
+    context: 'selectorList',
   }) as csstree.Selector;
 
 describe('generateRegexString()', () => {

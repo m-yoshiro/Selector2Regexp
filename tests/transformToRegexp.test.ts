@@ -166,7 +166,6 @@ describe('generateRegexString()', () => {
 
   describe('Whitespace combinator', () => {
     const testCase = new RegExp(transformToRegexp(selector('.example .child')));
-    console.log(testCase);
 
     it('Should match when HTML strings without any spaces or newline', () => {
       expect(testCase.test(`<div class="example"><div class="child"></div></div>`)).toBeTruthy();
@@ -246,8 +245,6 @@ describe('generateRegexString()', () => {
   //   });
 
   //   it('Should NOT match', () => {
-  //     console.log(selector('.parent > .child').children.last());
-  //     console.log(transformToRegexp(selector('.parent > .child')));
   //     expect(new RegExp(transformToRegexp(selector('.parent > .child'))).test(`<div class="parent"><div class="wrapper"><div class="child"></div></div></div>`)).toBeFalsy();
   //   });
   // });

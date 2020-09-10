@@ -1,6 +1,6 @@
 import csstree from 'css-tree';
 import { visitor } from './visitor/visitor';
-import { s2rList, targetNode } from '../../types';
+import { s2rList,  targetNode } from '../../types';
 
 const isSelectorList = (selector: csstree.SelectorList | csstree.Selector) => selector.type === 'SelectorList' && selector.children.getSize() > 1;
 
@@ -40,6 +40,6 @@ export function transformToRegexp(selector: csstree.SelectorList | csstree.Selec
   });
 
   return createS2rList(list)
-    .map((node) => visitor[node.data.type](node, list))
+    .map((listItem) => visitor[listItem.data.type](listItem, list))
     .join('');
 }

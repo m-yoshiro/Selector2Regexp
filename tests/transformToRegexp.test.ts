@@ -228,7 +228,6 @@ describe('generateRegexString()', () => {
 
   describe('Unsupported selector', () => {
     it('Throw Error with ">", "+" and "~" Combinator', () => {
-      expect(() => transformToRegexp(selector('.example > .child'))).toThrowError('Combinator ">" is not supported.');
       expect(() => transformToRegexp(selector('.example + .adjacentSibling'))).toThrowError('Combinator "+" is not supported.');
       expect(() => transformToRegexp(selector('.example ~ .sibling'))).toThrowError('Combinator "~" is not supported.');
     });

@@ -7,42 +7,54 @@ import { attributeRegexp, classRegexp, idRegexp, openingTagRegexpNoClosing, open
 type SelectorRegexpString = string;
 type NoSupport = Error | void;
 
+export type VisitorSkelton = {
+  enter: (listItem: s2rListItem<csstree.CssNode>, list?: targetNode[]) => SelectorRegexpString;
+  leave: (listItem: s2rListItem<csstree.CssNode>, list?: targetNode[]) => SelectorRegexpString;
+};
+
 export type Visitor = {
-  ClassSelector: (listItem: s2rListItem<csstree.CssNode>, list?: targetNode[]) => SelectorRegexpString;
-  IdSelector: (listItem: s2rListItem<csstree.CssNode>, list?: targetNode[]) => SelectorRegexpString;
-  AttributeSelector: (listItem: s2rListItem<csstree.CssNode>, list?: targetNode[]) => SelectorRegexpString;
-  WhiteSpace: (listItem: s2rListItem<csstree.CssNode>, list?: targetNode[]) => SelectorRegexpString;
-  TypeSelector: (listItem: s2rListItem<csstree.CssNode>, list?: targetNode[]) => SelectorRegexpString;
-  Combinator: (listItem: s2rListItem<csstree.CssNode>, list?: targetNode[]) => SelectorRegexpString | NoSupport;
+  ClassSelector: VisitorSkelton;
+  IdSelector: VisitorSkelton;
+  AttributeSelector: VisitorSkelton;
+  WhiteSpace: VisitorSkelton;
+  TypeSelector: VisitorSkelton;
+  Combinator: VisitorSkelton | NoSupport;
   PseudoElementSelector: (listItem: s2rListItem<csstree.CssNode>, list?: targetNode[]) => NoSupport;
   SelectorList: (listItem: s2rListItem<csstree.CssNode>, list?: targetNode[]) => NoSupport;
 };
 
 export const visitor: Visitor = {
-  ClassSelector(listItem) {
-    if (listItem.data.type !== 'ClassSelector') {
+  ClassSelector: {
+    enter: (listItem) => {
+      if (listItem.data.type !== 'ClassSelector') {
+        return '';
+      }
+      // Skip when prev item is ClassSelector.
+      if (isPrevClassSelector(listItem)) {
+        return '';
+      }
+      // For multiple selector
+      const afters = lookupForward(listItem, 'ClassSelector');
+      if (afters.length > 0) {
+        return classRegexp([listItem.data.name, ...afters.map((node) => (node.data as csstree.ClassSelector).name)]);
+      }
+      return classRegexp(listItem.data.name);
+    },
+    leave: () => {
       return '';
-    }
-
-    // Skip when prev item is ClassSelector.
-    if (isPrevClassSelector(listItem)) {
-      return '';
-    }
-
-    // For multiple selector
-    const afters = lookupForward(listItem, 'ClassSelector');
-    if (afters.length > 0) {
-      return classRegexp([listItem.data.name, ...afters.map((node) => (node.data as csstree.ClassSelector).name)]);
-    }
-
-    return classRegexp(listItem.data.name);
+    },
   },
 
-  IdSelector(listItem) {
-    if (listItem.data.type !== 'IdSelector') {
+  IdSelector: {
+    enter: (listItem) => {
+      if (listItem.data.type !== 'IdSelector') {
+        return '';
+      }
+      return idRegexp(listItem.data.name);
+    },
+    leave: () => {
       return '';
-    }
-    return idRegexp(listItem.data.name);
+    },
   },
 
   AttributeSelector(listItem) {

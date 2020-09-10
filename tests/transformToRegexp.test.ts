@@ -194,6 +194,24 @@ describe('generateRegexString()', () => {
         `)
       ).toBeTruthy();
     });
+
+    it('Should NOT match', () => {
+      expect(
+        testCase.test(`
+          <div class="example">
+            <div class="bad"></div>
+          </div>
+        `)
+      ).toBeFalsy();
+
+      expect(
+        testCase.test(`
+          <div class="example child">
+            <div class="bad"></div>
+          </div>
+        `)
+      ).toBeFalsy();
+    });
   });
 
   describe('Multiple selector', () => {
@@ -204,7 +222,8 @@ describe('generateRegexString()', () => {
       });
 
       it('Should NOT match', () => {
-        expect(new RegExp(transformToRegexp(selector('.button .button--primary'))).test(`<button class="button button--primary"></button>`)).toBeFalsy();
+        expect(new RegExp(transformToRegexp(selector('.button.button--primary'))).test(`<button class="button"><span class="bad"></span></button>`)).toBeFalsy();
+        expect(new RegExp(transformToRegexp(selector('.button.button--primary'))).test(`<button class="button--primary"><span class="bad"></span></button>`)).toBeFalsy();
       });
     });
 
@@ -220,9 +239,19 @@ describe('generateRegexString()', () => {
     });
   });
 
+  // describe('Child combinator', () => {
+  //   it('Should match', () => {
+  //     expect(new RegExp(transformToRegexp(selector('.parent > .child'))).test(`<div class="parent"><div class="child"></div></div>`)).toBeTruthy();
+  //   });
+
+  //   it('Should NOT match', () => {
+  //     expect(new RegExp(transformToRegexp(selector('.parent > .child'))).test(`<div class="parent"><div class="wrapper"><div class="child"></div></div></div>`)).toBeFalsy();
+  //   });
+  // });
+
   describe('Unsupported selector', () => {
     it('Throw Error with ">", "+" and "~" Combinator', () => {
-      expect(() => transformToRegexp(selector('.example > .child'))).toThrowError('Combinator ">" is not supported.');
+      expect(() => transformToRegexp(selector('.parent > .child'))).toThrowError('Combinator ">" is not supported.');
       expect(() => transformToRegexp(selector('.example + .adjacentSibling'))).toThrowError('Combinator "+" is not supported.');
       expect(() => transformToRegexp(selector('.example ~ .sibling'))).toThrowError('Combinator "~" is not supported.');
     });

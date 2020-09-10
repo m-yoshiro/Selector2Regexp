@@ -1,5 +1,5 @@
 import csstree from 'css-tree';
-import { s2rNode, targetNode } from '../../../types';
+import { s2rListItem, targetNode } from '../../../types';
 
 import { START_OF_BRACKET, END_OF_BRACKET, TYPE_NAME, ATTRIBUTE_SEPARATOR, SPACE_BETWEEN_ELEMENT, ANY_OPENING_TAG } from './definitions';
 import { attributeRegexp, classRegexp, idRegexp, openingTagRegexpNoClosing, openingTagRegexp, findBefore, findAfter } from './utils';
@@ -8,14 +8,14 @@ type SelectorRegexpString = string;
 type NoSupport = Error | void;
 
 export type Visitor = {
-  ClassSelector: (node: s2rNode<csstree.CssNode>, list?: targetNode[]) => SelectorRegexpString;
-  IdSelector: (node: s2rNode<csstree.CssNode>, list?: targetNode[]) => SelectorRegexpString;
-  AttributeSelector: (node: s2rNode<csstree.CssNode>, list?: targetNode[]) => SelectorRegexpString;
-  WhiteSpace: (node: s2rNode<csstree.CssNode>, list?: targetNode[]) => SelectorRegexpString;
-  TypeSelector: (node: s2rNode<csstree.CssNode>, list?: targetNode[]) => SelectorRegexpString;
-  Combinator: (node: s2rNode<csstree.CssNode>, list?: targetNode[]) => NoSupport;
-  PseudoElementSelector: (node: s2rNode<csstree.CssNode>, list?: targetNode[]) => NoSupport;
-  SelectorList: (node: s2rNode<csstree.CssNode>, list?: targetNode[]) => NoSupport;
+  ClassSelector: (node: s2rListItem<csstree.CssNode>, list?: targetNode[]) => SelectorRegexpString;
+  IdSelector: (node: s2rListItem<csstree.CssNode>, list?: targetNode[]) => SelectorRegexpString;
+  AttributeSelector: (node: s2rListItem<csstree.CssNode>, list?: targetNode[]) => SelectorRegexpString;
+  WhiteSpace: (node: s2rListItem<csstree.CssNode>, list?: targetNode[]) => SelectorRegexpString;
+  TypeSelector: (node: s2rListItem<csstree.CssNode>, list?: targetNode[]) => SelectorRegexpString;
+  Combinator: (node: s2rListItem<csstree.CssNode>, list?: targetNode[]) => NoSupport;
+  PseudoElementSelector: (node: s2rListItem<csstree.CssNode>, list?: targetNode[]) => NoSupport;
+  SelectorList: (node: s2rListItem<csstree.CssNode>, list?: targetNode[]) => NoSupport;
 };
 
 export const visitor: Visitor = {

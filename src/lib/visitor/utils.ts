@@ -1,5 +1,5 @@
 import csstree from 'css-tree';
-import { s2rNode, targetNode } from '../../../types';
+import { s2rListItem, targetNode } from '../../../types';
 
 import { START_OF_BRACKET, END_OF_BRACKET, CLASS_ATTRIBUTE, ANY_VALUE, ID_ATTRIBUTE, SPACE_BETWEEN_ELEMENT, QUOTE, BEFORE_ATTRIBUTE, AFTER_ATTRIBUTE } from './definitions';
 
@@ -70,7 +70,7 @@ export const closingTagRegexp = (type: string) => {
   return START_OF_BRACKET + '/' + type + END_OF_BRACKET;
 };
 
-export const findBefore = (node: s2rNode<csstree.CssNode>, type: targetNode['type']) => {
+export const findBefore = (node: s2rListItem<csstree.CssNode>, type: targetNode['type']) => {
   const result = [];
 
   let prev = node.prev();
@@ -85,7 +85,7 @@ export const findBefore = (node: s2rNode<csstree.CssNode>, type: targetNode['typ
   return result;
 };
 
-export const findAfter = (node: s2rNode<csstree.CssNode>, type: targetNode['type']) => {
+export const findAfter = (node: s2rListItem<csstree.CssNode>, type: targetNode['type']) => {
   const result = [];
 
   let next = node.next();

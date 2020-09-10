@@ -23,3 +23,5 @@ export type s2rListItem<N extends csstree.CssNode> = {
   next: () => s2rListItem<N> | null;
   prev: () => s2rListItem<N> | null;
 };
+
+export type s2rList<N extends csstree.CssNode> = s2rListItem<N>[];

@@ -220,6 +220,12 @@ describe('generateRegexString()', () => {
     });
   });
 
+  describe('Child combinator', () => {
+    it('Should match', () => {
+      expect(new RegExp(transformToRegexp(selector('.parent > .child'))).test(`<div class="parent"><div class="child"></div></div>`)).toBeTruthy();
+    });
+  });
+
   describe('Unsupported selector', () => {
     it('Throw Error with ">", "+" and "~" Combinator', () => {
       expect(() => transformToRegexp(selector('.example > .child'))).toThrowError('Combinator ">" is not supported.');

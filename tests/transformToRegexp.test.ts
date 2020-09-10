@@ -240,20 +240,21 @@ describe('generateRegexString()', () => {
     });
   });
 
-  describe('Child combinator', () => {
-    it('Should match', () => {
-      expect(new RegExp(transformToRegexp(selector('.parent > .child'))).test(`<div class="parent"><div class="child"></div></div>`)).toBeTruthy();
-    });
+  // describe('Child combinator', () => {
+  //   it('Should match', () => {
+  //     expect(new RegExp(transformToRegexp(selector('.parent > .child'))).test(`<div class="parent"><div class="child"></div></div>`)).toBeTruthy();
+  //   });
 
-    it('Should NOT match', () => {
-      console.log(selector('.parent > .child').children.last());
-      console.log(transformToRegexp(selector('.parent > .child')));
-      expect(new RegExp(transformToRegexp(selector('.parent > .child'))).test(`<div class="parent"><div class="wrapper"><div class="child"></div></div></div>`)).toBeFalsy();
-    });
-  });
+  //   it('Should NOT match', () => {
+  //     console.log(selector('.parent > .child').children.last());
+  //     console.log(transformToRegexp(selector('.parent > .child')));
+  //     expect(new RegExp(transformToRegexp(selector('.parent > .child'))).test(`<div class="parent"><div class="wrapper"><div class="child"></div></div></div>`)).toBeFalsy();
+  //   });
+  // });
 
   describe('Unsupported selector', () => {
     it('Throw Error with ">", "+" and "~" Combinator', () => {
+      expect(() => transformToRegexp(selector('.parent > .child'))).toThrowError('Combinator ">" is not supported.');
       expect(() => transformToRegexp(selector('.example + .adjacentSibling'))).toThrowError('Combinator "+" is not supported.');
       expect(() => transformToRegexp(selector('.example ~ .sibling'))).toThrowError('Combinator "~" is not supported.');
     });

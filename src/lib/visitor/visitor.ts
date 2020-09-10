@@ -117,7 +117,6 @@ export const visitor: Visitor = {
     }
     switch (listItem.data.name) {
       case '>':
-        return END_OF_BRACKET + SPACE_BETWEEN_ELEMENT + '(?=<)';
       case '+':
       case '~':
       default:

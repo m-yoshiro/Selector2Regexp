@@ -70,9 +70,9 @@ export const closingTagRegexp = (type: string) => {
   return START_OF_BRACKET + '/' + type + END_OF_BRACKET;
 };
 
-export const isPrevClassSelector = (node: s2rListItem<csstree.CssNode>, type: targetNode['type']) => {
+export const isPrevClassSelector = (node: s2rListItem<csstree.CssNode>) => {
   const prev = node.prev();
-  return prev && prev.data.type === type;
+  return prev && prev.data.type === 'ClassSelector';
 };
 
 export const findAfter = (node: s2rListItem<csstree.CssNode>, type: targetNode['type']) => {

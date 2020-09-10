@@ -25,7 +25,7 @@ export const visitor: Visitor = {
     }
 
     // Check current selector is multiple selector or not.
-    if (isPrevClassSelector(listItem, 'ClassSelector')) {
+    if (isPrevClassSelector(listItem)) {
       return '';
     }
 

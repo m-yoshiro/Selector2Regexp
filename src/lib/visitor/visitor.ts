@@ -13,7 +13,7 @@ export type Visitor = {
   AttributeSelector: (listItem: s2rListItem<csstree.CssNode>, list?: targetNode[]) => SelectorRegexpString;
   WhiteSpace: (listItem: s2rListItem<csstree.CssNode>, list?: targetNode[]) => SelectorRegexpString;
   TypeSelector: (listItem: s2rListItem<csstree.CssNode>, list?: targetNode[]) => SelectorRegexpString;
-  Combinator: (listItem: s2rListItem<csstree.Combinator>, list?: targetNode[]) => SelectorRegexpString | NoSupport;
+  Combinator: (listItem: s2rListItem<csstree.CssNode>, list?: targetNode[]) => SelectorRegexpString | NoSupport;
   PseudoElementSelector: (listItem: s2rListItem<csstree.CssNode>, list?: targetNode[]) => NoSupport;
   SelectorList: (listItem: s2rListItem<csstree.CssNode>, list?: targetNode[]) => NoSupport;
 };
@@ -111,9 +111,14 @@ export const visitor: Visitor = {
   },
 
   Combinator(listItem) {
+    if (listItem.data.type !== 'Combinator') {
+      return '';
+    }
     switch (listItem.data.name) {
       case '>':
-        return 'TODO: return Child selector regexp';
+        return END_OF_BRACKET + SPACE_BETWEEN_ELEMENT + `(?:\\s${ANY_OPENING_TAG}.*\\s*)*?` + START_OF_BRACKET + TYPE_NAME + ATTRIBUTE_SEPARATOR;
+      case '+':
+      case '~':
       default:
         throw new Error(`Combinator "${(listItem.data as csstree.Combinator).name}" is not supported.`);
     }

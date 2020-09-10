@@ -166,6 +166,7 @@ describe('generateRegexString()', () => {
 
   describe('Whitespace combinator', () => {
     const testCase = new RegExp(transformToRegexp(selector('.example .child')));
+    console.log(testCase);
 
     it('Should match when HTML strings without any spaces or newline', () => {
       expect(testCase.test(`<div class="example"><div class="child"></div></div>`)).toBeTruthy();
@@ -204,7 +205,8 @@ describe('generateRegexString()', () => {
       });
 
       it('Should NOT match', () => {
-        expect(new RegExp(transformToRegexp(selector('.button .button--primary'))).test(`<button class="button button--primary"></button>`)).toBeFalsy();
+        expect(new RegExp(transformToRegexp(selector('.button.button--primary'))).test(`<button class="button"><span class="bad"></span></button>`)).toBeFalsy();
+        expect(new RegExp(transformToRegexp(selector('.button.button--primary'))).test(`<button class="button--primary"><span class="bad"></span></button>`)).toBeFalsy();
       });
     });
 
@@ -223,6 +225,12 @@ describe('generateRegexString()', () => {
   describe('Child combinator', () => {
     it('Should match', () => {
       expect(new RegExp(transformToRegexp(selector('.parent > .child'))).test(`<div class="parent"><div class="child"></div></div>`)).toBeTruthy();
+    });
+
+    it('Should NOT match', () => {
+      console.log(selector('.parent > .child').children.last());
+      console.log(transformToRegexp(selector('.parent > .child')));
+      expect(new RegExp(transformToRegexp(selector('.parent > .child'))).test(`<div class="parent"><div class="wrapper"><div class="child"></div></div></div>`)).toBeFalsy();
     });
   });
 

@@ -70,19 +70,9 @@ export const closingTagRegexp = (type: string) => {
   return START_OF_BRACKET + '/' + type + END_OF_BRACKET;
 };
 
-export const findBefore = (node: s2rListItem<csstree.CssNode>, type: targetNode['type']) => {
-  const result = [];
-
-  let prev = node.prev();
-
-  while (prev) {
-    if (prev.data.type === type) {
-      result.push(prev);
-    }
-    prev = prev.prev();
-  }
-
-  return result;
+export const isPrevClassSelector = (node: s2rListItem<csstree.CssNode>, type: targetNode['type']) => {
+  const prev = node.prev();
+  return prev && prev.data.type === type;
 };
 
 export const findAfter = (node: s2rListItem<csstree.CssNode>, type: targetNode['type']) => {

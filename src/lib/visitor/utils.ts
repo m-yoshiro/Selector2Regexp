@@ -75,7 +75,7 @@ export const isPrevClassSelector = (node: s2rListItem<csstree.CssNode>) => {
   return prev && prev.data.type === 'ClassSelector';
 };
 
-export const findAfter = (node: s2rListItem<csstree.CssNode>, type: targetNode['type']) => {
+export const lookupForward = (node: s2rListItem<csstree.CssNode>, type: targetNode['type']) => {
   const result = [];
 
   let next = node.next();

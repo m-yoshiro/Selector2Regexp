@@ -2,7 +2,7 @@ import csstree from 'css-tree';
 import { s2rListItem, targetNode } from '../../../types';
 
 import { START_OF_BRACKET, END_OF_BRACKET, TYPE_NAME, ATTRIBUTE_SEPARATOR, SPACE_BETWEEN_ELEMENT, ANY_OPENING_TAG } from './definitions';
-import { attributeRegexp, classRegexp, idRegexp, openingTagRegexpNoClosing, openingTagRegexp, findBefore, findAfter } from './utils';
+import { attributeRegexp, classRegexp, idRegexp, openingTagRegexpNoClosing, openingTagRegexp, isPrevClassSelector, lookupForward } from './utils';
 
 type SelectorRegexpString = string;
 type NoSupport = Error | void;
@@ -24,13 +24,13 @@ export const visitor: Visitor = {
       return '';
     }
 
-    // Check current selector is multiple selector or not.
+    // Skip when prev item is ClassSelector.
     if (isPrevClassSelector(listItem)) {
       return '';
     }
 
-    const afters = findAfter(listItem, 'ClassSelector');
-
+    // For multiple selector
+    const afters = lookupForward(listItem, 'ClassSelector');
     if (afters.length > 0) {
       return classRegexp([listItem.data.name, ...afters.map((node) => (node.data as csstree.ClassSelector).name)]);
     }
@@ -117,7 +117,7 @@ export const visitor: Visitor = {
     }
     switch (listItem.data.name) {
       case '>':
-        return END_OF_BRACKET + SPACE_BETWEEN_ELEMENT + `(?:\\s${ANY_OPENING_TAG}.*\\s*)*?` + START_OF_BRACKET + TYPE_NAME + ATTRIBUTE_SEPARATOR;
+        return END_OF_BRACKET + SPACE_BETWEEN_ELEMENT + '(?=<)';
       case '+':
       case '~':
       default:

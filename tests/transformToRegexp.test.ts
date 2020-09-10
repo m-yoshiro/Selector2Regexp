@@ -195,6 +195,24 @@ describe('generateRegexString()', () => {
         `)
       ).toBeTruthy();
     });
+
+    it('Should NOT match', () => {
+      expect(
+        testCase.test(`
+          <div class="example">
+            <div class="bad"></div>
+          </div>
+        `)
+      ).toBeFalsy();
+
+      expect(
+        testCase.test(`
+          <div class="example child">
+            <div class="bad"></div>
+          </div>
+        `)
+      ).toBeFalsy();
+    });
   });
 
   describe('Multiple selector', () => {

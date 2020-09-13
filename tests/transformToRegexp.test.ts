@@ -239,15 +239,15 @@ describe('generateRegexString()', () => {
     });
   });
 
-  // describe('Child combinator', () => {
-  //   it('Should match', () => {
-  //     expect(new RegExp(transformToRegexp(selector('.parent > .child'))).test(`<div class="parent"><div class="child"></div></div>`)).toBeTruthy();
-  //   });
+  describe('Child combinator', () => {
+    it('Should match', () => {
+      expect(new RegExp(transformToRegexp(selector('.parent > .child'))).test(`<div class="parent"><div class="child"></div></div>`)).toBeTruthy();
+    });
 
-  //   it('Should NOT match', () => {
-  //     expect(new RegExp(transformToRegexp(selector('.parent > .child'))).test(`<div class="parent"><div class="wrapper"><div class="child"></div></div></div>`)).toBeFalsy();
-  //   });
-  // });
+    it('Should NOT match', () => {
+      expect(new RegExp(transformToRegexp(selector('.parent > .child'))).test(`<div class="parent"><div class="wrapper"><div class="child"></div></div></div>`)).toBeFalsy();
+    });
+  });
 
   describe('Unsupported selector', () => {
     it('Throw Error with ">", "+" and "~" Combinator', () => {

@@ -21,11 +21,14 @@ export type targetNode =
   | csstree.SelectorList;
 
 namespace s2r {
+  type relationType = 'group' | 'single';
   export interface Node<N extends csstree.CssNode> {
+    type: N['type'] | 'ChildCombinator' | 'AdjacentSiblingCombinator' | 'GeneralSiblingCombinator';
     data: N;
-    next: () => Node<N> | null;
-    prev: () => Node<N> | null;
+    next: () => s2r.Node<N> | null;
+    prev: () => s2r.Node<N> | null;
     value: string;
+    children?: s2r.NodeList<N>;
   }
 
   export type NodeList<N extends csstree.CssNode> = s2r.Node<N>[];

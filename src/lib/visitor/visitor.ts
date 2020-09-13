@@ -36,6 +36,11 @@ export const visitor: Visitor = {
         return null;
       }
 
+      // Skip when node is a part of group
+      if (node.relationType === 'group') {
+        return null;
+      }
+
       const afters = lookupForward(node, 'ClassSelector');
       if (afters.length > 0) {
         // For multiple selector
@@ -142,6 +147,7 @@ export const visitor: Visitor = {
       }
     },
     leave: (node) => {
+      // Leaveの時にprevとnextを合わせて処理する
       if (node.data.type !== 'Combinator') {
         return null;
       }

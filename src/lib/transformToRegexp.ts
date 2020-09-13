@@ -1,21 +1,64 @@
 import csstree from 'css-tree';
 import { visitor, VisitorFunction } from './visitor/visitor';
 import { targetNode, s2r } from '../../types';
+import { showCompletionScript } from 'yargs';
 
 const isSelectorList = (selector: csstree.SelectorList | csstree.Selector) => selector.type === 'SelectorList' && selector.children.getSize() > 1;
 
+const SPECIFIC_COMBINATOR = {
+  '>': 'ChildCombinator',
+  '+': 'AdjacentSiblingCombinator',
+  '~': 'GeneralSiblingCombinator',
+} as const;
+
+const classifyCombinator = (node: csstree.Combinator) => {
+  if (node.type === 'Combinator' && node.name in SPECIFIC_COMBINATOR) {
+    return SPECIFIC_COMBINATOR[node.name as keyof typeof SPECIFIC_COMBINATOR];
+  } else {
+    return 'Combinator';
+  }
+};
+
+const createNode = (node: targetNode, i: number, context: s2r.NodeList<targetNode>): s2r.Node<targetNode> => {
+  return {
+    type: node.type,
+    data: node,
+    next: () => (context[i + 1] ? context[i + 1] : null),
+    prev: () => (context[i - 1] ? context[i - 1] : null),
+    value: '',
+  };
+};
+
 const createS2rList = (list: targetNode[]): s2r.NodeList<targetNode> => {
-  const result: s2r.NodeList<targetNode> = [];
+  const context: s2r.NodeList<targetNode> = [];
   list.forEach((node, i) => {
-    result.push({
-      data: node,
-      next: () => (result[i + 1] ? result[i + 1] : null),
-      prev: () => (result[i - 1] ? result[i - 1] : null),
-      value: '',
-    });
+    const nextNode = context[i + 1];
+    const prevNode = context[i - 1];
+
+    // When next node is a Combinator,
+    // this node should create Group node and be contained Group node children.
+    if (nextNode && nextNode.data.type === 'Combinator') {
+      const CombinatorNode: s2r.Node<targetNode> = {
+        type: classifyCombinator(nextNode.data),
+        data: node,
+        next: () => (context[i + 1] ? context[i + 1] : null),
+        prev: () => (context[i - 1] ? context[i - 1] : null),
+        value: '',
+        children: [],
+      };
+
+      // Create child nodes.
+      [node, list[i + 1], list[i + 2]].forEach((child, i) => {
+        CombinatorNode.children && CombinatorNode.children.push(createNode(child, i, CombinatorNode.children));
+      });
+
+      context.push(CombinatorNode);
+    } else {
+      context.push(createNode(node, i, context));
+    }
   });
 
-  return result;
+  return context;
 };
 
 const noop = () => null;

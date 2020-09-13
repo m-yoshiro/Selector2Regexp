@@ -8,6 +8,8 @@ export type CSSSelectorString = string;
 
 export type IdOrClassSelector = csstree.ClassSelector | csstree.IdSelector;
 
+export type SelectorRegexpString = string;
+
 export type targetNode =
   | csstree.ClassSelector
   | csstree.IdSelector
@@ -18,11 +20,13 @@ export type targetNode =
   | csstree.PseudoElementSelector
   | csstree.SelectorList;
 
-export type s2rListItem<N extends csstree.CssNode> = {
-  data: N;
-  next: () => s2rListItem<N> | null;
-  prev: () => s2rListItem<N> | null;
-  value: string;
-};
+namespace s2r {
+  export interface Node<N extends csstree.CssNode> {
+    data: N;
+    next: () => Node<N> | null;
+    prev: () => Node<N> | null;
+    value: string;
+  }
 
-export type s2rList<N extends csstree.CssNode> = s2rListItem<N>[];
+  export type NodeList<N extends csstree.CssNode> = s2r.Node<N>[];
+}

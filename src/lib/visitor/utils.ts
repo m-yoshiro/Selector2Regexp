@@ -1,5 +1,5 @@
 import csstree from 'css-tree';
-import { s2rListItem, targetNode } from '../../../types';
+import { targetNode, s2r } from '../../../types';
 
 import { START_OF_BRACKET, END_OF_BRACKET, CLASS_ATTRIBUTE, ANY_VALUE, ID_ATTRIBUTE, SPACE_BETWEEN_ELEMENT, QUOTE, BEFORE_ATTRIBUTE, AFTER_ATTRIBUTE } from './definitions';
 
@@ -70,12 +70,12 @@ export const closingTagRegexp = (type: string) => {
   return START_OF_BRACKET + '/' + type + END_OF_BRACKET;
 };
 
-export const isPrevClassSelector = (node: s2rListItem<csstree.CssNode>) => {
+export const isPrevClassSelector = (node: s2r.Node<csstree.CssNode>) => {
   const prev = node.prev();
   return prev && prev.data.type === 'ClassSelector';
 };
 
-export const lookupForward = (node: s2rListItem<csstree.CssNode>, type: targetNode['type']) => {
+export const lookupForward = (node: s2r.Node<csstree.CssNode>, type: targetNode['type']) => {
   const result = [];
 
   let next = node.next();
@@ -90,4 +90,10 @@ export const lookupForward = (node: s2rListItem<csstree.CssNode>, type: targetNo
   }
 
   return result;
+};
+
+export const childCombinatorRegexp = (parent: string, child: string) => {
+  // parent
+  // child
+  return `(?<=<${parent}>\s+)` + `<${child}>`;
 };

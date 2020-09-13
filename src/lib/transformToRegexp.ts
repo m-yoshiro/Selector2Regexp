@@ -1,11 +1,11 @@
 import csstree from 'css-tree';
 import { visitor, VisitorFunction } from './visitor/visitor';
-import { s2rList, targetNode } from '../../types';
+import { targetNode, s2r } from '../../types';
 
 const isSelectorList = (selector: csstree.SelectorList | csstree.Selector) => selector.type === 'SelectorList' && selector.children.getSize() > 1;
 
-const createS2rList = (list: targetNode[]): s2rList<targetNode> => {
-  const result: s2rList<targetNode> = [];
+const createS2rList = (list: targetNode[]): s2r.NodeList<targetNode> => {
+  const result: s2r.NodeList<targetNode> = [];
   list.forEach((node, i) => {
     result.push({
       data: node,

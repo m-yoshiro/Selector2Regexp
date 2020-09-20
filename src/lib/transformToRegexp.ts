@@ -25,21 +25,23 @@ export function transformToRegexp(selector: csstree.SelectorList | csstree.Selec
   selector = isSelectorList(selector) ? selector : (selector.children.first() as csstree.Selector);
   const list: targetNode[] = [];
 
-  csstree.walk(selector, (node) => {
-    switch (node.type) {
-      case 'ClassSelector':
-      case 'IdSelector':
-      case 'TypeSelector':
-      case 'WhiteSpace':
-      case 'AttributeSelector':
-      case 'Combinator':
-      case 'PseudoElementSelector':
-      case 'SelectorList':
-        list.push(node);
-        break;
-      default:
-        break;
-    }
+  csstree.walk(selector, {
+    enter(node: csstree.CssNode) {
+      switch (node.type) {
+        case 'ClassSelector':
+        case 'IdSelector':
+        case 'TypeSelector':
+        case 'WhiteSpace':
+        case 'AttributeSelector':
+        case 'Combinator':
+        case 'PseudoElementSelector':
+        case 'SelectorList':
+          list.push(node);
+          break;
+        default:
+          break;
+      }
+    },
   });
 
   const result = createS2rList(list);

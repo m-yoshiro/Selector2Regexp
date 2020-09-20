@@ -26,6 +26,7 @@ export function transformToRegexp(selector: csstree.SelectorList | csstree.Selec
   const list: targetNode[] = [];
 
   csstree.walk(selector, {
+    reverse: true,
     enter(node: csstree.CssNode) {
       switch (node.type) {
         case 'ClassSelector':

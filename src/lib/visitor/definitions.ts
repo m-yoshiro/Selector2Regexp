@@ -1,6 +1,6 @@
 export const START_OF_BRACKET = '<\\s*';
 export const END_OF_BRACKET = '\\s*>';
-export const TYPE_NAME = '\\w+';
+export const ANY_TYPE_NAME = '\\w+';
 export const CLASS_ATTRIBUTE = 'class';
 export const ANY_VALUE = '\\w*';
 export const ID_ATTRIBUTE = 'id';

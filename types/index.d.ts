@@ -1,4 +1,7 @@
 import csstree from 'css-tree';
+import { Combinator } from '../src/lib/node/combinator';
+import { Element } from '../src/lib/node/element';
+import { Selector } from '../src/lib/node/selector';
 
 export interface CssSearchSelector {
   version: string;
@@ -37,3 +40,5 @@ interface S2rNode {
   parent?: S2rNode;
   child?: S2rNode;
 }
+
+export type Node = Selector | Element | Combinator;

@@ -8,7 +8,7 @@ export const parse = (selectorString: CSSSelectorString) => {
       onParseError: (error) => {
         console.log(error.message);
       },
-    }) as csstree.Selector;
+    }) as csstree.SelectorList;
   } catch (error) {
     throw error;
   }

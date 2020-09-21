@@ -1,8 +1,8 @@
 import csstree from 'css-tree';
 import { s2rListItem, targetNode } from '../../../types';
 
-import { START_OF_BRACKET, END_OF_BRACKET, TYPE_NAME, ATTRIBUTE_SEPARATOR, SPACE_BETWEEN_ELEMENT, ANY_OPENING_TAG } from './definitions';
-import { attributeRegexp, classRegexp, idRegexp, openingTagRegexpNoClosing, openingTagRegexp, isPrevClassSelector, lookupForward } from './utils';
+import { START_OF_BRACKET, END_OF_BRACKET, ANY_TYPE_NAME, ATTRIBUTE_SEPARATOR, SPACE_BETWEEN_ELEMENT, ANY_OPENING_TAG } from './definitions';
+import { attributeToRegexp, classRegexp, idRegexp, openingTagRegexpNoClosing, openingTagRegexp, isPrevClassSelector, lookupForward } from './utils';
 
 type SelectorRegexpString = string;
 export type NoSupport = Error;
@@ -25,6 +25,15 @@ export type Visitor = {
   SelectorList: (listItem: s2rListItem<csstree.CssNode>, list?: targetNode[]) => NoSupport;
 };
 
+const hasMultipleSelector = (listItem: s2rListItem<csstree.CssNode>) => {
+  const next = listItem.next();
+  if (!next) return false;
+
+  const { type } = next.data;
+
+  return type === 'TypeSelector' || type === 'IdSelector' || type === 'ClassSelector' || type === 'AttributeSelector';
+};
+
 export const visitor: Visitor = {
   ClassSelector: {
     enter: (listItem) => {
@@ -38,6 +47,10 @@ export const visitor: Visitor = {
       }
 
       const afters = lookupForward(listItem, 'ClassSelector');
+
+      if (hasMultipleSelector(listItem)) {
+      }
+
       if (afters.length > 0) {
         // For multiple selector
         listItem.value = classRegexp([listItem.data.name, ...afters.map((node) => (node.data as csstree.ClassSelector).name)]);
@@ -69,11 +82,11 @@ export const visitor: Visitor = {
           case '=':
             if (listItem.data.value) {
               const value = listItem.data.value.type === 'Identifier' ? listItem.data.value.name : listItem.data.value.value;
-              result = attributeRegexp(listItem.data.name.name, value.replace(/(:?^['"]|['"]$)/g, ''), listItem.data.matcher);
+              result = attributeToRegexp(listItem.data.name.name, value.replace(/(:?^['"]|['"]$)/g, ''), listItem.data.matcher);
               break;
             }
 
-            result = attributeRegexp(listItem.data.name.name);
+            result = attributeToRegexp(listItem.data.name.name);
             break;
           case '~=':
           case '$=':
@@ -83,16 +96,16 @@ export const visitor: Visitor = {
             if (listItem.data.value) {
               value = listItem.data.value.type === 'Identifier' ? listItem.data.value.name : listItem.data.value.value.replace(/[\"\']/g, '');
             }
-            result = attributeRegexp(listItem.data.name.name, value, listItem.data.matcher);
+            result = attributeToRegexp(listItem.data.name.name, value, listItem.data.matcher);
             break;
           default:
-            result = attributeRegexp(listItem.data.name.name, (listItem.data.value as csstree.Identifier).name);
+            result = attributeToRegexp(listItem.data.name.name, (listItem.data.value as csstree.Identifier).name);
             break;
         }
 
         listItem.value = result;
       } else {
-        listItem.value = attributeRegexp(listItem.data.name.name);
+        listItem.value = attributeToRegexp(listItem.data.name.name);
       }
     },
   },
@@ -124,7 +137,7 @@ export const visitor: Visitor = {
         return null;
       }
 
-      listItem.value = END_OF_BRACKET + SPACE_BETWEEN_ELEMENT + `(?:\\s${ANY_OPENING_TAG}.*\\s*)*?` + START_OF_BRACKET + TYPE_NAME + ATTRIBUTE_SEPARATOR;
+      listItem.value = END_OF_BRACKET + SPACE_BETWEEN_ELEMENT + `(?:\\s${ANY_OPENING_TAG}.*\\s*)*?` + START_OF_BRACKET + ANY_TYPE_NAME + ATTRIBUTE_SEPARATOR;
     },
   },
 

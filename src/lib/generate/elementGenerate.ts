@@ -13,6 +13,10 @@ import {
 } from '../visitor/definitions';
 
 export const elementTemplate = (value: { type?: string; attributes?: string }) => {
+  if (value.type && !value.attributes) {
+    return openingTagRegexp(value.type);
+  }
+
   const type = value.type || ANY_TYPE_NAME;
   const attributes = value.attributes || '';
 

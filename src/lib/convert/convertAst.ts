@@ -61,8 +61,8 @@ export const convertToAst = (ast: CssNode) => {
     if (node.type === 'Combinator' || node.type === 'WhiteSpace') {
       if (current._tagName || current.attributes.length > 0) {
         result.add(current);
-        const combinator = new Combinator();
-        combinator.add(node);
+        const name = node.type === 'Combinator' ? node.name : node.type;
+        const combinator = new Combinator(name);
 
         result.add(combinator);
       }

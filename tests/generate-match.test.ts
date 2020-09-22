@@ -61,8 +61,7 @@ describe('Matching', () => {
     describe('Attribute without any value', () => {
       const testCase = makeTest({
         attr: {
-          name: 'class',
-          value: 'example',
+          name: 'hidden',
         },
       });
 
@@ -205,9 +204,12 @@ describe('Matching', () => {
     });
 
     describe('Type selector', () => {
-      const testCaseDiv = makeTest({
-        tagName: 'div',
-      });
+      const testCaseDiv = makeTest(
+        {
+          tagName: 'div',
+        },
+        true
+      );
       const testCaseA = makeTest({
         tagName: 'a',
       });

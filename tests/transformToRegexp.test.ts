@@ -164,56 +164,6 @@ describe.skip('generateRegexString()', () => {
     });
   });
 
-  describe('Whitespace combinator', () => {
-    const testCase = new RegExp(transformToRegexp(selector('.example .child')));
-
-    it('Should match when HTML strings without any spaces or newline', () => {
-      expect(testCase.test(`<div class="example"><div class="child"></div></div>`)).toBeTruthy();
-    });
-
-    it('Should match when HTML strings with any spaces or newline', () => {
-      expect(
-        testCase.test(`
-          <div class="example">
-            <div class="first"></div>
-            <div class="second child"></div>
-            <div class="third"></div>
-          </div>
-        `)
-      ).toBeTruthy();
-    });
-
-    it('Should match when HTML strings with any children', () => {
-      expect(
-        testCase.test(`
-          <div class="example">
-            <div class="first"></div>
-            <div><div class="second child"></div></div>
-            <div class="third"></div>
-          </div>
-        `)
-      ).toBeTruthy();
-    });
-
-    it('Should NOT match', () => {
-      expect(
-        testCase.test(`
-          <div class="example">
-            <div class="bad"></div>
-          </div>
-        `)
-      ).toBeFalsy();
-
-      expect(
-        testCase.test(`
-          <div class="example child">
-            <div class="bad"></div>
-          </div>
-        `)
-      ).toBeFalsy();
-    });
-  });
-
   describe('Multiple selector', () => {
     describe('ClassSelectors', () => {
       it('Should match', () => {

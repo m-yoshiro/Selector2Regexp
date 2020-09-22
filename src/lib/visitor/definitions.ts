@@ -11,3 +11,4 @@ export const QUOTE = '[\'"]';
 export const BEFORE_ATTRIBUTE = '(?<!\\w)'; // ES2018
 export const AFTER_ATTRIBUTE = '(?!\\w)';
 export const ANY_OPENING_TAG = '<.*>';
+export const ANY_CLOSING_TAG = '</.*>';

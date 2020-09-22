@@ -6,28 +6,21 @@ import { Combinator } from '../src/lib/node/combinator';
 import { Selector } from '../src/lib/node/selector';
 import { Attribute } from '../types';
 
-const makeTest = (attr: Attribute) => {
-  const selector = new Selector();
-  const element = new Element();
-  element.addAttr({
-    name: 'class',
-    value: [{ value: 'example' }],
-  });
-  selector.add(element);
-  return new RegExp(generate(selector));
-};
+import { makeTest } from './util';
 
 describe('Attribute', () => {
   it('class', () => {
-    expect(attributeToRegexp('class', [{ value: 'button' }])).toEqual(1);
+    expect(attributeToRegexp({ name: 'class', value: 'button' })).toEqual(1);
   });
 });
 
 describe('Generate', () => {
   it('SelectorList has a child', () => {
     const testCas = makeTest({
-      name: 'class',
-      value: [{ value: 'example' }],
+      attr: {
+        name: 'class',
+        value: 'example',
+      },
     });
     console.log(testCas);
 

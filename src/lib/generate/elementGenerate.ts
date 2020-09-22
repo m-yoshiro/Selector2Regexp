@@ -1,16 +1,4 @@
-import {
-  START_OF_BRACKET,
-  END_OF_BRACKET,
-  CLASS_ATTRIBUTE,
-  ANY_VALUE,
-  ID_ATTRIBUTE,
-  SPACE_BETWEEN_ELEMENT,
-  QUOTE,
-  BEFORE_ATTRIBUTE,
-  AFTER_ATTRIBUTE,
-  ANY_TYPE_NAME,
-  ATTRIBUTE_SEPARATOR,
-} from '../utils/definitions';
+import { START_OF_BRACKET, END_OF_BRACKET, ANY_TYPE_NAME, ATTRIBUTE_SEPARATOR } from '../utils/definitions';
 
 export const elementTemplate = (value: { type?: string; attributes?: string }) => {
   if (value.type && !value.attributes) {

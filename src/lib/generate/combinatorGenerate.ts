@@ -1,16 +1,4 @@
-import {
-  START_OF_BRACKET,
-  END_OF_BRACKET,
-  CLASS_ATTRIBUTE,
-  ANY_VALUE,
-  ID_ATTRIBUTE,
-  SPACE_BETWEEN_ELEMENT,
-  QUOTE,
-  BEFORE_ATTRIBUTE,
-  AFTER_ATTRIBUTE,
-  ANY_OPENING_TAG,
-  ANY_CLOSING_TAG,
-} from '../utils/definitions';
+import { SPACE_BETWEEN_ELEMENT, ANY_OPENING_TAG, ANY_CLOSING_TAG } from '../utils/definitions';
 
 export const combinatorGenerate = (name: string, ancestor: string) => {
   if (name === 'WhiteSpace') {

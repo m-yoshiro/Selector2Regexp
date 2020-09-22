@@ -2,12 +2,15 @@ import { makeTest } from './util';
 
 describe('Matching', () => {
   describe('ClassSelector', () => {
-    const testCase = makeTest({
-      attr: {
-        name: 'class',
-        value: 'example',
+    const testCase = makeTest(
+      {
+        attr: {
+          name: 'class',
+          value: 'example',
+        },
       },
-    });
+      true
+    );
 
     it('Should match', () => {
       expect(testCase.test(`<div class="example"></div>`)).toBeTruthy();

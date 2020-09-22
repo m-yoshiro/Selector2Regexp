@@ -1,11 +1,7 @@
-import { makeTest } from './util';
-
 import { generate } from '../src/lib/generate/generate';
 import { Element } from '../src/lib/node/element';
 import { Combinator } from '../src/lib/node/combinator';
 import { Selector } from '../src/lib/node/selector';
-import { Attribute } from '../types';
-import { combinatorGenerate } from '../src/lib/generate/combinatorGenerate';
 
 const whitespace = new Combinator('WhiteSpace');
 const Child = new Combinator('>');
@@ -95,7 +91,6 @@ describe('Match with combinator', () => {
     selector.add(elementB);
 
     const testCase = new RegExp(generate(selector));
-    console.log(testCase);
 
     it('Should match when HTML strings without any spaces or newline', () => {
       expect(testCase.test(`<div class="parent"><div class="child"></div></div>`)).toBeTruthy();
@@ -170,7 +165,6 @@ describe('Match with combinator', () => {
     selector.add(elementB);
 
     const testCase = new RegExp(generate(selector));
-    console.log(testCase);
 
     it('Should match when HTML strings without any spaces or newline', () => {
       expect(testCase.test(`<div class="older"></div><div class="lower"></div>`)).toBeTruthy();
@@ -235,7 +229,6 @@ describe('Match with combinator', () => {
     selector.add(elementB);
 
     const testCase = new RegExp(generate(selector));
-    console.log(testCase);
 
     it('Should match when HTML strings without any spaces or newline', () => {
       expect(testCase.test(`<div class="leader"></div><div class="follower"></div><div class="follower"></div>`)).toBeTruthy();

@@ -1,16 +1,5 @@
 import { Attribute } from '../../../types';
-import {
-  START_OF_BRACKET,
-  END_OF_BRACKET,
-  CLASS_ATTRIBUTE,
-  ANY_VALUE,
-  ID_ATTRIBUTE,
-  SPACE_BETWEEN_ELEMENT,
-  QUOTE,
-  BEFORE_ATTRIBUTE,
-  AFTER_ATTRIBUTE,
-  SPACE_BETWEEN_VALUE,
-} from '../visitor/definitions';
+import { START_OF_BRACKET, END_OF_BRACKET, CLASS_ATTRIBUTE, ANY_VALUE, ID_ATTRIBUTE, SPACE_BETWEEN_ELEMENT, QUOTE, BEFORE_ATTRIBUTE, AFTER_ATTRIBUTE, SPACE_BETWEEN_VALUE } from '../utils/definitions';
 
 const wrapQuate = (value: string) => {
   return `${QUOTE}${value}${QUOTE}`;

@@ -10,7 +10,7 @@ import {
   AFTER_ATTRIBUTE,
   ANY_OPENING_TAG,
   ANY_CLOSING_TAG,
-} from '../visitor/definitions';
+} from '../utils/definitions';
 
 export const combinatorGenerate = (name: string, ancestor: string) => {
   if (name === 'WhiteSpace') {

@@ -10,7 +10,7 @@ import {
   AFTER_ATTRIBUTE,
   ANY_TYPE_NAME,
   ATTRIBUTE_SEPARATOR,
-} from '../visitor/definitions';
+} from '../utils/definitions';
 
 export const elementTemplate = (value: { type?: string; attributes?: string }) => {
   if (value.type && !value.attributes) {

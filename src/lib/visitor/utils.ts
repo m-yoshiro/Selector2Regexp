@@ -1,7 +1,7 @@
 import csstree from 'css-tree';
 import { s2rListItem, targetNode } from '../../../types';
 
-import { START_OF_BRACKET, END_OF_BRACKET, CLASS_ATTRIBUTE, ANY_VALUE, ID_ATTRIBUTE, SPACE_BETWEEN_ELEMENT, QUOTE, BEFORE_ATTRIBUTE, AFTER_ATTRIBUTE } from './definitions';
+import { START_OF_BRACKET, END_OF_BRACKET, CLASS_ATTRIBUTE, ANY_VALUE, ID_ATTRIBUTE, SPACE_BETWEEN_ELEMENT, QUOTE, BEFORE_ATTRIBUTE, AFTER_ATTRIBUTE } from '../utils/definitions';
 
 type Matcher = '=' | '*=' | '~=' | '^=' | '$=';
 interface AttributeValue {
@@ -22,10 +22,6 @@ export const multipleValue = (value: string[]) => {
 
 export const singleValue = (value: string) => {
   return ANY_VALUE + SPACE_BETWEEN_ELEMENT + BEFORE_ATTRIBUTE + `(${value})` + AFTER_ATTRIBUTE + SPACE_BETWEEN_ELEMENT + ANY_VALUE;
-};
-
-const wrapQuate = (value: string) => {
-  return `${QUOTE}${value}${QUOTE}`;
 };
 
 export const attributeRegexpTemplate = (attribute: string, value?: string) => {
@@ -78,10 +74,6 @@ export const attributeToRegexp = <T extends string>(name: string, attrValues?: A
 
   return valueToRegexp(attrValues);
 };
-
-export const classRegexp = (value: string | string[]) => attributeToRegexp(CLASS_ATTRIBUTE, value);
-
-export const idRegexp = (value: string | string[]) => attributeToRegexp(ID_ATTRIBUTE, value);
 
 export const openingTagRegexpNoClosing = (type: string) => {
   return START_OF_BRACKET + `(${type})` + '\\s*.*?';

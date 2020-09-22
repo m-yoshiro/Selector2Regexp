@@ -1,5 +1,6 @@
 import { Attribute } from '../../../types';
 import { START_OF_BRACKET, END_OF_BRACKET, CLASS_ATTRIBUTE, ANY_VALUE, ID_ATTRIBUTE, SPACE_BETWEEN_ELEMENT, QUOTE, BEFORE_ATTRIBUTE, AFTER_ATTRIBUTE, SPACE_BETWEEN_VALUE } from '../utils/definitions';
+import { openingTagRegexp } from './elementGenerate';
 
 const wrapQuate = (value: string) => {
   return `${QUOTE}${value}${QUOTE}`;
@@ -37,16 +38,43 @@ const convertValueWithMatcher = (attrValue: Attribute) => {
   }
 };
 
+export const multipleValue = (value: string[]) => {
+  if (!Array.isArray(value) || value.length <= 1) {
+    return null;
+  }
+
+  const valueString = value.join('|');
+  const n = `{${value.length}}`;
+
+  return ANY_VALUE + '(' + SPACE_BETWEEN_ELEMENT + BEFORE_ATTRIBUTE + `(${valueString})` + AFTER_ATTRIBUTE + SPACE_BETWEEN_ELEMENT + ')' + `${n}` + ANY_VALUE;
+};
+
 const convertSelectorOrIdValue = (value: string) => ANY_VALUE + SPACE_BETWEEN_VALUE + BEFORE_ATTRIBUTE + `${value}` + AFTER_ATTRIBUTE + SPACE_BETWEEN_VALUE + ANY_VALUE;
 
-export const attributeToRegexp = (attr: Attribute) => {
-  if (!attr.value) {
-    return attributeRegexpTemplate(attr.name);
-  } else if (attr.matcher) {
-    // Remove quates if a value contains.
-    attr.value = attr.value.replace(/(:?^['"]|['"]$)/g, '');
-    return attributeRegexpTemplate(attr.name, `(${convertValueWithMatcher(attr)})`);
-  } else {
-    return attributeRegexpTemplate(attr.name, `(${convertSelectorOrIdValue(attr.value)})`);
-  }
+export const attributeToRegexp = (attributes: Attribute[]) => {
+  const names = [...new Set(attributes.map((item) => item.name))];
+  const attrsWithMatcher = attributes.filter((item) => !!item.matcher);
+  const attrsWithoutMatcher = names.map((name) => {
+    const valueArr = attributes.filter((x) => x.name === name && !x.matcher).map((y) => (y.value ? y.value : ''));
+    return {
+      name,
+      value: valueArr.length === 1 ? valueArr[0] : multipleValue(valueArr) || '',
+    } as Attribute;
+  });
+
+  const array = [...attrsWithMatcher, ...attrsWithoutMatcher];
+
+  return array
+    .map((attr) => {
+      if (attr.value) {
+        return attributeRegexpTemplate(attr.name);
+      } else if (attr.matcher) {
+        // Remove quates if a value contains.
+        attr.value = attr.value ? attr.value.replace(/(:?^['"]|['"]$)/g, '') : '';
+        return attributeRegexpTemplate(attr.name, `(${convertValueWithMatcher(attr)})`);
+      } else {
+        return attributeRegexpTemplate(attr.name, `(${convertSelectorOrIdValue(attr.value || '')})`);
+      }
+    })
+    .join('|');
 };

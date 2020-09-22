@@ -22,17 +22,7 @@ export const generate = (ast: Selector[] | Selector): string => {
         let attrResult = '';
 
         // Generate Attributes regexp
-        for (const attr of node.attributes) {
-          attrTmp.push(attributeToRegexp(attr));
-        }
-
-        attrResult = (() => {
-          if (attrTmp.length > 1) {
-            return attrTmp.join('|') + `{${attrTmp.length}}`;
-          } else {
-            return attrTmp.join('');
-          }
-        })();
+        attrResult = attributeToRegexp(node.attributes);
 
         // If tagName exist
         if (node._tagName) {

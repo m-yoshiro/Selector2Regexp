@@ -6,7 +6,7 @@ const selector = (str: string) =>
     context: 'selectorList',
   }) as csstree.Selector;
 
-describe('generateRegexString()', () => {
+describe.skip('generateRegexString()', () => {
   describe('ClassName selector', () => {
     const testCase = new RegExp(transformToRegexp(selector('.example')));
 

@@ -1,40 +1,37 @@
-import csstree from 'css-tree';
+import { Attribute } from '../../../types';
 import { S2rNode } from './abstractNode';
+import equal from 'deep-equal';
 
 export class Element extends S2rNode {
-  tagName?: csstree.TypeSelector['name'];
-  attributes: {
-    name: string | csstree.Identifier;
-    value: string | null | csstree.AttributeSelector['value'];
-    matcher?: string | null;
-  }[];
+  _tagName: string | null;
+  attributes: Attribute[];
 
   constructor() {
     super();
     this.type = 'Element';
+    this._tagName = null;
     this.attributes = [];
   }
 
-  add(ast: csstree.CssNode) {
-    if (ast.type === 'ClassSelector') {
-      this.attributes?.push({
-        name: 'class',
-        value: ast.name,
-      });
-    } else if (ast.type === 'IdSelector') {
-      this.attributes?.push({
-        name: 'id',
-        value: ast.name,
-      });
-    } else if (ast.type === 'TypeSelector') {
-      this.tagName = ast.name;
-    } else if (ast.type === 'AttributeSelector') {
-      const { name, value, matcher } = ast;
-      this.attributes?.push({
-        name,
-        value,
-        matcher,
-      });
+  set tagName(name: string | null) {
+    this._tagName = name;
+  }
+
+  get tagName() {
+    return this._tagName;
+  }
+
+  addAttr(attr: Attribute) {
+    if (!this.isDuplicatedAttr(attr)) {
+      this.attributes.push(attr);
     }
+  }
+
+  private isDuplicatedAttr(attr: Attribute): boolean {
+    return this.attributes.some((item) => equal(item, attr));
+  }
+
+  findIndexAttr(attrName: string) {
+    return this.attributes.findIndex((item) => attrName in item);
   }
 }

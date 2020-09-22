@@ -1,11 +1,11 @@
 import { Element } from '../node/element';
 import { Combinator } from '../node/combinator';
 import { Selector } from '../node/selector';
-import { attributeToRegexp, AttributeValue } from './attributeGenerate';
+import { attributeToRegexp } from './attributeGenerate';
 import { elementTemplate } from './elementGenerate';
 import { combinatorGenerate } from './combinatorGenerate';
 
-export const generate = (ast: Selector[] | Selector) => {
+export const generate = (ast: Selector[] | Selector): string => {
   ast = Array.isArray(ast) ? ast : [ast];
   const result = [];
 
@@ -18,43 +18,28 @@ export const generate = (ast: Selector[] | Selector) => {
       if (node instanceof Element) {
         // Traverse attributes
         let type = '';
-        const attrResults = [];
-        const attributes: { [K: string]: AttributeValue[] } = {};
-        let elementResult = '';
-
-        // Preparing
-        for (const attribute of node.attributes) {
-          const name = typeof attribute.name === 'string' ? attribute.name : attribute.name.name;
-
-          if (!attributes[name]) {
-            attributes[name] = [];
-          }
-
-          const attrValue = ((value) => {
-            if (typeof value === 'string') {
-              return value;
-            }
-
-            if (value?.type === 'Identifier') {
-              return value.name;
-            }
-          })(attribute.value);
-
-          attributes[name].push({ value: attrValue, matcher: attribute.matcher });
-        }
+        const attrTmp = [];
+        let attrResult = '';
 
         // Generate Attributes regexp
-        for (const name in attributes) {
-          attrResults.push(attributeToRegexp(name, attributes[name]));
+        for (const attr of node.attributes) {
+          attrTmp.push(attributeToRegexp(attr));
         }
-        elementResult = attrResults.join('|') + `{${attrResults.length}}`;
+
+        attrResult = (() => {
+          if (attrTmp.length > 1) {
+            return attrTmp.join('|') + `{${attrTmp.length}}`;
+          } else {
+            return attrTmp.join('');
+          }
+        })();
 
         // If tagName exist
-        if (node.tagName) {
-          type = node.tagName;
+        if (node._tagName) {
+          type = node._tagName;
         }
 
-        selectorResult.push(elementTemplate({ type: type, attributes: elementResult }));
+        selectorResult.push(elementTemplate({ type: type, attributes: attrResult }));
       } else if (node instanceof Combinator) {
         selectorResult.push(node);
       }
@@ -69,8 +54,6 @@ export const generate = (ast: Selector[] | Selector) => {
         if (ancestor && typeof ancestor === 'string') {
           selectorResult[index] = combinatorGenerate(node.name, ancestor);
           delete selectorResult[index - 1];
-        } else {
-          return;
         }
       }
     }

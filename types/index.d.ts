@@ -30,13 +30,16 @@ export type s2rListItem<N extends csstree.CssNode> = {
 
 export type s2rList<N extends csstree.CssNode> = s2rListItem<N>[];
 
+type Matcher = '=' | '*=' | '~=' | '^=' | '$=' | string | null;
+export interface Attribute {
+  name: string;
+  value?: string | null;
+  matcher?: Matcher;
+}
+
 interface S2rNode {
   tagName?: csstree.TypeSelector['name'];
-  attributes?: {
-    name: string;
-    value: string | null | csstree.AttributeSelector['value'];
-    matcher: string | null;
-  }[];
+  attributes?: Attribute[];
   parent?: S2rNode;
   child?: S2rNode;
 }

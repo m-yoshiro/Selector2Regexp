@@ -1,5 +1,5 @@
 import { convert } from '../src/lib/convert/convert';
-import csstree, { Selector } from 'css-tree';
+import csstree from 'css-tree';
 
 describe('Convert', () => {
   it('SelectorList has a child', () => {

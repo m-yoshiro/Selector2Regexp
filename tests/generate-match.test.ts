@@ -1,3 +1,6 @@
+import { generate } from '../src/lib/generate/generate';
+import { Element } from '../src/lib/node/element';
+import { Selector } from '../src/lib/node/selector';
 import { makeTest } from './util';
 
 describe('Matching', () => {
@@ -224,6 +227,55 @@ describe('Matching', () => {
 
       it('Should match when a target is a child', () => {
         expect(testCaseA.test(`<div id="app" class="sample"><a href=""></a></div>`)).toBeTruthy();
+      });
+    });
+
+    describe('Multipe selector', () => {
+      describe('ClassSelectors', () => {
+        const selector = new Selector();
+        const elementA = new Element();
+        elementA.addAttr({
+          name: 'class',
+          value: 'button',
+        });
+        elementA.addAttr({
+          name: 'class',
+          value: 'button--primary',
+        });
+        selector.add(elementA);
+        const testCase = new RegExp(generate(selector));
+        console.log(testCase);
+
+        it('Should match', () => {
+          expect(testCase.test(`<button class="button button--primary"></button>`)).toBeTruthy();
+        });
+
+        it('Should NOT match', () => {
+          expect(testCase.test(`<button class="button"><span class="bad"></span></button>`)).toBeFalsy();
+          expect(testCase.test(`<button class="button--primary"><span class="bad"></span></button>`)).toBeFalsy();
+        });
+      });
+
+      describe('TypeSelector with any selectors', () => {
+        const selector = new Selector();
+        const elementA = new Element();
+        elementA.tagName = 'div';
+        elementA.addAttr({
+          name: 'class',
+          value: 'panel',
+        });
+        selector.add(elementA);
+        const testCase = new RegExp(generate(selector));
+
+        console.log(testCase);
+
+        it('Should match', () => {
+          expect(testCase.test(`<div class="panel"></div>`)).toBeTruthy();
+        });
+
+        it('Should NOT match', () => {
+          expect(testCase.test(`<section class="panel"></section>`)).toBeFalsy();
+        });
       });
     });
   });

@@ -1,7 +1,13 @@
 import csstree from 'css-tree';
 import { s2rListItem, targetNode } from '../../../types';
 
-import { START_OF_BRACKET, END_OF_BRACKET, CLASS_ATTRIBUTE, ANY_VALUE, ID_ATTRIBUTE, SPACE_BETWEEN_ELEMENT, QUOTE, BEFORE_ATTRIBUTE, AFTER_ATTRIBUTE } from './definitions';
+import { START_OF_BRACKET, END_OF_BRACKET, CLASS_ATTRIBUTE, ANY_VALUE, ID_ATTRIBUTE, SPACE_BETWEEN_ELEMENT, QUOTE, BEFORE_ATTRIBUTE, AFTER_ATTRIBUTE } from '../utils/definitions';
+
+type Matcher = '=' | '*=' | '~=' | '^=' | '$=';
+interface AttributeValue {
+  value: string;
+  matcher?: Matcher;
+}
 
 export const multipleValue = (value: string[]) => {
   if (!Array.isArray(value) || value.length <= 1) {
@@ -18,45 +24,56 @@ export const singleValue = (value: string) => {
   return ANY_VALUE + SPACE_BETWEEN_ELEMENT + BEFORE_ATTRIBUTE + `(${value})` + AFTER_ATTRIBUTE + SPACE_BETWEEN_ELEMENT + ANY_VALUE;
 };
 
-export const attributeTemplate = (attribute: string, value: string) => `${attribute}=${QUOTE}${value}${QUOTE}`;
-
-export const attributeRegexp = <T extends string>(attribute: string, value?: T | T[] | null, matcher?: '=' | '*=' | '~=' | '^=' | '$=') => {
+export const attributeRegexpTemplate = (attribute: string, value?: string) => {
   if (!value) {
-    return `${attribute}`;
+    return attribute;
   }
-
-  if (Array.isArray(value)) {
-    return `${attribute}=${QUOTE}${multipleValue(value)}${QUOTE}`;
-  }
-
-  if (matcher) {
-    switch (matcher) {
-      case '=':
-        return `${attribute}=${QUOTE}(${value})${QUOTE}`;
-
-      case '*=':
-        return attributeTemplate(attribute, singleValue(`([\\w\\d_-]*?${value}[\\w\\d_-]*?)`));
-
-      case '^=':
-        return attributeTemplate(attribute, singleValue(`(${value}[\\w\\d_-]*?)`));
-
-      case '$=':
-        return attributeTemplate(attribute, singleValue(`([\\w\\d_-]*?${value})`));
-
-      case '~=':
-        return attributeTemplate(attribute, singleValue(value));
-
-      default:
-        break;
-    }
-  }
-
-  return attributeTemplate(attribute, singleValue(value));
+  return `${attribute}=${QUOTE}${value}${QUOTE}`;
 };
 
-export const classRegexp = (value: string | string[]) => attributeRegexp(CLASS_ATTRIBUTE, value);
+const convertValue = (attrValue: AttributeValue) => {
+  const { value, matcher } = attrValue;
 
-export const idRegexp = (value: string | string[]) => attributeRegexp(ID_ATTRIBUTE, value);
+  // With Matcher
+  if (matcher) {
+    if (matcher === '=') {
+      return value;
+    } else if (matcher === '*=') {
+      return `([\\w\\d_-]*?${value}[\\w\\d_-]*?)`;
+    } else if (matcher === '^=') {
+      return `(${value}[\\w\\d_-]*?)`;
+    } else if (matcher === '$=') {
+      return `([\\w\\d_-]*?${value})`;
+    } else if (matcher === '~=') {
+      return value;
+    } else {
+      return '';
+    }
+  } else {
+    return value;
+  }
+};
+
+const multipleValueTemplate = (value: string, n: number) =>
+  ANY_VALUE + '(' + SPACE_BETWEEN_ELEMENT + BEFORE_ATTRIBUTE + `(${value})` + AFTER_ATTRIBUTE + SPACE_BETWEEN_ELEMENT + ')' + `${n}` + ANY_VALUE;
+const singleValueTemplate = (value: string) => ANY_VALUE + SPACE_BETWEEN_ELEMENT + BEFORE_ATTRIBUTE + `(${value})` + AFTER_ATTRIBUTE + SPACE_BETWEEN_ELEMENT + ANY_VALUE;
+
+const valueToRegexp = (attrValue: AttributeValue | AttributeValue[]) => {
+  if (!Array.isArray(attrValue)) {
+    const value = convertValue(attrValue);
+    return singleValueTemplate(value);
+  }
+
+  const valueString = attrValue.map((val) => convertValue(val)).join('|');
+  const n = attrValue.length;
+  return multipleValueTemplate(valueString, n);
+};
+
+export const attributeToRegexp = <T extends string>(name: string, attrValues?: AttributeValue[]) => {
+  if (!attrValues) return attributeRegexpTemplate(name);
+
+  return valueToRegexp(attrValues);
+};
 
 export const openingTagRegexpNoClosing = (type: string) => {
   return START_OF_BRACKET + `(${type})` + '\\s*.*?';

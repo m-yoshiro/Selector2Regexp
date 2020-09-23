@@ -1,4 +1,7 @@
 import csstree from 'css-tree';
+import { Combinator } from '../src/lib/node/combinator';
+import { Element } from '../src/lib/node/element';
+import { Selector } from '../src/lib/node/selector';
 
 export interface CssSearchSelector {
   version: string;
@@ -26,3 +29,21 @@ export type s2rListItem<N extends csstree.CssNode> = {
 };
 
 export type s2rList<N extends csstree.CssNode> = s2rListItem<N>[];
+
+type Matcher = '=' | '*=' | '~=' | '^=' | '$=' | string | null;
+export interface Attribute {
+  name: string;
+  value?: string | null;
+  matcher?: Matcher;
+}
+
+interface S2rNode {
+  tagName?: csstree.TypeSelector['name'];
+  id?: string;
+  class?: string[];
+  attributes?: Attribute[];
+  parent?: S2rNode;
+  child?: S2rNode;
+}
+
+export type Node = Selector | Element | Combinator;

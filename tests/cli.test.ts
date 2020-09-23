@@ -15,6 +15,6 @@ const cliMock = async (args: string[]) => {
 
 describe('CLI', () => {
   it('.button', async () => {
-    await expect(cliMock(['.button'])).resolves.toBe('class=[\'"]\\w*\\s*(?<!\\w)(button)(?!\\w)\\s*\\w*[\'"]' + '\n');
+    await expect(cliMock(['.button'])).resolves.toBe('<\\s*\\w+\\s+class=[\'"]\\w*\\s*(?<!\\w)(button)(?!\\w)\\s*\\w*[\'"]\\s*>' + '\n');
   });
 });

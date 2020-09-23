@@ -32,10 +32,12 @@
   "homepage": "https://github.com/m-yoshiro/Selector2Regexp",
   "dependencies": {
     "css-tree": "^1.0.0-alpha.39",
+    "deep-equal": "^2.0.3",
     "yargs": "^15.4.1"
   },
   "devDependencies": {
     "@types/css-tree": "^1.0.3",
+    "@types/deep-equal": "^1.0.1",
     "@types/jest": "^26.0.10",
     "@types/pretty-format": "^24.3.0",
     "@typescript-eslint/eslint-plugin": "^3.10.1",

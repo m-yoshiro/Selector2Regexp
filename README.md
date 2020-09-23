@@ -2,8 +2,6 @@
 
 Transform CSS Selector to a Regexp string for searching matched elements in HTML.
 
-**NOTE：This tool is an experiment.**
-
 - Generated regexps **only work JavaScript based environments**. ex. VSCode, Node.js, Chrome..
 - Generated regexps contain ES2018's features. "Lookbehind assertion" and "Negative lookbehind assertion".<br>
   Please check their statements:<br>https://caniuse.com/#feat=mdn-javascript_builtins_regexp_lookbehind_assertion,
@@ -53,6 +51,24 @@ s2r '.button' | pbcopy
 
   ```sh
   s2r '.parent .child'
+  ```
+
+- **Child combinator**
+
+  ```sh
+  s2r '.parent > .child'
+  ```
+
+- **Next sibling combinator**
+
+  ```sh
+  s2r '.parent + .child'
+  ```
+
+- **General sibling combinator**
+
+  ```sh
+  s2r '.parent ~ .child'
   ```
 
 - **Multiples**

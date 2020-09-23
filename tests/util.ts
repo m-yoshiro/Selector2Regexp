@@ -6,24 +6,28 @@ import { Attribute } from '../types';
 import { combinatorGenerate } from '../src/lib/generate/combinatorGenerate';
 
 type TestElement = {
+  classList?: string[];
+  id?: string;
   attr?: Attribute;
   tagName?: string;
 };
 
-interface TestCombinator {
-  name: string;
-}
-
 export const makeTest = (data: TestElement, debug?: boolean) => {
   const selector = new Selector();
 
-  const { attr, tagName } = data;
+  const { classList, id, attr, tagName } = data;
   const element = new Element();
   if (attr) {
     element.addAttr(attr);
   }
   if (tagName) {
     element.tagName = tagName;
+  }
+  if (classList) {
+    element.classList.push(...classList);
+  }
+  if (id) {
+    element.id = id;
   }
 
   selector.add(element);

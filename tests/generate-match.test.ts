@@ -5,15 +5,9 @@ import { makeTest } from './util';
 
 describe('Matching', () => {
   describe('ClassSelector', () => {
-    const testCase = makeTest(
-      {
-        attr: {
-          name: 'class',
-          value: 'example',
-        },
-      },
-      true
-    );
+    const testCase = makeTest({
+      classList: ['example'],
+    });
 
     it('Should match', () => {
       expect(testCase.test(`<div class="example"></div>`)).toBeTruthy();
@@ -50,10 +44,7 @@ describe('Matching', () => {
 
   describe('ID selector', () => {
     const testCase = makeTest({
-      attr: {
-        name: 'id',
-        value: 'idTest',
-      },
+      id: 'idTest',
     });
 
     it('Should match the id', () => {
@@ -210,12 +201,9 @@ describe('Matching', () => {
     });
 
     describe('Type selector', () => {
-      const testCaseDiv = makeTest(
-        {
-          tagName: 'div',
-        },
-        true
-      );
+      const testCaseDiv = makeTest({
+        tagName: 'div',
+      });
       const testCaseA = makeTest({
         tagName: 'a',
       });
@@ -234,17 +222,9 @@ describe('Matching', () => {
       describe('ClassSelectors', () => {
         const selector = new Selector();
         const elementA = new Element();
-        elementA.addAttr({
-          name: 'class',
-          value: 'button',
-        });
-        elementA.addAttr({
-          name: 'class',
-          value: 'button--primary',
-        });
+        elementA.classList.push(...['button', 'button--primary']);
         selector.add(elementA);
         const testCase = new RegExp(generate(selector));
-        console.log(testCase);
 
         it('Should match', () => {
           expect(testCase.test(`<button class="button button--primary"></button>`)).toBeTruthy();
@@ -260,14 +240,9 @@ describe('Matching', () => {
         const selector = new Selector();
         const elementA = new Element();
         elementA.tagName = 'div';
-        elementA.addAttr({
-          name: 'class',
-          value: 'panel',
-        });
+        elementA.classList.push('panel');
         selector.add(elementA);
         const testCase = new RegExp(generate(selector));
-
-        console.log(testCase);
 
         it('Should match', () => {
           expect(testCase.test(`<div class="panel"></div>`)).toBeTruthy();

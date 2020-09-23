@@ -5,12 +5,15 @@ import equal from 'deep-equal';
 export class Element extends S2rNode {
   _tagName: string | null;
   attributes: Attribute[];
+  id?: string;
+  classList: string[];
 
   constructor() {
     super();
     this.type = 'Element';
     this._tagName = null;
     this.attributes = [];
+    this.classList = [];
   }
 
   set tagName(name: string | null) {

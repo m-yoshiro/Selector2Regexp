@@ -39,6 +39,8 @@ export interface Attribute {
 
 interface S2rNode {
   tagName?: csstree.TypeSelector['name'];
+  id?: string;
+  class?: string[];
   attributes?: Attribute[];
   parent?: S2rNode;
   child?: S2rNode;

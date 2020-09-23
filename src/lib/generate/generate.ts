@@ -4,6 +4,8 @@ import { Selector } from '../node/selector';
 import { attributeToRegexp } from './attributeGenerate';
 import { elementTemplate } from './elementGenerate';
 import { combinatorGenerate } from './combinatorGenerate';
+import { classToRegexp } from './classGenerate';
+import { idToRegexp } from './idGenerate';
 
 export const generate = (ast: Selector[] | Selector): string => {
   ast = Array.isArray(ast) ? ast : [ast];
@@ -21,9 +23,22 @@ export const generate = (ast: Selector[] | Selector): string => {
         const attrTmp = [];
         let attrResult = '';
 
+        // Generate classes
+        if (node.classList.length > 0) {
+          attrTmp.push(classToRegexp(node.classList));
+        }
+
+        // Generate id
+        if (!!node.id) {
+          attrTmp.push(idToRegexp(node.id));
+        }
+
         // Generate Attributes regexp
         for (const attr of node.attributes) {
-          attrTmp.push(attributeToRegexp(attr));
+          const attrRegexp = attributeToRegexp(attr);
+          if (attrRegexp) {
+            attrTmp.push(attrRegexp);
+          }
         }
 
         attrResult = (() => {

@@ -12,15 +12,9 @@ describe('Match with combinator', () => {
   describe('Whitespace', () => {
     const selector = new Selector();
     const elementA = new Element();
-    elementA.addAttr({
-      name: 'class',
-      value: 'parent',
-    });
+    elementA.classList.push('parent');
     const elementB = new Element();
-    elementB.addAttr({
-      name: 'class',
-      value: 'child',
-    });
+    elementB.classList.push('child');
     selector.add(elementA);
     selector.add(whitespace);
     selector.add(elementB);
@@ -151,15 +145,9 @@ describe('Match with combinator', () => {
   describe('Adjacent Sibling Combinator', () => {
     const selector = new Selector();
     const elementA = new Element();
-    elementA.addAttr({
-      name: 'class',
-      value: 'older',
-    });
+    elementA.classList.push('older');
     const elementB = new Element();
-    elementB.addAttr({
-      name: 'class',
-      value: 'lower',
-    });
+    elementB.classList.push('lower');
     selector.add(elementA);
     selector.add(AdjacentSibling);
     selector.add(elementB);
@@ -215,15 +203,9 @@ describe('Match with combinator', () => {
   describe('General Sibling Combinator', () => {
     const selector = new Selector();
     const elementA = new Element();
-    elementA.addAttr({
-      name: 'class',
-      value: 'leader',
-    });
+    elementA.classList.push('leader');
     const elementB = new Element();
-    elementB.addAttr({
-      name: 'class',
-      value: 'follower',
-    });
+    elementB.classList.push('follower');
     selector.add(elementA);
     selector.add(GeneralSibling);
     selector.add(elementB);

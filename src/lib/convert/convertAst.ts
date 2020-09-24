@@ -32,12 +32,8 @@ export const convertToAst = (ast: CssNode) => {
         const attr: Attribute = { name: '', value: '' };
 
         if (node.type === 'ClassSelector') {
-          // attr.name = INNER_ATTR_NAME[node.type];
-          // attr.value = node.name;
           current.classList?.push(node.name);
         } else if (node.type === 'IdSelector') {
-          // attr.name = INNER_ATTR_NAME[node.type];
-          // attr.value = node.name;
           current.id = node.name;
         } else if (node.type === 'AttributeSelector') {
           attr.name = typeof node.name === 'string' ? node.name : node.name.name;

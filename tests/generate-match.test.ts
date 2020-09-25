@@ -40,6 +40,12 @@ describe('Matching', () => {
         expect(testCase.test(`<div class="left exampleright"></div>`)).toBeFalsy();
       });
     });
+
+    describe('if target has multiple attributes', () => {
+      it('Should match', () => {
+        expect(testCase.test(`<div id="main" class="example" data-state="active"></div>`)).toBeTruthy();
+      });
+    });
   });
 
   describe('ID selector', () => {

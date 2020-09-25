@@ -40,14 +40,6 @@ export const generate = (ast: Selector[] | Selector): string => {
           }
         }
 
-        // attrResult = (() => {
-        //   if (attrTmp.length > 1) {
-        //     return attrTmp.join('|') + `{${attrTmp.length}}`;
-        //   } else {
-        //     return attrTmp.join('');
-        //   }
-        // })();
-
         // If tagName exist
         if (node._tagName) {
           type = node._tagName;

@@ -234,6 +234,7 @@ describe('Matching', () => {
 
         it('Should match', () => {
           expect(testCase.test(`<button class="button button--primary"></button>`)).toBeTruthy();
+          expect(testCase.test(`<button id="main" class="button button--primary"></button>`)).toBeTruthy();
         });
 
         it('Should NOT match', () => {
@@ -252,6 +253,7 @@ describe('Matching', () => {
 
         it('Should match', () => {
           expect(testCase.test(`<div class="panel"></div>`)).toBeTruthy();
+          expect(testCase.test(`<div id="main" class="panel"></div>`)).toBeTruthy();
         });
 
         it('Should NOT match', () => {

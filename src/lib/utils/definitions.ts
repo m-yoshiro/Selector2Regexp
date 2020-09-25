@@ -14,5 +14,4 @@ export const BEFORE_ATTRIBUTE = '(?<!\\w)'; // ES2018
 export const AFTER_ATTRIBUTE = '(?!\\w)';
 export const ANY_OPENING_TAG = '<.*>';
 export const ANY_CLOSING_TAG = '</.*>';
-
-export const ANY_ATTRIBUTE = `${ANY_ATTRIBUTE_NAME}(?:=${QUOTE}${ANY_ATTRIBUTE_VALUE}${QUOTE})?`;
+export const ANY = '.*';

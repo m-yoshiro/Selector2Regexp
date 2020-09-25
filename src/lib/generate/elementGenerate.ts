@@ -1,10 +1,10 @@
-import { START_OF_BRACKET, END_OF_BRACKET, ANY_TYPE_NAME, ATTRIBUTE_SEPARATOR } from '../utils/definitions';
+import { START_OF_BRACKET, END_OF_BRACKET, ANY_TYPE_NAME, ATTRIBUTE_SEPARATOR, ANY } from '../utils/definitions';
 
 const attributesCompile = (attrs: string[]) => {
   if (attrs.length >= 2) {
-    return attrs.join('|') + `{${attrs.length}}`;
+    return ANY + `(${attrs.join('|')})` + ANY + `{${attrs.length}}`;
   } else {
-    return attrs.join('');
+    return ANY + `(${attrs.join('')})` + ANY;
   }
 };
 

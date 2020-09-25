@@ -1,5 +1,5 @@
 import { Attribute } from '../../../types';
-import { ANY_VALUE, QUOTE, BEFORE_ATTRIBUTE, AFTER_ATTRIBUTE, SPACE_BETWEEN_VALUE, ANY_ATTRIBUTE } from '../utils/definitions';
+import { ANY_VALUE, QUOTE, BEFORE_ATTRIBUTE, AFTER_ATTRIBUTE, SPACE_BETWEEN_VALUE } from '../utils/definitions';
 
 const wrapQuate = (value: string) => `${QUOTE}${value}${QUOTE}`;
 

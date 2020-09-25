@@ -8,7 +8,7 @@ const attributesCompile = (attrs: string[]) => {
   }
 };
 
-export const elementTemplate = (value: { type: string; attributes?: string[] }) => {
+export const elementTemplate = (value: { type?: string; attributes?: string[] }) => {
   const { type, attributes } = value;
   if (!attributes || attributes.length < 1) {
     return START_OF_BRACKET + `(${value.type})` + '\\s*.*?' + END_OF_BRACKET;

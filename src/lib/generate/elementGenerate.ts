@@ -9,12 +9,10 @@ const attributesCompile = (attrs: string[]) => {
 };
 
 export const elementTemplate = (value: { type: string; attributes?: string[] }) => {
-  if (!value.attributes || value.attributes.length < 1) {
+  const { type, attributes } = value;
+  if (!attributes || attributes.length < 1) {
     return START_OF_BRACKET + `(${value.type})` + '\\s*.*?' + END_OF_BRACKET;
   }
 
-  const type = value.type || ANY_TYPE_NAME;
-  const attributes = value.attributes;
-
-  return START_OF_BRACKET + type + ATTRIBUTE_SEPARATOR + attributesCompile(attributes) + END_OF_BRACKET;
+  return START_OF_BRACKET + `(${type || ANY_TYPE_NAME})` + ATTRIBUTE_SEPARATOR + attributesCompile(attributes) + END_OF_BRACKET;
 };

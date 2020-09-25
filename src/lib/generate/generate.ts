@@ -20,34 +20,25 @@ export const generate = (ast: Selector[] | Selector): string => {
       if (node instanceof Element) {
         // Traverse attributes
         let type = '';
-        const attrTmp = [];
-        let attrResult = '';
+        const attrResult = [];
 
         // Generate classes
         if (node.classList.length > 0) {
-          attrTmp.push(classToRegexp(node.classList));
+          attrResult.push(classToRegexp(node.classList));
         }
 
         // Generate id
         if (!!node.id) {
-          attrTmp.push(idToRegexp(node.id));
+          attrResult.push(idToRegexp(node.id));
         }
 
         // Generate Attributes regexp
         for (const attr of node.attributes) {
           const attrRegexp = attributeToRegexp(attr);
           if (attrRegexp) {
-            attrTmp.push(attrRegexp);
+            attrResult.push(attrRegexp);
           }
         }
-
-        attrResult = (() => {
-          if (attrTmp.length > 1) {
-            return attrTmp.join('|') + `{${attrTmp.length}}`;
-          } else {
-            return attrTmp.join('');
-          }
-        })();
 
         // If tagName exist
         if (node._tagName) {

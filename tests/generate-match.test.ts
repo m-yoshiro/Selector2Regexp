@@ -233,6 +233,7 @@ describe('Matching', () => {
         const testCase = new RegExp(generate(selector));
 
         it('Should match', () => {
+          console.log(testCase.toString());
           expect(testCase.test(`<button class="button button--primary"></button>`)).toBeTruthy();
           expect(testCase.test(`<button id="main" class="button button--primary"></button>`)).toBeTruthy();
         });

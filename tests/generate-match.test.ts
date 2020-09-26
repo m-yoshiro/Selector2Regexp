@@ -234,6 +234,8 @@ describe('Matching', () => {
 
         it('Should match', () => {
           expect(testCase.test(`<button class="button button--primary"></button>`)).toBeTruthy();
+          expect(testCase.test(`<button class="button other button--primary"></button>`)).toBeTruthy();
+          expect(testCase.test(`<button class="button--primary other button"></button>`)).toBeTruthy();
           expect(testCase.test(`<button id="main" class="button button--primary"></button>`)).toBeTruthy();
         });
 

@@ -1,4 +1,4 @@
-import { ANY, ANY_VALUE, SPACE_BETWEEN_ELEMENT, QUOTE, BEFORE_ATTRIBUTE, AFTER_ATTRIBUTE, SPACE_BETWEEN_VALUE } from '../utils/definitions';
+import { ANY_VALUE, QUOTE, BEFORE_ATTRIBUTE, AFTER_ATTRIBUTE, SPACE_BETWEEN_VALUE } from '../utils/definitions';
 
 export const attributeRegexpTemplate = (name: string, value?: string) => {
   if (!value) {

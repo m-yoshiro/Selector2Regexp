@@ -1,13 +1,5 @@
 import { ANY, ANY_VALUE, SPACE_BETWEEN_ELEMENT, QUOTE, BEFORE_ATTRIBUTE, AFTER_ATTRIBUTE, SPACE_BETWEEN_VALUE } from '../utils/definitions';
 
-const wrapQuate = (value: string) => {
-  return `${QUOTE}${value}${QUOTE}`;
-};
-
-const ignoreDuplication = (value: string) => {
-  return `(?<![^\\w]${value}\\s+${ANY})(?:${ANY})${value}(?!\\w).*(?![^\\w]${value}[^\\w])`;
-};
-
 export const attributeRegexpTemplate = (name: string, value?: string) => {
   if (!value) {
     return name;

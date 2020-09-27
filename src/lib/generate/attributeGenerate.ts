@@ -2,34 +2,34 @@ import { Attribute } from '../../../types';
 import { ANY_VALUE, QUOTE, BEFORE_ATTRIBUTE, AFTER_ATTRIBUTE, SPACE_BETWEEN_VALUE } from '../utils/definitions';
 import { attributeRegexpTemplate } from './attributeRegexTemplate';
 
+const prerequisite = (condition: string) => `(?=(.*[\\s'"]${condition}[\\s'"]))`;
+
 const convertValueWithMatcher = (attrValue: Attribute) => {
   const { value, matcher } = attrValue;
 
-  let result: string;
+  let result: string | null;
 
   // With Matcher
   if (matcher && value) {
     if (matcher === '=') {
-      result = value;
+      // This matcher needs a strict condition
+      result = `${QUOTE}${value}${QUOTE}`;
     } else if (matcher === '*=') {
-      result = `[\\w\\d_-\\s]*?${value}[\\w\\d_-\\s]*?`;
+      result = `(?=${QUOTE})${prerequisite(`[\\w\\d_-\\s]*?${value}[\\w\\d_-\\s]*?`)}.*(?=${QUOTE})`;
     } else if (matcher === '^=') {
-      result = `${value}[\\w\\d_-]*?`;
+      result = `(?=${QUOTE})${prerequisite(`${value}[\\w\\d_-]*?`)}.*(?=${QUOTE})`;
     } else if (matcher === '$=') {
-      result = `[\\w\\d_-]*?${value}`;
+      result = `(?=${QUOTE})${prerequisite(`[\\w\\d_-]*?${value}`)}.*(?=${QUOTE})`;
     } else if (matcher === '~=') {
-      result = `(?=(.*[\\s'"]${value}[\\s'"])).*`;
+      result = `(?=${QUOTE})${prerequisite(value)}.*(?=${QUOTE})`;
     } else {
-      result = '';
+      result = null;
     }
+    return result;
   } else {
-    result = '';
+    return null;
   }
-
-  return result;
 };
-
-const convertSelectorOrIdValue = (value: string) => `(?=(.*[\\s'"]${value}[\\s'"])).*`;
 
 export const attributeToRegexp = (attr: Attribute) => {
   if (!attr.value) {
@@ -37,8 +37,8 @@ export const attributeToRegexp = (attr: Attribute) => {
   } else if (attr.matcher) {
     // Remove quotes if a value contains.
     attr.value = attr.value.replace(/(:?^['"]|['"]$)/g, '');
-    return attributeRegexpTemplate(attr.name, `(${QUOTE}${convertValueWithMatcher(attr)}${QUOTE})`);
+    return attributeRegexpTemplate(attr.name, convertValueWithMatcher(attr));
   } else {
-    return attributeRegexpTemplate(attr.name, `(?=${QUOTE})${convertSelectorOrIdValue(attr.value)}(?=${QUOTE})`);
+    return attributeRegexpTemplate(attr.name, `(?=${QUOTE})${prerequisite(attr.value)}.*(?=${QUOTE})`);
   }
 };

@@ -189,6 +189,7 @@ describe('Matching', () => {
       });
       it('Should NOT match', () => {
         expect(testCase.test(`<div class="box-super"></div>`)).toBeFalsy();
+        expect(testCase.test(`<div class="boxa box-super"></div>`)).toBeFalsy();
       });
     });
 

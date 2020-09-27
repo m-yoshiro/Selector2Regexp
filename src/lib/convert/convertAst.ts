@@ -7,10 +7,6 @@ import { Attribute } from '../../../types';
 export const convertToAst = (ast: CssNode) => {
   let current: Element;
   const result = new Selector();
-  const INNER_ATTR_NAME = {
-    ClassSelector: 'class',
-    IdSelector: 'id',
-  };
 
   walk(ast, (node, item) => {
     // Skip

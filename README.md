@@ -4,8 +4,6 @@ Generate regular expressions of JavaScript from CSS Selectors.
 
 That regular expressions is for searching HTML elements which is matched given CSS selector.
 
-- Generated regexps contain ES2018's features. "Lookbehind assertion" and "Negative lookbehind assertion".<br>
-  Please check their statements:<br>https://caniuse.com/#feat=mdn-javascript_builtins_regexp_lookbehind_assertion,
 
 [![npm version](https://badge.fury.io/js/selector-2-regexp.svg)](https://badge.fury.io/js/selector-2-regexp)
 ![](https://github.com/m-yoshiro/Selector2Regexp/workflows/TEST/badge.svg)
@@ -80,9 +78,7 @@ s2r '.button' | pbcopy
   s2r 'div.panel.flex'
   ```
 
-<!--
-```
-# Grep html
-grep -E $(s2r '.button') index.html
-```
- -->
+## Notes
+
+- Generated regexps contain ES2018's features. "Lookbehind assertion" and "Negative lookbehind assertion".<br>
+  Please check their statements:<br>https://caniuse.com/#feat=mdn-javascript_builtins_regexp_lookbehind_assertion,

@@ -10,6 +10,7 @@ export const ATTRIBUTE_SEPARATOR = '\\s+';
 export const SPACE_BETWEEN_ELEMENT = '\\s*';
 export const SPACE_BETWEEN_VALUE = '\\s*';
 export const QUOTE = '[\'"]';
+export const QUOTE_OR_SPACE = '[\\s\'"]';
 export const BEFORE_ATTRIBUTE = '(?<!\\w)'; // ES2018
 export const AFTER_ATTRIBUTE = '(?!\\w)';
 export const ANY_OPENING_TAG = '<.*>';

@@ -1,8 +1,8 @@
 import { Attribute } from '../../../types';
-import { ANY_VALUE, QUOTE, BEFORE_ATTRIBUTE, AFTER_ATTRIBUTE, SPACE_BETWEEN_VALUE } from '../utils/definitions';
+import { QUOTE, QUOTE_OR_SPACE, ANY } from '../utils/definitions';
 import { attributeRegexpTemplate } from './attributeRegexTemplate';
 
-const prerequisite = (condition: string) => `(?=(.*[\\s'"]${condition}[\\s'"]))`;
+const prerequisite = (condition: string) => `(?=(${ANY}${QUOTE_OR_SPACE}${condition}${QUOTE_OR_SPACE}))`;
 
 const convertValueWithMatcher = (attrValue: Attribute) => {
   const { value, matcher } = attrValue;
@@ -15,13 +15,13 @@ const convertValueWithMatcher = (attrValue: Attribute) => {
       // This matcher needs a strict condition
       result = `${QUOTE}${value}${QUOTE}`;
     } else if (matcher === '*=') {
-      result = `(?=${QUOTE})${prerequisite(`[\\w\\d_-\\s]*?${value}[\\w\\d_-\\s]*?`)}.*(?=${QUOTE})`;
+      result = `(?=${QUOTE})${prerequisite(`[\\w\\d_-\\s]*?${value}[\\w\\d_-\\s]*?`)}${ANY}(?=${QUOTE})`;
     } else if (matcher === '^=') {
-      result = `(?=${QUOTE})${prerequisite(`${value}[\\w\\d_-]*?`)}.*(?=${QUOTE})`;
+      result = `(?=${QUOTE})${prerequisite(`${value}[\\w\\d_-]*?`)}${ANY}(?=${QUOTE})`;
     } else if (matcher === '$=') {
-      result = `(?=${QUOTE})${prerequisite(`[\\w\\d_-]*?${value}`)}.*(?=${QUOTE})`;
+      result = `(?=${QUOTE})${prerequisite(`[\\w\\d_-]*?${value}`)}${ANY}(?=${QUOTE})`;
     } else if (matcher === '~=') {
-      result = `(?=${QUOTE})${prerequisite(value)}.*(?=${QUOTE})`;
+      result = `(?=${QUOTE})${prerequisite(value)}${ANY}(?=${QUOTE})`;
     } else {
       result = null;
     }
@@ -39,6 +39,6 @@ export const attributeToRegexp = (attr: Attribute) => {
     attr.value = attr.value.replace(/(:?^['"]|['"]$)/g, '');
     return attributeRegexpTemplate(attr.name, convertValueWithMatcher(attr));
   } else {
-    return attributeRegexpTemplate(attr.name, `(?=${QUOTE})${prerequisite(attr.value)}.*(?=${QUOTE})`);
+    return attributeRegexpTemplate(attr.name, `(?=${QUOTE})${prerequisite(attr.value)}${ANY}(?=${QUOTE})`);
   }
 };

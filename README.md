@@ -37,7 +37,7 @@ After saving clipboard, paste it on a search input of your editor.
 
 2. Paste a regular expression on your tool
 
-    <img src="./docs/images/screenshot.png" width="80%" align="center">
+    <img src="./docs/images/screenshot.png" width="60%" align="center">
 
 ### Examples
 

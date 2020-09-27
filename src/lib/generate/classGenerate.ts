@@ -1,11 +1,5 @@
 import { ANY_VALUE, QUOTE, BEFORE_ATTRIBUTE, AFTER_ATTRIBUTE, SPACE_BETWEEN_VALUE } from '../utils/definitions';
-
-export const attributeRegexpTemplate = (name: string, value?: string) => {
-  if (!value) {
-    return name;
-  }
-  return `${name}=${value}`;
-};
+import { attributeRegexpTemplate } from './attributeRegexTemplate';
 
 export const classToRegexp = (classList: string[]) => {
   const isMultiple = classList.length >= 2;

@@ -1,14 +1,6 @@
 import { Attribute } from '../../../types';
 import { ANY_VALUE, QUOTE, BEFORE_ATTRIBUTE, AFTER_ATTRIBUTE, SPACE_BETWEEN_VALUE } from '../utils/definitions';
-
-const wrapQuate = (value: string) => `${QUOTE}${value}${QUOTE}`;
-
-export const attributeRegexpTemplate = (name: string, value?: string) => {
-  if (!value) {
-    return name;
-  }
-  return `${name}=${wrapQuate(value)}`;
-};
+import { attributeRegexpTemplate } from './attributeRegexTemplate';
 
 const convertValueWithMatcher = (attrValue: Attribute) => {
   const { value, matcher } = attrValue;
@@ -43,8 +35,8 @@ export const attributeToRegexp = (attr: Attribute) => {
   } else if (attr.matcher) {
     // Remove quates if a value contains.
     attr.value = attr.value.replace(/(:?^['"]|['"]$)/g, '');
-    return attributeRegexpTemplate(attr.name, `(${convertValueWithMatcher(attr)})`);
+    return attributeRegexpTemplate(attr.name, `(${QUOTE}${convertValueWithMatcher(attr)}${QUOTE})`);
   } else {
-    return attributeRegexpTemplate(attr.name, `(${convertSelectorOrIdValue(attr.value)})`);
+    return attributeRegexpTemplate(attr.name, `(${QUOTE}${convertSelectorOrIdValue(attr.value)}${QUOTE})`);
   }
 };

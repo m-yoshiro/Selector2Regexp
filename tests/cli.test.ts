@@ -1,6 +1,7 @@
 import path from 'path';
 import { exec } from 'child_process';
 import { promisify } from 'util';
+import { classToRegexp } from '../src/lib/generate/classGenerate';
 
 const cliMock = async (args: string[]) => {
   const asyncExec = promisify(exec);
@@ -15,6 +16,6 @@ const cliMock = async (args: string[]) => {
 
 describe('CLI', () => {
   it('.button', async () => {
-    await expect(cliMock(['.button'])).resolves.toBe('<\\s*([a-zA-Z]+)\\s+.*(class=[\'"]\\w*\\s*(?<!\\w)(button)(?!\\w)\\s*\\w*[\'"]).*\\s*>' + '\n');
+    await expect(cliMock(['.button'])).resolves.toBe('<\\s*([a-zA-Z]+)\\s+.*(' + classToRegexp(['button']) + ').*\\s*>' + '\n');
   });
 });

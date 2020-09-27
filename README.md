@@ -1,86 +1,119 @@
 # Selector2Regexp
 
-Transform CSS Selector to a Regexp string for searching matched elements in HTML.
+Generate regular expressions of JavaScript from CSS selectors.
 
-- Generated regexps **only work JavaScript based environments**. ex. VSCode, Node.js, Chrome..
-- Generated regexps contain ES2018's features. "Lookbehind assertion" and "Negative lookbehind assertion".<br>
-  Please check their statements:<br>https://caniuse.com/#feat=mdn-javascript_builtins_regexp_lookbehind_assertion,
+That regular expressions is for searching HTML elements which is matched given CSS selector.
 
+
+[![npm version](https://badge.fury.io/js/selector-2-regexp.svg)](https://badge.fury.io/js/selector-2-regexp)
 ![](https://github.com/m-yoshiro/Selector2Regexp/workflows/TEST/badge.svg)
 
-## Install
+## Installation
 
 ```sh
-npm i selector-2-regexp
+$ npm i selector-2-regexp
 ```
 
 ## Usage
 
-```sh
-s2r '.button'
-# => class=['"]\w*\s*(?<!\w)(button)(?!\w)\s*\w*['"]
+### Basic
 
-# Save to clipboard
-s2r '.button' | pbcopy
+```sh
+$ s2r '.button'
+# => <\s*([a-zA-Z]+)\s+.*(class=(?=['"])((?=(.*[\s'"]button[\s'"])).*)(?=['"])).*\s*>
 ```
 
-### Supported selector patterns
+### With clipboard
 
-- **Single selector**
+Saving clipboard is convenient to use with editor, e.g. VS Code.  
+After saving clipboard, paste it on a search input of your editor.
 
-  ```sh
-  # Type Selector
+1. Save to clipboard.
+
+    ```sh
+    # Save to clipboard on macOS (On Windows, Replace "pbcopy" to "clip")
+    $ s2r '.button' | pbcopy
+    ```
+
+2. Paste a regular expression on your tool
+
+    <img src="./docs/images/screenshot.png" width="60%" align="center">
+
+### Examples
+
+#### Basics
+
+```sh
+# Type Selector
   s2r 'div'
 
-  # Classs Selector
+# Classs Selector
   s2r '.single'
 
-  # Id Selector
+# Id Selector
   s2r '#app'
 
-  # Attribute Selector
+# Attribute Selector
   s2r '[hidden]'
   s2r '[data-state=active]'
   s2r '[data-state*=active]'
   s2r '[data-state~=active]'
   s2r '[data-state^=active]'
   s2r '[data-state$=active]'
-  ```
 
-- **Descendant selector**
+# href, src
+  s2r 'a[href^=https://]'
+  s2r 'img[src$=.svg]'
 
-  ```sh
-  s2r '.parent .child'
-  ```
-
-- **Child combinator**
-
-  ```sh
-  s2r '.parent > .child'
-  ```
-
-- **Next sibling combinator**
-
-  ```sh
-  s2r '.parent + .child'
-  ```
-
-- **General sibling combinator**
-
-  ```sh
-  s2r '.parent ~ .child'
-  ```
-
-- **Multiples**
-
-  ```sh
+# Multiples
   s2r '.button.button--primary'
   s2r 'div.panel.flex'
-  ```
+```
 
-<!--
+#### Combinator
+
+```sh
+# Descendant combinator
+  s2r '.parent .child'
+
+# Child combinator
+  s2r '.parent > .child'
+
+# Next sibling combinator
+  s2r '.parent + .child'
+
+# General sibling combinator
+  s2r '.parent ~ .child'
 ```
-# Grep html
-grep -E $(s2r '.button') index.html
-```
- -->
+
+## Supported selectors
+
+### Basic selectors
+
+* Class selector ✅
+* ID selector ✅
+* Type selector ✅
+* Attribute selector ✅
+
+
+### Combinators
+
+* Descendant combinator ✅
+* Child combinator ✅
+* General sibling combinator ✅
+* Adjacent sibling combinator ✅
+* Column combinator ☑️ 😢
+
+
+
+## Notes
+
+### With "combinators", a generated regular expression includes ES2018's features.
+
+When given combinators, generated regular expressions that includes `"Lookbehind assertion"` and `"Negative lookbehind assertion"` which are ES2018's features.  
+
+This regular expressions **might not work some environments not supported them** 😢.  
+_(e.g., IE, FireFox and old version Node.js)_  
+
+Please check their statements if you use with combinator.  
+https://caniuse.com/#feat=mdn-javascript_builtins_regexp_lookbehind_assertion

@@ -18,7 +18,7 @@ npm i selector-2-regexp
 
 ```sh
 s2r '.button'
-# => class=['"]\w*\s*(?<!\w)(button)(?!\w)\s*\w*['"]
+# => <\s*([a-zA-Z]+)\s+.*(class=(?=['"])((?=(.*[\s'"]button[\s'"])).*)(?=['"])).*\s*>
 
 # Save to clipboard
 s2r '.button' | pbcopy

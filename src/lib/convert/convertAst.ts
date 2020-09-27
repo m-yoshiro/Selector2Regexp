@@ -35,15 +35,12 @@ export const convertToAst = (ast: CssNode) => {
         } else if (node.type === 'AttributeSelector') {
           attr.name = typeof node.name === 'string' ? node.name : node.name.name;
           attr.value = (() => {
-            let value = '';
+            // eslint-disable-next-line prettier/prettier
+            let value = 
+              node.value?.type === 'Identifier' ? node.value.name :
+              node.value?.type === 'String' ? node.value.value : null;
 
-            if (node.value?.type === 'Identifier') {
-              value = node.value.name;
-            } else if (node.value?.type === 'String') {
-              value = node.value.value;
-            }
-
-            value = escapeRegExp(value);
+            value = value && escapeRegExp(value);
 
             return value;
           })();

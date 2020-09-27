@@ -98,5 +98,12 @@ s2r '[data-state$=active]'
 
 ## Notes
 
-- Generated regexps contain ES2018's features. "Lookbehind assertion" and "Negative lookbehind assertion".<br>
-  Please check their statements:<br>https://caniuse.com/#feat=mdn-javascript_builtins_regexp_lookbehind_assertion,
+### With "combinators", a generated regular expression includes ES2018's features.
+
+When given combinators, generated regular expressions that includes `"Lookbehind assertion"` and `"Negative lookbehind assertion"` which are ES2018's features.  
+
+This regular expressions **might not work some environments not supported them** 😢.  
+(Ex. IE, FireFox, old version Node.js)  
+
+Please check their statements if you use with combinator.  
+https://caniuse.com/#feat=mdn-javascript_builtins_regexp_lookbehind_assertion

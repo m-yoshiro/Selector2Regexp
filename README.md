@@ -16,65 +16,75 @@ $ npm i selector-2-regexp
 
 ## Usage
 
-```sh
-$ s2r '.button'
-# => <\s*([a-zA-Z]+)\s+.*(class=(?=['"])((?=(.*[\s'"]button[\s'"])).*)(?=['"])).*\s*>
-
-# Save to clipboard
-$ s2r '.button' | pbcopy
-```
-
 ### Basic
 
 ```sh
-# Type Selector
-s2r 'div'
-
-# Classs Selector
-s2r '.single'
-
-# Id Selector
-s2r '#app'
-
-# Attribute Selector
-s2r '[hidden]'
-s2r '[data-state=active]'
-s2r '[data-state*=active]'
-s2r '[data-state~=active]'
-s2r '[data-state^=active]'
-s2r '[data-state$=active]'
+$ s2r '.button'
+# => <\s*([a-zA-Z]+)\s+.*(class=(?=['"])((?=(.*[\s'"]button[\s'"])).*)(?=['"])).*\s*>
 ```
 
-- **Descendant selector**
+### With clipboard
 
-  ```sh
-  s2r '.parent .child'
-  ```
+Saving clipboard is convenient to use with editor, e.g. VS Code.  
+After saving clipboard, paste it on a search input of your editor.
 
-- **Child combinator**
+1. Save to clipboard.
 
-  ```sh
-  s2r '.parent > .child'
-  ```
+    ```sh
+    # Save to clipboard on macOS (On Windows, Replace "pbcopy" to "clip")
+    $ s2r '.button' | pbcopy
+    ```
 
-- **Next sibling combinator**
+2. Paste a regular expression on your tool
 
-  ```sh
-  s2r '.parent + .child'
-  ```
+    <img src="./docs/images/screenshot.png" width="80%" align="center">
 
-- **General sibling combinator**
+### Examples
 
-  ```sh
-  s2r '.parent ~ .child'
-  ```
+#### Basics
 
-- **Multiples**
+```sh
+# Type Selector
+  s2r 'div'
 
-  ```sh
+# Classs Selector
+  s2r '.single'
+
+# Id Selector
+  s2r '#app'
+
+# Attribute Selector
+  s2r '[hidden]'
+  s2r '[data-state=active]'
+  s2r '[data-state*=active]'
+  s2r '[data-state~=active]'
+  s2r '[data-state^=active]'
+  s2r '[data-state$=active]'
+
+# href, src
+  s2r 'a[href^=https://]'
+  s2r 'img[src$=.svg]'
+
+# Multiples
   s2r '.button.button--primary'
   s2r 'div.panel.flex'
-  ```
+```
+
+#### Combinator
+
+```sh
+# Descendant combinator
+  s2r '.parent .child'
+
+# Child combinator
+  s2r '.parent > .child'
+
+# Next sibling combinator
+  s2r '.parent + .child'
+
+# General sibling combinator
+  s2r '.parent ~ .child'
+```
 
 ## Supported selectors
 

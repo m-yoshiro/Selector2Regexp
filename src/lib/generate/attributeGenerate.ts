@@ -1,5 +1,5 @@
 import { Attribute } from '../../../types';
-import { QUOTE, QUOTE_OR_SPACE, ANY } from '../utils/definitions';
+import { QUOTE, QUOTE_OR_SPACE, ANY, ANY_VALUE_CHARACTER } from '../utils/definitions';
 import { attributeRegexpTemplate } from './attributeRegexTemplate';
 
 const prerequisite = (condition: string) => `(?=(${ANY}${QUOTE_OR_SPACE}${condition}${QUOTE_OR_SPACE}))`;
@@ -15,11 +15,11 @@ const convertValueWithMatcher = (attrValue: Attribute) => {
       // This matcher needs a strict condition
       result = `${QUOTE}${value}${QUOTE}`;
     } else if (matcher === '*=') {
-      result = `(?=${QUOTE})${prerequisite(`[\\w\\d_-\\s]*?${value}[\\w\\d_-\\s]*?`)}${ANY}(?=${QUOTE})`;
+      result = `(?=${QUOTE})${prerequisite(`[\\w\\d\\/\\.:_-\\s]*?${value}[\\w\\d\\/\\.:_-\\s]*?`)}${ANY}(?=${QUOTE})`;
     } else if (matcher === '^=') {
-      result = `(?=${QUOTE})${prerequisite(`${value}[\\w\\d_-]*?`)}${ANY}(?=${QUOTE})`;
+      result = `(?=${QUOTE})${prerequisite(`${value}${ANY_VALUE_CHARACTER}*?`)}${ANY}(?=${QUOTE})`;
     } else if (matcher === '$=') {
-      result = `(?=${QUOTE})${prerequisite(`[\\w\\d_-]*?${value}`)}${ANY}(?=${QUOTE})`;
+      result = `(?=${QUOTE})${prerequisite(`${ANY_VALUE_CHARACTER}*?${value}`)}${ANY}(?=${QUOTE})`;
     } else if (matcher === '~=') {
       result = `(?=${QUOTE})${prerequisite(value)}${ANY}(?=${QUOTE})`;
     } else {

@@ -3,6 +3,7 @@ import { Element } from '../node/element';
 import { Combinator } from '../node/combinator';
 import { Selector } from '../node/selector';
 import { Attribute } from '../../../types';
+import { escapeRegExp } from '../utils';
 
 export const convertToAst = (ast: CssNode) => {
   let current: Element;
@@ -34,11 +35,17 @@ export const convertToAst = (ast: CssNode) => {
         } else if (node.type === 'AttributeSelector') {
           attr.name = typeof node.name === 'string' ? node.name : node.name.name;
           attr.value = (() => {
+            let value = '';
+
             if (node.value?.type === 'Identifier') {
-              return node.value.name;
+              value = node.value.name;
             } else if (node.value?.type === 'String') {
-              return node.value.value;
+              value = node.value.value;
             }
+
+            value = escapeRegExp(value);
+
+            return value;
           })();
           attr.matcher = node.matcher;
         }

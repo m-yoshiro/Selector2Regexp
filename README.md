@@ -103,7 +103,7 @@ s2r '[data-state$=active]'
 When given combinators, generated regular expressions that includes `"Lookbehind assertion"` and `"Negative lookbehind assertion"` which are ES2018's features.  
 
 This regular expressions **might not work some environments not supported them** 😢.  
-(Ex. IE, FireFox, old version Node.js)  
+_(e.g., IE, FireFox and old version Node.js)_  
 
 Please check their statements if you use with combinator.  
 https://caniuse.com/#feat=mdn-javascript_builtins_regexp_lookbehind_assertion

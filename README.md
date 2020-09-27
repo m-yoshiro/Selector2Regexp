@@ -1,6 +1,6 @@
 # Selector2Regexp
 
-Generate regular expressions of JavaScript from CSS Selectors.
+Generate regular expressions of JavaScript from CSS selectors.
 
 That regular expressions is for searching HTML elements which is matched given CSS selector.
 
@@ -8,44 +8,42 @@ That regular expressions is for searching HTML elements which is matched given C
 [![npm version](https://badge.fury.io/js/selector-2-regexp.svg)](https://badge.fury.io/js/selector-2-regexp)
 ![](https://github.com/m-yoshiro/Selector2Regexp/workflows/TEST/badge.svg)
 
-## Install
+## Installation
 
 ```sh
-npm i selector-2-regexp
+$ npm i selector-2-regexp
 ```
 
 ## Usage
 
 ```sh
-s2r '.button'
+$ s2r '.button'
 # => <\s*([a-zA-Z]+)\s+.*(class=(?=['"])((?=(.*[\s'"]button[\s'"])).*)(?=['"])).*\s*>
 
 # Save to clipboard
-s2r '.button' | pbcopy
+$ s2r '.button' | pbcopy
 ```
 
-### Supported selector patterns
+### Basic
 
-- **Single selector**
+```sh
+# Type Selector
+s2r 'div'
 
-  ```sh
-  # Type Selector
-  s2r 'div'
+# Classs Selector
+s2r '.single'
 
-  # Classs Selector
-  s2r '.single'
+# Id Selector
+s2r '#app'
 
-  # Id Selector
-  s2r '#app'
-
-  # Attribute Selector
-  s2r '[hidden]'
-  s2r '[data-state=active]'
-  s2r '[data-state*=active]'
-  s2r '[data-state~=active]'
-  s2r '[data-state^=active]'
-  s2r '[data-state$=active]'
-  ```
+# Attribute Selector
+s2r '[hidden]'
+s2r '[data-state=active]'
+s2r '[data-state*=active]'
+s2r '[data-state~=active]'
+s2r '[data-state^=active]'
+s2r '[data-state$=active]'
+```
 
 - **Descendant selector**
 
@@ -77,6 +75,26 @@ s2r '.button' | pbcopy
   s2r '.button.button--primary'
   s2r 'div.panel.flex'
   ```
+
+## Supported selectors
+
+### Basic selectors
+
+* Class selector ✅
+* ID selector ✅
+* Type selector ✅
+* Attribute selector ✅
+
+
+### Combinators
+
+* Descendant combinator ✅
+* Child combinator ✅
+* General sibling combinator ✅
+* Adjacent sibling combinator ✅
+* Column combinator ☑️ 😢
+
+
 
 ## Notes
 

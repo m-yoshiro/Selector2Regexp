@@ -143,7 +143,7 @@ describe('Matching', () => {
 
       it('Should match', () => {
         expect(testCase.test(`<div class="button-small"></div>`)).toBeTruthy();
-        expect(testCase.test(`<a href="https://schdhdkej/"></a>`)).toBeTruthy();
+        expect(testCaseWithPath.test(`<a href="https://schdhdkej/"></a>`)).toBeTruthy();
         expect(testCaseWithPath.test(`<a href="https://schdhdkej/index.html"></a>`)).toBeTruthy();
       });
 

@@ -1,42 +1,44 @@
 import { Attribute } from '../../../types';
-import { ANY_VALUE, QUOTE, BEFORE_ATTRIBUTE, AFTER_ATTRIBUTE, SPACE_BETWEEN_VALUE } from '../utils/definitions';
+import { QUOTE, QUOTE_OR_SPACE, ANY } from '../utils/definitions';
 import { attributeRegexpTemplate } from './attributeRegexTemplate';
+
+const prerequisite = (condition: string) => `(?=(${ANY}${QUOTE_OR_SPACE}${condition}${QUOTE_OR_SPACE}))`;
 
 const convertValueWithMatcher = (attrValue: Attribute) => {
   const { value, matcher } = attrValue;
 
+  let result: string | null;
+
   // With Matcher
   if (matcher && value) {
     if (matcher === '=') {
-      return `${value}`;
+      // This matcher needs a strict condition
+      result = `${QUOTE}${value}${QUOTE}`;
     } else if (matcher === '*=') {
-      return `[\\w\\d_-\\s]*?${value}[\\w\\d_-\\s]*?`;
+      result = `(?=${QUOTE})${prerequisite(`[\\w\\d_-\\s]*?${value}[\\w\\d_-\\s]*?`)}${ANY}(?=${QUOTE})`;
     } else if (matcher === '^=') {
-      return `${value}[\\w\\d_-]*?`;
+      result = `(?=${QUOTE})${prerequisite(`${value}[\\w\\d_-]*?`)}${ANY}(?=${QUOTE})`;
     } else if (matcher === '$=') {
-      return `[\\w\\d_-]*?${value}`;
+      result = `(?=${QUOTE})${prerequisite(`[\\w\\d_-]*?${value}`)}${ANY}(?=${QUOTE})`;
     } else if (matcher === '~=') {
-      return ANY_VALUE + SPACE_BETWEEN_VALUE + BEFORE_ATTRIBUTE + `${value}` + AFTER_ATTRIBUTE + SPACE_BETWEEN_VALUE + ANY_VALUE;
+      result = `(?=${QUOTE})${prerequisite(value)}${ANY}(?=${QUOTE})`;
     } else {
-      return '';
+      result = null;
     }
-  } else if (value) {
-    return `${value}`;
+    return result;
   } else {
-    return '';
+    return null;
   }
 };
-
-const convertSelectorOrIdValue = (value: string) => ANY_VALUE + SPACE_BETWEEN_VALUE + BEFORE_ATTRIBUTE + `${value}` + AFTER_ATTRIBUTE + SPACE_BETWEEN_VALUE + ANY_VALUE;
 
 export const attributeToRegexp = (attr: Attribute) => {
   if (!attr.value) {
     return attributeRegexpTemplate(attr.name);
   } else if (attr.matcher) {
-    // Remove quates if a value contains.
+    // Remove quotes if a value contains.
     attr.value = attr.value.replace(/(:?^['"]|['"]$)/g, '');
-    return attributeRegexpTemplate(attr.name, `(${QUOTE}${convertValueWithMatcher(attr)}${QUOTE})`);
+    return attributeRegexpTemplate(attr.name, convertValueWithMatcher(attr));
   } else {
-    return attributeRegexpTemplate(attr.name, `(${QUOTE}${convertSelectorOrIdValue(attr.value)}${QUOTE})`);
+    return attributeRegexpTemplate(attr.name, `(?=${QUOTE})${prerequisite(attr.value)}${ANY}(?=${QUOTE})`);
   }
 };

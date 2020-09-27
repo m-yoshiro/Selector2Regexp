@@ -1,28 +1,15 @@
-import { ANY_VALUE, QUOTE, BEFORE_ATTRIBUTE, AFTER_ATTRIBUTE, SPACE_BETWEEN_VALUE } from '../utils/definitions';
+import { QUOTE, ANY, QUOTE_OR_SPACE } from '../utils/definitions';
 import { attributeRegexpTemplate } from './attributeRegexTemplate';
 
 export const classToRegexp = (classList: string[]) => {
-  const isMultiple = classList.length >= 2;
-  let valueString: string;
-
-  if (isMultiple) {
-    valueString = classList
-      .map((classItem) => {
-        return `(?=(.*[\\s'"]${classItem}[\\s'"]))`;
-      })
-      .join('');
-  } else {
-    valueString = classList[0];
-  }
+  const valueString = classList
+    .map((classItem) => {
+      return `(?=(${ANY}${QUOTE_OR_SPACE}${classItem}${QUOTE_OR_SPACE}))`;
+    })
+    .join('');
 
   const attrName = 'class';
-  let valueRegex: string;
-
-  if (isMultiple) {
-    valueRegex = `(?=${QUOTE})(${valueString}.*)(?=${QUOTE})`;
-  } else {
-    valueRegex = QUOTE + ANY_VALUE + SPACE_BETWEEN_VALUE + BEFORE_ATTRIBUTE + `(${valueString})` + AFTER_ATTRIBUTE + SPACE_BETWEEN_VALUE + ANY_VALUE + QUOTE;
-  }
+  const valueRegex = `(?=${QUOTE})(${valueString}${ANY})(?=${QUOTE})`;
 
   return attributeRegexpTemplate(attrName, valueRegex);
 };

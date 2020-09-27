@@ -3,7 +3,7 @@ import { attributeRegexpTemplate } from './attributeRegexTemplate';
 
 export const idToRegexp = (id: string) => {
   const attrName = 'id';
-  const valueRegex = ANY_VALUE + SPACE_BETWEEN_VALUE + BEFORE_ATTRIBUTE + `(${id})` + AFTER_ATTRIBUTE + SPACE_BETWEEN_VALUE + ANY_VALUE;
+  const valueRegex = `(?=(.*[\\s'"]${id}[\\s'"]))`;
 
-  return attributeRegexpTemplate(attrName, `(${QUOTE}${valueRegex}${QUOTE})`);
+  return attributeRegexpTemplate(attrName, `(?=${QUOTE})(${valueRegex}.*)(?=${QUOTE})`);
 };

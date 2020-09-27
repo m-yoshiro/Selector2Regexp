@@ -183,6 +183,9 @@ describe('Matching', () => {
 
       it('Should match', () => {
         expect(testCase.test(`<div class="super-box"></div>`)).toBeTruthy();
+        expect(testCase.test(`<div class="box"></div>`)).toBeTruthy();
+        expect(testCase.test(`<div class="presentbox other"></div>`)).toBeTruthy();
+        expect(testCase.test(`<div class="superlongclassnamebox"></div>`)).toBeTruthy();
       });
       it('Should NOT match', () => {
         expect(testCase.test(`<div class="box-super"></div>`)).toBeFalsy();

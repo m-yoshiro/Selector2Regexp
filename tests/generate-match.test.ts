@@ -133,8 +133,18 @@ describe('Matching', () => {
         },
       });
 
+      const testCaseWithPath = makeTest({
+        attr: {
+          name: 'href',
+          value: 'https://schdhdkej/',
+          matcher: '^=',
+        },
+      });
+
       it('Should match', () => {
         expect(testCase.test(`<div class="button-small"></div>`)).toBeTruthy();
+        expect(testCase.test(`<a href="https://schdhdkej/"></a>`)).toBeTruthy();
+        expect(testCaseWithPath.test(`<a href="https://schdhdkej/index.html"></a>`)).toBeTruthy();
       });
 
       it('Should NOT match', () => {
@@ -181,11 +191,20 @@ describe('Matching', () => {
         },
       });
 
+      const testCaseWithPath = makeTest({
+        attr: {
+          name: 'href',
+          value: '/index.html',
+          matcher: '$=',
+        },
+      });
+
       it('Should match', () => {
         expect(testCase.test(`<div class="super-box"></div>`)).toBeTruthy();
         expect(testCase.test(`<div class="box"></div>`)).toBeTruthy();
         expect(testCase.test(`<div class="presentbox other"></div>`)).toBeTruthy();
         expect(testCase.test(`<div class="superlongclassnamebox"></div>`)).toBeTruthy();
+        expect(testCaseWithPath.test(`<a href="https://kkdddwe/index.html"></a>`)).toBeTruthy();
       });
       it('Should NOT match', () => {
         expect(testCase.test(`<div class="box-super"></div>`)).toBeFalsy();

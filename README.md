@@ -6,6 +6,7 @@ Transform CSS Selector to a Regexp string for searching matched elements in HTML
 - Generated regexps contain ES2018's features. "Lookbehind assertion" and "Negative lookbehind assertion".<br>
   Please check their statements:<br>https://caniuse.com/#feat=mdn-javascript_builtins_regexp_lookbehind_assertion,
 
+[![npm version](https://badge.fury.io/js/selector-2-regexp.svg)](https://badge.fury.io/js/selector-2-regexp)
 ![](https://github.com/m-yoshiro/Selector2Regexp/workflows/TEST/badge.svg)
 
 ## Install

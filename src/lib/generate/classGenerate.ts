@@ -12,17 +12,11 @@ export const classToRegexp = (classList: string[]) => {
       })
       .join('');
   } else {
-    valueString = classList[0];
+    valueString = `(?=(.*[\\s'"]${classList[0]}[\\s'"]))`;
   }
 
   const attrName = 'class';
-  let valueRegex: string;
-
-  if (isMultiple) {
-    valueRegex = `(?=${QUOTE})(${valueString}.*)(?=${QUOTE})`;
-  } else {
-    valueRegex = QUOTE + ANY_VALUE + SPACE_BETWEEN_VALUE + BEFORE_ATTRIBUTE + `(${valueString})` + AFTER_ATTRIBUTE + SPACE_BETWEEN_VALUE + ANY_VALUE + QUOTE;
-  }
+  const valueRegex = `(?=${QUOTE})(${valueString}.*)(?=${QUOTE})`;
 
   return attributeRegexpTemplate(attrName, valueRegex);
 };

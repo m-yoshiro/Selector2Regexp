@@ -3,14 +3,11 @@ import { Element } from '../node/element';
 import { Combinator } from '../node/combinator';
 import { Selector } from '../node/selector';
 import { Attribute } from '../../../types';
+import { escapeRegExp } from '../utils';
 
 export const convertToAst = (ast: CssNode) => {
   let current: Element;
   const result = new Selector();
-  const INNER_ATTR_NAME = {
-    ClassSelector: 'class',
-    IdSelector: 'id',
-  };
 
   walk(ast, (node, item) => {
     // Skip
@@ -38,11 +35,14 @@ export const convertToAst = (ast: CssNode) => {
         } else if (node.type === 'AttributeSelector') {
           attr.name = typeof node.name === 'string' ? node.name : node.name.name;
           attr.value = (() => {
-            if (node.value?.type === 'Identifier') {
-              return node.value.name;
-            } else if (node.value?.type === 'String') {
-              return node.value.value;
-            }
+            // eslint-disable-next-line prettier/prettier
+            let value = 
+              node.value?.type === 'Identifier' ? node.value.name :
+              node.value?.type === 'String' ? node.value.value : null;
+
+            value = value && escapeRegExp(value);
+
+            return value;
           })();
           attr.matcher = node.matcher;
         }

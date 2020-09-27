@@ -1,8 +1,9 @@
 # Selector2Regexp
 
-Transform CSS Selector to a Regexp string for searching matched elements in HTML.
+Generate regular expressions of JavaScript from CSS Selectors.
 
-- Generated regexps **only work JavaScript based environments**. ex. VSCode, Node.js, Chrome..
+That regular expressions is for searching HTML elements which is matched given CSS selector.
+
 - Generated regexps contain ES2018's features. "Lookbehind assertion" and "Negative lookbehind assertion".<br>
   Please check their statements:<br>https://caniuse.com/#feat=mdn-javascript_builtins_regexp_lookbehind_assertion,
 

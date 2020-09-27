@@ -1,4 +1,4 @@
-import { START_OF_BRACKET, END_OF_BRACKET, ANY_TYPE_NAME, ATTRIBUTE_SEPARATOR, ANY } from '../utils/definitions';
+import { START_OF_BRACKET, END_OF_BRACKET, ANY_TYPE_NAME, ATTRIBUTE_SEPARATOR, ANY, ANY_IN_ELEMENT } from '../utils/definitions';
 
 const attributesCompile = (attrs: string[]) => {
   if (attrs.length >= 2) {
@@ -11,7 +11,7 @@ const attributesCompile = (attrs: string[]) => {
 export const elementTemplate = (value: { type?: string; attributes?: string[] }) => {
   const { type, attributes } = value;
   if (!attributes || attributes.length < 1) {
-    return START_OF_BRACKET + `(${value.type})` + '\\s*.*?' + END_OF_BRACKET;
+    return START_OF_BRACKET + `(${value.type})` + `\\s*${ANY_IN_ELEMENT}` + END_OF_BRACKET;
   }
 
   return START_OF_BRACKET + `(${type || ANY_TYPE_NAME})` + ATTRIBUTE_SEPARATOR + attributesCompile(attributes) + END_OF_BRACKET;

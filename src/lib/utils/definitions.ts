@@ -16,3 +16,6 @@ export const AFTER_ATTRIBUTE = '(?!\\w)';
 export const ANY_OPENING_TAG = '<.*>';
 export const ANY_CLOSING_TAG = '</.*>';
 export const ANY = '.*';
+export const ANY_ELEMENT_CHARACTER = '[^<>]';
+export const ANY_IN_ELEMENT = `${ANY_ELEMENT_CHARACTER}*`;
+export const ANY_VALUE_CHARACTER = '[\\w\\d\\/\\.:_-]';

@@ -1,3 +1,7 @@
 **/tests/**
 src
 tsconfig.json
+.node-version
+docs
+package-lock.json
+.github

@@ -112,7 +112,7 @@ After saving clipboard, paste it on a search input of your editor.
 
 When given combinators, generated regular expressions that includes `"Lookbehind assertion"` and `"Negative lookbehind assertion"` which are ES2018's features.  
 
-This regular expressions **might not work some environments not supported them** 😢.  
+This regular expressions **might not work some environments unsupported them** 😢.  
 _(e.g., IE, FireFox and old version Node.js)_  
 
 Please check their statements if you use with combinator.  

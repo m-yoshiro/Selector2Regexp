@@ -35,28 +35,28 @@
   "homepage": "https://github.com/m-yoshiro/Selector2Regexp",
   "dependencies": {
     "css-tree": "^1.0.0-alpha.39",
-    "deep-equal": "^2.0.3",
-    "yargs": "^16.0.3"
+    "deep-equal": "^2.0.4",
+    "yargs": "^16.1.0"
   },
   "devDependencies": {
     "@types/css-tree": "^1.0.3",
     "@types/deep-equal": "^1.0.1",
     "@types/jest": "^26.0.14",
     "@types/pretty-format": "^24.3.0",
-    "@typescript-eslint/eslint-plugin": "^4.2.0",
-    "@typescript-eslint/parser": "^4.2.0",
-    "eslint": "^7.9.0",
-    "eslint-config-prettier": "^6.11.0",
+    "@typescript-eslint/eslint-plugin": "^4.4.1",
+    "@typescript-eslint/parser": "^4.4.1",
+    "eslint": "^7.11.0",
+    "eslint-config-prettier": "^6.13.0",
     "eslint-config-standard": "^14.1.1",
-    "eslint-plugin-import": "^2.22.0",
-    "eslint-plugin-jest": "^24.0.2",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-jest": "^24.1.0",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-prettier": "^3.1.4",
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-standard": "^4.0.1",
-    "jest": "^26.4.2",
+    "jest": "^26.5.3",
     "prettier": "^2.1.2",
-    "ts-jest": "^26.4.0",
+    "ts-jest": "^26.4.1",
     "typescript": "^4.0.3"
   }
 }

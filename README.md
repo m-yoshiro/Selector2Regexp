@@ -3,7 +3,8 @@
 Generate regular expressions of JavaScript from CSS selectors.
 That regular expressions is for searching HTML elements which is matched given CSS selector.
 
-You can try it on the web. https://m-yoshiro.github.io/selector2regexp-web/
+You can try it on the web.  
+https://m-yoshiro.github.io/selector2regexp-web/
 
 [![npm version](https://badge.fury.io/js/selector-2-regexp.svg)](https://badge.fury.io/js/selector-2-regexp)
 ![](https://github.com/m-yoshiro/Selector2Regexp/workflows/TEST/badge.svg)

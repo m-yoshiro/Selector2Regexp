@@ -39,6 +39,8 @@
     "yargs": "^16.2.0"
   },
   "devDependencies": {
+    "@commitlint/cli": "^17.4.2",
+    "@commitlint/config-conventional": "^17.4.2",
     "@types/css-tree": "^1.0.5",
     "@types/deep-equal": "^1.0.1",
     "@types/jest": "^26.0.20",

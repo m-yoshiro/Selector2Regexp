@@ -19,7 +19,7 @@
     "preversion": "npm run test",
     "version": "npm run build",
     "postversion": "git push && git push --tags",
-    "commit": "cz"
+    "commit": "git-cz"
   },
   "keywords": [
     "s2r",
@@ -67,7 +67,7 @@
   },
   "config": {
     "commitizen": {
-      "path": "./node_modules/cz-conventional-changelog"
+      "path": "@commitlint/cz-commitlint"
     }
   }
 }

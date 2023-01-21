@@ -37,7 +37,7 @@
   "dependencies": {
     "css-tree": "^1.1.2",
     "deep-equal": "^2.0.5",
-    "yargs": "^16.2.0"
+    "yargs": "^17.6.2"
   },
   "devDependencies": {
     "@commitlint/cli": "^17.4.2",

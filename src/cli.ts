@@ -16,7 +16,7 @@ Usage:
     // eslint-disable-next-line @typescript-eslint/no-var-requires
     .version(require('../package.json').version)
     .alias('v', 'version')
-    .parse(args);
+    .parseSync(args);
 
   const input = argv._;
 
@@ -24,5 +24,5 @@ Usage:
     throw new Error('Multiple input is not supported.');
   }
 
-  process.stdout.write(selector2Regexp(input[0]) + '\n');
+  process.stdout.write(selector2Regexp(`${input[0]}`) + '\n');
 };

@@ -1,4 +1,4 @@
-import { Attribute } from '../../../types';
+import type { Attribute } from '../../../types';
 import { S2rNode } from './abstractNode';
 import equal from 'deep-equal';
 

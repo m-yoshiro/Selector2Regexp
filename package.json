@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Convert CSS Selector to a Regexp string for searching matched elements in HTML.",
   "engines": {
-    "node": "^12 || ^14 || >=16.0.0"
+    "node": "^14 || >=16.0.0"
   },
   "bin": {
     "s2r": "bin/selector2regexp"
@@ -35,35 +35,35 @@
   },
   "homepage": "https://github.com/m-yoshiro/Selector2Regexp",
   "dependencies": {
-    "css-tree": "^1.1.2",
-    "deep-equal": "^2.0.5",
+    "css-tree": "^2.3.1",
     "yargs": "^17.6.2"
   },
   "devDependencies": {
     "@commitlint/cli": "^17.4.2",
     "@commitlint/config-conventional": "^17.4.2",
     "@commitlint/cz-commitlint": "^17.4.2",
-    "@types/css-tree": "^1.0.5",
+    "@types/css-tree": "^2.0.1",
     "@types/deep-equal": "^1.0.1",
-    "@types/jest": "^26.0.20",
+    "@types/jest": "^29.2.6",
     "@types/pretty-format": "^24.3.0",
-    "@typescript-eslint/eslint-plugin": "^4.15.1",
-    "@typescript-eslint/parser": "^4.15.1",
+    "@typescript-eslint/eslint-plugin": "^5.48.2",
+    "@typescript-eslint/parser": "^5.48.2",
     "commitizen": "^4.3.0",
     "cz-conventional-changelog": "^3.3.0",
-    "eslint": "^7.20.0",
-    "eslint-config-prettier": "^7.2.0",
-    "eslint-config-standard": "^16.0.2",
-    "eslint-plugin-import": "^2.22.1",
-    "eslint-plugin-jest": "^24.1.5",
+    "deep-equal": "^2.2.0",
+    "eslint": "^8.32.0",
+    "eslint-config-prettier": "^8.6.0",
+    "eslint-config-standard": "^17.0.0",
+    "eslint-plugin-import": "^2.27.5",
+    "eslint-plugin-jest": "^27.2.1",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-prettier": "^4.2.1",
-    "eslint-plugin-promise": "^4.3.1",
+    "eslint-plugin-promise": "^6.1.1",
     "eslint-plugin-standard": "^5.0.0",
     "husky": "^8.0.3",
-    "jest": "^26.6.3",
-    "prettier": "^2.2.1",
-    "ts-jest": "^26.5.1",
+    "jest": "^29.3.1",
+    "prettier": "^2.8.3",
+    "ts-jest": "^29.0.5",
     "typescript": "^4.1.5"
   },
   "config": {

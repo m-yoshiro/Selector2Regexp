@@ -1,6 +1,6 @@
 {
   "name": "selector-2-regexp",
-  "version": "1.0.0",
+  "version": "1.0.1-beta.6",
   "description": "Convert CSS Selector to a Regexp string for searching matched elements in HTML.",
   "engines": {
     "node": "^14 || >=16.0.0"

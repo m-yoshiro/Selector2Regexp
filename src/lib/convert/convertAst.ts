@@ -1,8 +1,9 @@
-import { CssNode, walk } from 'css-tree';
+import type { CssNode } from 'css-tree';
+import { walk } from 'css-tree';
 import { Element } from '../node/element';
 import { Combinator } from '../node/combinator';
 import { Selector } from '../node/selector';
-import { Attribute } from '../../../types';
+import type { Attribute } from '../../../types';
 import { escapeRegExp } from '../utils';
 
 export const convertToAst = (ast: CssNode) => {

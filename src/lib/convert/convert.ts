@@ -1,4 +1,5 @@
-import { CssNode, walk } from 'css-tree';
+import { walk } from 'css-tree';
+import type { CssNode } from 'css-tree';
 import { convertToAst } from './convertAst';
 
 const splitSelectorList = (ast: CssNode) => {

@@ -36,7 +36,6 @@
   "homepage": "https://github.com/m-yoshiro/Selector2Regexp",
   "dependencies": {
     "css-tree": "^2.3.1",
-    "deep-equal": "^2.0.5",
     "yargs": "^17.6.2"
   },
   "devDependencies": {
@@ -51,6 +50,7 @@
     "@typescript-eslint/parser": "^5.48.2",
     "commitizen": "^4.3.0",
     "cz-conventional-changelog": "^3.3.0",
+    "deep-equal": "^2.2.0",
     "eslint": "^8.32.0",
     "eslint-config-prettier": "^8.6.0",
     "eslint-config-standard": "^17.0.0",

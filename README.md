@@ -48,7 +48,7 @@ After saving clipboard, paste it on a search input of your editor.
 # Type Selector
   s2r 'div'
 
-# Classs Selector
+# Class Selector
   s2r '.single'
 
 # Id Selector

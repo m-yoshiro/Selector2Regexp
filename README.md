@@ -11,6 +11,8 @@ https://m-yoshiro.github.io/selector2regexp-web/
 
 ## Installation
 
+Requires Node.js 18 or later.
+
 ```sh
 $ npm i selector-2-regexp
 ```

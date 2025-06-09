@@ -46,7 +46,7 @@
     "@types/deep-equal": "^1.0.1",
     "@types/jest": "^29.2.6",
     "@types/pretty-format": "^24.3.0",
-    "@typescript-eslint/eslint-plugin": "^5.48.2",
+    "@typescript-eslint/eslint-plugin": "^8.33.1",
     "@typescript-eslint/parser": "^5.48.2",
     "commitizen": "^4.3.0",
     "cz-conventional-changelog": "^3.3.0",
